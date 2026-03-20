@@ -1,4 +1,4 @@
-$color-menu: #61331c;
+$colormenu: #61331c;
 .Menu{
   display: flex;
   flex-direction: column;
@@ -9,10 +9,13 @@ $color-menu: #61331c;
     width: 100%;
     justify-content: space-around;
     color: white;
-    background:linear-gradient(0deg,$color-menu,darken($color-menu,15));
+    background:linear-gradient(0deg,$colormenu,darken($colormenu,15));
     .Logo{
       width: 8rem;
       height: 8rem;
+    }
+    .Sponsor{
+      width: 8rem;
     }
     .clubDesc{
       display: flex;
@@ -21,7 +24,8 @@ $color-menu: #61331c;
       text-align: center;
       h1{
         margin: 0.4rem;
-        font-size: 2.4rem;
+        font-size: 2.8rem;
+        font-family: "Bookman Old Style",sans-serif;
       }
       .titlesYears{
         list-style: none;
@@ -43,21 +47,21 @@ $color-menu: #61331c;
     flex-direction: row;
     width: 100%;
     justify-content: center;
-    padding: 0.6rem 0;
-    background-color: $color-menu;
+    padding: 0.6rem 0 0.1rem 0;
+    background-color: $colormenu;
     a{
       margin: 0 2px;
       font-size: 1.2rem;
       text-decoration: none;
-      background-color: $color-menu;
+      background-color: $colormenu;
       color: white;
       font-weight: bold;
       padding: 0.5rem;
       border-radius: 0.4rem;
-      transition: ease-in-out 0.4s;
+      transition: ease-in-out 0.12s;
       &:hover{
-        background-color: darken($color-menu,4);
-        padding: 0.5rem 0.8rem;
+        background-color: darken($colormenu,4);
+        padding: 0.4rem 0.8rem 0.6rem 0.8rem;
       }
     }
   }
