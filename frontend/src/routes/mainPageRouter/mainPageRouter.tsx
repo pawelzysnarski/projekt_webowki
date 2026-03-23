@@ -1,4 +1,4 @@
-import Menu from "../../fragments/menu"
+import Menu from "../../fragments/menu/menu.tsx"
 import "./mainPageRouter.scss"
 
 export default function mainPageRouter(){

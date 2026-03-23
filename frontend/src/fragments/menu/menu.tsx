@@ -1,7 +1,7 @@
 import {NavLink} from "react-router";
 import "./menu.scss"
-import logo from "../logo.png"
-import sponsor from "../sponsor.png"
+import logo from "../../logo.png"
+import sponsor from "../../sponsor.png"
 export default function Menu(){
     return(
         <nav className="Menu">
@@ -35,6 +35,7 @@ export default function Menu(){
                 <NavLink to="/druzyna">Drużyna</NavLink>
                 <NavLink to="/akademia">Akademia</NavLink>
                 <NavLink to="/bilety">Bilety</NavLink>
+                <NavLink to="/sklep">Sklep</NavLink>
                 <NavLink to="/kontakt">Kontakt</NavLink>
             </div>
         </nav>
