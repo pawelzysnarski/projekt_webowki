@@ -1,6 +1,7 @@
 import {BrowserRouter,Route,Routes} from "react-router"
 import mainPageRouter from "./routes/mainPageRouter/mainPageRouter.tsx"
 import shopPageRouter from "./routes/shopPageRouter/shopPageRouter.tsx"
+import tablePageRouter from "./routes/tablePageRouter/tablePageRouter.tsx";
 import "./App.scss"
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Routes>
             <Route path="/*" element={mainPageRouter()}/>
             <Route path="/sklep" element={shopPageRouter()}/>
+            <Route path="/terminarz" element={tablePageRouter()}/>
         </Routes>
     </BrowserRouter>
   )
