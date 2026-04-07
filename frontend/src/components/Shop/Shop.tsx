@@ -1,5 +1,4 @@
-import Menu from "../../fragments/menu/menu.tsx"
-import "./shop.scss"
+import styles from "./Shop.module.scss"
 
 const items = [
     { id: 1, name: "Przedmiot1", price: "Cena" },
@@ -18,23 +17,22 @@ const items = [
 
 export default function Shop() {
     return (
-        <div className="App">
-            <Menu />
-            <main className="Shop">
-                <div className="shopHeader">
+        <div>
+            <main className={styles.Shop}>
+                <div className={styles.shopHeader}>
                     <h2>Sklep Kibica</h2>
                     <p>Oficjalne akcesoria klubu Chaber Pobiedziska</p>
                 </div>
-                <div className="shopGrid">
+                <div className={styles.shopGrid}>
                     {items.map(item => (
-                        <div className="shopItem" key={item.id}>
-                            <div className="itemPlaceholder">
-                                <span className="itemNumber">{item.id}</span>
+                        <div className={styles.shopItem} key={item.id}>
+                            <div className={styles.itemPlaceholder}>
+                                <span className={styles.itemNumber}>{item.id}</span>
                             </div>
-                            <div className="itemInfo">
-                                <p className="itemName">{item.name}</p>
-                                <p className="itemPrice">{item.price}</p>
-                                <button className="buyButton">Dodaj do koszyka</button>
+                            <div className={styles.itemInfo}>
+                                <p className={styles.itemName}>{item.name}</p>
+                                <p className={styles.itemPrice}>{item.price}</p>
+                                <button className={styles.buyButton}>Dodaj do koszyka</button>
                             </div>
                         </div>
                     ))}

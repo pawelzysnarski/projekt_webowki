@@ -1,16 +1,16 @@
 import {NavLink} from "react-router";
-import "./menu.scss"
+import styles from "./Menu.module.scss"
 import logo from "../../logo.png"
 import sponsor from "../../sponsor.png"
 export default function Menu(){
     return(
-        <nav className="Menu">
-            <div className="menuTop">
-                <img className="Logo" src={logo} alt="Logo"/>
-                <div className="clubDesc">
-                    <h1 className="clubName">Chaber Pobiedziska</h1>
-                    <p className="Desc">Strona najbardziej utytułowanego klubu w całej Polsce</p>
-                    <ul className="titlesYears">
+        <nav className={styles.Menu}>
+            <div className={styles.menuTop}>
+                <img className={styles.Logo} src={logo} alt="Logo"/>
+                <div className={styles.clubDesc}>
+                    <h1 className={styles.clubName}>Chaber Pobiedziska</h1>
+                    <p className={styles.desc}>Strona najbardziej utytułowanego klubu w całej Polsce</p>
+                    <ul className={styles.titlesYears}>
                         <li>| 1921 |</li>
                         <li>1928 |</li>
                         <li>1934 |</li>
@@ -26,9 +26,9 @@ export default function Menu(){
                         <li>2024 |</li>
                     </ul>
                 </div>
-                <img className="Sponsor" src={sponsor} alt="Sponsor"/>
+                <img className={styles.Sponsor} src={sponsor} alt="Sponsor"/>
             </div>
-            <div className="menuBottom">
+            <div className={styles.menuBottom}>
                 <NavLink to="/">Strona główna</NavLink>
                 <NavLink to="/aktualnosci">Aktualności</NavLink>
                 <NavLink to="/terminarz">Terminarz</NavLink>

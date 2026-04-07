@@ -1,8 +1,8 @@
-import "./table.scss"
+import styles from "./Table.module.scss"
 
 export default function Table(){
     return(
-        <table className="Table">
+        <table className={styles.Table}>
             <thead>
                 <tr>
                     <th>Klub</th>

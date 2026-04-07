@@ -38,7 +38,7 @@ CREATE TABLE `klub` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `klub`
+-- Dumping data for Table `klub`
 --
 
 INSERT INTO `klub` (`id`, `nazwa`, `miasto`, `stadion`, `herb`, `skrot`, `Siła`) VALUES
@@ -78,7 +78,7 @@ CREATE TABLE `tabela` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tabela`
+-- Dumping data for Table `tabela`
 --
 
 INSERT INTO `tabela` (`ID_Klubu`, `Mecze`, `Zwycięstwa`, `Remisy`, `Porażki`, `Gole_Zdobyte`, `Gole_Stracone`, `Bilans_Bramek`, `Punkty`) VALUES
@@ -159,13 +159,13 @@ ALTER TABLE `wyniki`
 --
 
 --
--- AUTO_INCREMENT for table `klub`
+-- AUTO_INCREMENT for Table `klub`
 --
 ALTER TABLE `klub`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `terminarz`
+-- AUTO_INCREMENT for Table `terminarz`
 --
 ALTER TABLE `terminarz`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
@@ -175,20 +175,20 @@ ALTER TABLE `terminarz`
 --
 
 --
--- Constraints for table `tabela`
+-- Constraints for Table `tabela`
 --
 ALTER TABLE `tabela`
   ADD CONSTRAINT `tabela_ibfk_1` FOREIGN KEY (`ID_Klubu`) REFERENCES `klub` (`id`);
 
 --
--- Constraints for table `terminarz`
+-- Constraints for Table `terminarz`
 --
 ALTER TABLE `terminarz`
   ADD CONSTRAINT `terminarz_ibfk_1` FOREIGN KEY (`ID_Gospodarza`) REFERENCES `klub` (`id`),
   ADD CONSTRAINT `terminarz_ibfk_2` FOREIGN KEY (`ID_Gościa`) REFERENCES `klub` (`id`);
 
 --
--- Constraints for table `wyniki`
+-- Constraints for Table `wyniki`
 --
 ALTER TABLE `wyniki`
   ADD CONSTRAINT `wyniki_ibfk_1` FOREIGN KEY (`ID_meczu`) REFERENCES `terminarz` (`ID`);
