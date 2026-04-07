@@ -8,7 +8,23 @@
     tr{
       border-bottom: 0.02rem dotted #703d23;
       th{
-        padding: 0.4rem;
+        padding: 0.3rem;
+        width: auto;
+      }
+    }
+  }
+  tbody{
+    tr{
+      border-bottom: 0.005rem dotted #703d23;
+      .desc{
+        display:flex;
+        flex-direction: row;
+      }
+      td{
+        text-align: end;
+        img{
+          width: 2rem;
+        }
       }
     }
   }

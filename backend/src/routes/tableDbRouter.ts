@@ -3,7 +3,9 @@ import prisma from "../prismaDb.ts";
 const tableDbRouter = Router();
 tableDbRouter.use(express.json());
 tableDbRouter.get("/", async (req, res) => {
-    const result = await prisma.tabela.findMany();
+    const result = await prisma.tabela.findMany({
+        include:{klub:true}
+    });
     res.json(result);
 })
 export default tableDbRouter;
