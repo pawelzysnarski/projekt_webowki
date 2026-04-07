@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import prisma from "../prismaDb";
+import prisma from "../prismaDb.ts";
 const tableDbRouter = Router();
 tableDbRouter.use(express.json());
 tableDbRouter.get("/", async (req, res) => {

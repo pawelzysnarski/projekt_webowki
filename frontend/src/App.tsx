@@ -1,17 +1,21 @@
 import {BrowserRouter,Route,Routes} from "react-router"
-import mainPageRouter from "./routes/mainPageRouter/mainPageRouter.tsx"
-import shopPageRouter from "./routes/shopPageRouter/shopPageRouter.tsx"
-import tablePageRouter from "./routes/tablePageRouter/tablePageRouter.tsx";
+import MainPage from "./routes/MainPage/MainPage.tsx"
+import ShopPage from "./routes/ShopPage/ShopPage.tsx"
+import TablePage from "./routes/TablePage/TablePage.tsx";
 import "./App.scss"
+import Menu from "./components/Menu/Menu.tsx";
+import TicketPage from "./routes/TicketPage/TicketPage.tsx";
 
 function App() {
 
   return (
     <BrowserRouter>
+        <Menu></Menu>
         <Routes>
-            <Route path="/*" element={mainPageRouter()}/>
-            <Route path="/sklep" element={shopPageRouter()}/>
-            <Route path="/terminarz" element={tablePageRouter()}/>
+            <Route path="/" element={MainPage()}/>
+            <Route path="/sklep" element={ShopPage()}/>
+            <Route path="/terminarz" element={TablePage()}/>
+            <Route path="/bilety" element={TicketPage()}/>
         </Routes>
     </BrowserRouter>
   )

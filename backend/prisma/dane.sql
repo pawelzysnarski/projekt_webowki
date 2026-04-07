@@ -1,0 +1,36 @@
+INSERT INTO `klub` (`id`, `nazwa`, `miasto`, `stadion`, `herb`, `skrot`, `Siła`) VALUES
+(1, 'Chaber Pobiedziska', 'Pobiedziska', 'Arena imienia Tomasza Piotrkowskiego', 'chaber.png', 'CHP', 95),
+(2, 'Zatyłek Pobiedziska', 'Pobiedziska', 'Fanservice Stadium', 'zatylek.png', 'ZAP', 89),
+(3, 'Ćwikła Opalenica', 'Opalenica', 'Pole Buraków', 'cwikla.png', 'OPA', 74),
+(4, 'Maczeta Dębiec', 'Dębiec', 'Arena Za Garażami', 'maczeta.png', 'MAD', 77),
+(5, 'Piotrki Tomaszów', 'Tomaszów', 'CWL Arena', 'piotrki.png', 'PIT', 10),
+(6, 'Tęczowi Grecja', 'Grecja', 'Olimp', 'teczowi.png', 'TGR', 81),
+(7, 'Lustro Puszczykowo', 'Puszczykowo', 'Stadion Szklanek i Garnków', 'lustro.png', 'LPU', 67),
+(8, 'Drzwi Chludowo', 'Chludowo', 'Arena Dworcowa', 'drzwi.png', 'DCH', 54),
+(9, 'Lodówka Luboń', 'Luboń', 'Stadion imienia Górki Papieskiej', 'lodowka.png', 'LOL', 52),
+(10, 'Stypa Budapeszt', 'Budapeszt', 'Stadion Miejski 5m^2', 'stypa.png', 'STB', 61),
+(11, 'Rajdowcy Zbąszynek', 'Zbąszynek', 'Arena Wyścigów Rajdowych', 'rajdowcy.png', 'RAZ', 68),
+(12, 'Karni Wronki', 'Wronki', 'Stadion Obok Zakładu Karnego', 'karni.png', 'KAW', 65),
+(13, 'Insomnia Pobiedziska', 'Pobiedziska', 'Arena Głębokiego Snu', 'insomnia.png', 'INP', 73),
+(14, 'Tchórze Marianowo', 'Marianowo', 'Stadion imienia Uciekinierów i Tchórzy', 'tchorze.png', 'TMA', 43),
+(15, 'Bidul Dębiec', 'Dębiec', 'Arena Bursa 2', 'bidul.png', 'BID', 56),
+(16, 'Mleczni Ptaki', 'Ptaki', 'Stadion Cytatów i Mądrości', 'mleczni.png', 'MLP', 76);
+
+
+INSERT INTO `tabela` (`ID_Klubu`, `Mecze`, `Zwycięstwa`, `Remisy`, `Porażki`, `Gole_Zdobyte`, `Gole_Stracone`, `Bilans_Bramek`, `Punkty`) VALUES
+(1, 0, 0, 0, 0, 0, 0, 0, 0),
+(2, 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 0, 0, 0, 0, 0, 0, 0, 0),
+(7, 0, 0, 0, 0, 0, 0, 0, 0),
+(8, 0, 0, 0, 0, 0, 0, 0, 0),
+(9, 0, 0, 0, 0, 0, 0, 0, 0),
+(10, 0, 0, 0, 0, 0, 0, 0, 0),
+(11, 0, 0, 0, 0, 0, 0, 0, 0),
+(12, 0, 0, 0, 0, 0, 0, 0, 0),
+(13, 0, 0, 0, 0, 0, 0, 0, 0),
+(14, 0, 0, 0, 0, 0, 0, 0, 0),
+(15, 0, 0, 0, 0, 0, 0, 0, 0),
+(16, 0, 0, 0, 0, 0, 0, 0, 0);
