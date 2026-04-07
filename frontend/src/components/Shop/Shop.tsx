@@ -16,20 +16,20 @@ type CartItem = {
 };
 
 const products: Product[] = [
-    { id: 1, name: 'spodenki1', price: 89.99, category: 'spodenki', image: 'spodenki1.png', alt: 'Spodenki piłkarskie model 1' },
-    { id: 2, name: 'spodenki2', price: 89.99, category: 'spodenki', image: 'spodenki2.jpg', alt: 'Spodenki piłkarskie model 2' },
-    { id: 3, name: 'spodenki3', price: 89.99, category: 'spodenki', image: 'spodenki3.png', alt: 'Spodenki piłkarskie model 3' },
-    { id: 4, name: 'koszulka1', price: 129.99, category: 'koszulki', image: 'koszulka1.jpg', alt: 'Koszulka piłkarska model 1' },
-    { id: 5, name: 'koszulka2', price: 129.99, category: 'koszulki', image: 'koszulka2.jpg', alt: 'Koszulka piłkarska model 2' },
-    { id: 6, name: 'koszulka3', price: 129.99, category: 'koszulki', image: 'koszulka3.jpg', alt: 'Koszulka piłkarska model 3' },
-    { id: 7, name: 'komplet1', price: 199.99, category: 'komplety', image: 'komplet1.jpg', alt: 'Kompletny strój kibica zestaw 1' },
-    { id: 8, name: 'komplet2', price: 199.99, category: 'komplety', image: 'komplet2.jpg', alt: 'Kompletny strój kibica zestaw 2' },
-    { id: 9, name: 'komplet3', price: 199.99, category: 'komplety', image: 'komplet3.jpg', alt: 'Kompletny strój kibica zestaw 3' },
-    { id: 10, name: 'misiek', price: 49.99, category: 'pluszaki', image: 'misiek.jpg', alt: 'Pluszowa maskotka miś' },
-    { id: 11, name: 'misiek1', price: 59.99, category: 'pluszaki', image: 'misiek1.jpg', alt: 'Pluszowa maskotka miś z szalikiem' },
-    { id: 12, name: 'misiek2', price: 59.99, category: 'pluszaki', image: 'misiek2.jpg', alt: 'Pluszowa maskotka miś z czapką' },
-    { id: 13, name: 'misiek3', price: 59.99, category: 'pluszaki', image: 'misiek3.jpg', alt: 'Pluszowa maskotka miś z piłką' },
-    { id: 14, name: 'kubek', price: 29.99, category: 'akcesoria', image: 'kubek.jpg', alt: 'Kubek kibica z logo klubu' },
+    { id: 1, name: 'spodenki1', price: 89.99, category: 'spodenki', image: 'spodenki1.png', alt: 'spodenki1' },
+    { id: 2, name: 'spodenki2', price: 89.99, category: 'spodenki', image: 'spodenki2.jpg', alt: 'spodenki2' },
+    { id: 3, name: 'spodenki3', price: 89.99, category: 'spodenki', image: 'spodenki3.png', alt: 'spodenki3' },
+    { id: 4, name: 'koszulka1', price: 129.99, category: 'koszulki', image: 'koszulka1.jpeg', alt: 'koszulka1' },
+    { id: 5, name: 'koszulka2', price: 129.99, category: 'koszulki', image: 'koszulka2.jpeg', alt: 'koszulka2' },
+    { id: 6, name: 'koszulka3', price: 129.99, category: 'koszulki', image: 'koszulka3.jpeg', alt: 'koszulka3' },
+    { id: 7, name: 'komplet1', price: 199.99, category: 'komplety', image: 'komplet1.jpg', alt: 'komplet1' },
+    { id: 8, name: 'komplet2', price: 199.99, category: 'komplety', image: 'komplet2.jpg', alt: 'komplet2' },
+    { id: 9, name: 'komplet3', price: 199.99, category: 'komplety', image: 'komplet3.jpg', alt: 'komplet3' },
+    { id: 10, name: 'misiek', price: 49.99, category: 'pluszaki', image: 'misiek.jpg', alt: 'misiek' },
+    { id: 11, name: 'misiek1', price: 59.99, category: 'pluszaki', image: 'misiek1.jpg', alt: 'misiek1' },
+    { id: 12, name: 'misiek2', price: 59.99, category: 'pluszaki', image: 'misiek2.jpg', alt: 'misiek2' },
+    { id: 13, name: 'misiek3', price: 59.99, category: 'pluszaki', image: 'misiek3.jpg', alt: 'misiek3' },
+    { id: 14, name: 'kubek', price: 29.99, category: 'akcesoria', image: 'kubek.jpg', alt: 'kubek' },
 ];
 
 const categories = [
