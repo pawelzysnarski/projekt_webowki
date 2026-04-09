@@ -1,0 +1,30 @@
+.FormPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  .Formularz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    textarea{
+      margin: 0.3rem 0;
+      width: 100%;
+    }
+    button {
+      width: 5rem;
+      color: white;
+      background-color: #703d23;
+      border:0.02rem solid #61331c;
+      padding: 0.2rem;
+      border-radius: 0.2rem;
+      transition: 0.2s ease-in-out;
+      font-size: 1.2rem;
+      &:hover{
+        background-color: darken(#61331c,2);
+        font-size: 1.3rem;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {NavLink} from "react-router";
+import {NavLink} from "react-router-dom";
 import styles from "./Menu.module.scss"
 import logo from "../../logo.png"
 import sponsor from "../../sponsor.png"
