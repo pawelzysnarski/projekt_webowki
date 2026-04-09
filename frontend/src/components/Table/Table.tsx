@@ -1,16 +1,9 @@
 import styles from "./Table.module.scss";
-import {useQuery} from "@tanstack/react-query";
+import useTable from "../../queries/tableQuery.ts";
 
-const getTableData = async () => {
-    const res = await fetch('/api/table');
-    if (!res.ok) throw new Error('Problem z pobraniem danych');
-    return res.json();
-};
 export default function Table(){
-    const { data: tableData, isLoading, isError, error } = useQuery({
-        queryKey: ['table'],
-        queryFn: getTableData,
-    });
+    const { data: tableData, isLoading, isError, error } = useTable();
+
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;
     return(
