@@ -6,6 +6,7 @@ import "./App.scss"
 import Menu from "./components/Menu/Menu.tsx";
 import TicketPage from "./routes/TicketPage/TicketPage.tsx";
 import ContactPage from "./routes/ContactPage/ContactPage.tsx";
+import Tickets from "./components/Tickets/Tickets.tsx";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/sklep" element={<ShopPage/>}/>
             <Route path="/terminarz" element={<TablePage/>}/>
             <Route path="/bilety" element={<TicketPage/>}/>
+            <Route path="/bilety/:id" element={<Tickets/>}/>
             <Route path="/kontakt" element={<ContactPage/>}/>
         </Routes>
     </BrowserRouter>
