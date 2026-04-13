@@ -59,3 +59,11 @@ model wyniki {
 
   terminarz terminarz @relation(fields: [idMeczu], references: [id], onUpdate: Restrict, map: "wyniki_ibfk_1")
 }
+
+model produkt {
+  id        Int     @id @default(autoincrement())
+  nazwa     String  @db.VarChar(100)
+  cena      Decimal @db.Decimal(10, 2)
+  kategoria String  @db.VarChar(50)
+  obrazek   String  @db.VarChar(255)
+}

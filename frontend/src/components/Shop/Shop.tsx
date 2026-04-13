@@ -1,13 +1,13 @@
 import { useState, useMemo } from 'react';
-import styles from './Shop.module.scss';
+import styles from '../Shop.module.scss';
+import { useQuery } from '@tanstack/react-query';
 
 type Product = {
     id: number;
-    name: string;
-    price: number;
-    category: string;
-    image: string;
-    alt: string;
+    nazwa: string;
+    cena: number;
+    kategoria: string;
+    obrazek: string;
 };
 
 type CartItem = {
@@ -15,22 +15,11 @@ type CartItem = {
     quantity: number;
 };
 
-const products: Product[] = [
-    { id: 1, name: 'spodenki1', price: 89.99, category: 'spodenki', image: 'spodenki1.png', alt: 'spodenki1' },
-    { id: 2, name: 'spodenki2', price: 89.99, category: 'spodenki', image: 'spodenki2.jpg', alt: 'spodenki2' },
-    { id: 3, name: 'spodenki3', price: 89.99, category: 'spodenki', image: 'spodenki3.png', alt: 'spodenki3' },
-    { id: 4, name: 'koszulka1', price: 129.99, category: 'koszulki', image: 'koszulka1.jpeg', alt: 'koszulka1' },
-    { id: 5, name: 'koszulka2', price: 129.99, category: 'koszulki', image: 'koszulka2.jpeg', alt: 'koszulka2' },
-    { id: 6, name: 'koszulka3', price: 129.99, category: 'koszulki', image: 'koszulka3.jpeg', alt: 'koszulka3' },
-    { id: 7, name: 'komplet1', price: 199.99, category: 'komplety', image: 'komplet1.jpg', alt: 'komplet1' },
-    { id: 8, name: 'komplet2', price: 199.99, category: 'komplety', image: 'komplet2.jpg', alt: 'komplet2' },
-    { id: 9, name: 'komplet3', price: 199.99, category: 'komplety', image: 'komplet3.jpg', alt: 'komplet3' },
-    { id: 10, name: 'misiek', price: 49.99, category: 'pluszaki', image: 'misiek.jpg', alt: 'misiek' },
-    { id: 11, name: 'misiek1', price: 59.99, category: 'pluszaki', image: 'misiek1.jpg', alt: 'misiek1' },
-    { id: 12, name: 'misiek2', price: 59.99, category: 'pluszaki', image: 'misiek2.jpg', alt: 'misiek2' },
-    { id: 13, name: 'misiek3', price: 59.99, category: 'pluszaki', image: 'misiek3.jpg', alt: 'misiek3' },
-    { id: 14, name: 'kubek', price: 29.99, category: 'akcesoria', image: 'kubek.jpg', alt: 'kubek' },
-];
+const getProducts = async () => {
+    const res = await fetch('/api/shop/products');
+    if (!res.ok) throw new Error('Problem z pobraniem produktów');
+    return res.json();
+};
 
 const categories = [
     { id: 'all', name: 'Wszystkie' },
@@ -47,20 +36,27 @@ export default function Shop() {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [showCart, setShowCart] = useState(false);
 
+    const { data: products, isLoading, isError, error } = useQuery({
+        queryKey: ['products'],
+        queryFn: getProducts,
+    });
+
     const filteredProducts = useMemo(() => {
+        if (!products) return [];
+
         let filtered = products;
 
         if (activeCategory !== 'all') {
-            filtered = filtered.filter(p => p.category === activeCategory);
+            filtered = filtered.filter((p: Product) => p.kategoria === activeCategory);
         }
 
         if (searchTerm.trim() !== '') {
             const term = searchTerm.toLowerCase();
-            filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
+            filtered = filtered.filter((p: Product) => p.nazwa.toLowerCase().includes(term));
         }
 
         return filtered;
-    }, [searchTerm, activeCategory]);
+    }, [searchTerm, activeCategory, products]);
 
     const formatPrice = (price: number) => {
         return price.toFixed(2).replace('.', ',') + ' zł';
@@ -103,8 +99,11 @@ export default function Shop() {
     };
 
     const getCartTotal = () => {
-        return cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+        return cart.reduce((total, item) => total + (item.product.cena * item.quantity), 0);
     };
+
+    if (isLoading) return <div className={styles.Shop}>Ładowanie produktów...</div>;
+    if (isError) return <div className={styles.Shop}>Błąd: {error.message}</div>;
 
     return (
         <main className={styles.Shop}>
@@ -143,8 +142,8 @@ export default function Shop() {
                                     {cart.map(item => (
                                         <div key={item.product.id} className={styles.cartItem}>
                                             <div className={styles.cartItemInfo}>
-                                                <p className={styles.cartItemName}>{item.product.name}</p>
-                                                <p className={styles.cartItemPrice}>{formatPrice(item.product.price)}</p>
+                                                <p className={styles.cartItemName}>{item.product.nazwa}</p>
+                                                <p className={styles.cartItemPrice}>{formatPrice(item.product.cena)}</p>
                                             </div>
                                             <div className={styles.cartItemControls}>
                                                 <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
@@ -217,18 +216,18 @@ export default function Shop() {
                         </div>
                     ) : (
                         <div className={styles.shopGrid}>
-                            {filteredProducts.map(product => (
+                            {filteredProducts.map((product: Product) => (
                                 <div className={styles.shopItem} key={product.id}>
                                     <div className={styles.imageWrapper}>
                                         <img
-                                            src={`products/${product.image}`}
-                                            alt={product.alt}
+                                            src={`products/${product.obrazek}`}
+                                            alt={product.nazwa}
                                             className={styles.productImage}
                                         />
                                     </div>
                                     <div className={styles.itemInfo}>
-                                        <p className={styles.itemName}>{product.name}</p>
-                                        <p className={styles.itemPrice}>{formatPrice(product.price)}</p>
+                                        <p className={styles.itemName}>{product.nazwa}</p>
+                                        <p className={styles.itemPrice}>{formatPrice(product.cena)}</p>
                                         <button
                                             className={styles.buyButton}
                                             onClick={() => addToCart(product)}
