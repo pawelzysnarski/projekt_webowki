@@ -1,0 +1,418 @@
+$primary-dark: #2d1b12;      // ciemny brąz
+$primary-darker: #1a0f09;    // bardzo ciemny brąz
+$primary-accent: #714a36;     // główny kolor akcentu
+$primary-light: #8b5e46;      // jaśniejszy brąz
+$text-light: #f5e6d9;         // kremowy biały
+$text-muted: #c4a58b;         // jasny brąz
+$border-color: #8b5e46;       // krawędzie w kolorze akcentu
+
+$gold-color: #d4af37;
+$silver-color: #a8a8a8;
+$bronze-color: #cd7f32;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin glass-effect {
+  background: rgba(45, 27, 18, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 94, 70, 0.3);
+}
+
+.Stadium_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: $primary-dark;
+  border-bottom: 1px solid $border-color;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.Stadium_title {
+  color: $text-light;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ticketTypeBadge {
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, $primary-accent, darken($primary-accent, 10%));
+}
+
+.backButton {
+  background: $primary-accent;
+  color: $text-light;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: lighten($primary-accent, 10%);
+    transform: translateX(-2px);
+  }
+}
+
+.seatCount {
+  font-size: 1rem;
+  color: $text-muted;
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  color: $text-muted;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 16px;
+  border-radius: 30px;
+}
+
+.legendDotAvailable {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legendDotReserved {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legendDotLocked {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #64748b, #475569);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legendDotSelected {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #eab308, #ca8a04);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.instruction {
+  text-align: center;
+  color: $gold-color;
+  padding: 12px;
+  background: rgba(45, 27, 18, 0.9);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  border-top: 1px solid $primary-accent;
+}
+
+.loading {
+  @include flex-center;
+  min-height: 100vh;
+  background: $primary-darker;
+  color: $text-light;
+  font-size: 1.2rem;
+
+  &::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin-left: 12px;
+    border: 2px solid $text-light;
+    border-top-color: $primary-accent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.seatMapContainer {
+  padding: 24px;
+  overflow: auto;
+  max-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, $primary-darker, $primary-dark);
+}
+
+.seatMap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  min-width: 800px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  border: 1px solid $primary-accent;
+}
+
+.seatRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rowLabel {
+  width: 40px;
+  font-weight: 800;
+  color: $gold-color;
+  font-size: 18px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 0;
+  border-radius: 10px;
+  border: 1px solid $primary-accent;
+}
+
+.seatsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  border-radius: 16px;
+}
+
+.seat {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.seatNumber {
+  position: relative;
+  z-index: 1;
+}
+
+.seatAvailable {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+.seatReserved {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.seatSelected {
+  background: linear-gradient(135deg, #eab308, #ca8a04);
+  color: #1a1a2e;
+  box-shadow: 0 0 0 2px $primary-accent, 0 4px 12px rgba(234, 179, 8, 0.5);
+  transform: scale(1.02);
+}
+
+.seatLocked {
+  background: linear-gradient(135deg, #64748b, #475569);
+  color: $text-muted;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.seatPanel {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 320px;
+  @include glass-effect;
+  border-radius: 20px;
+  overflow: hidden;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  border: 1px solid $primary-accent;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.seatPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, $primary-dark, $primary-darker);
+  border-bottom: 1px solid $primary-accent;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: $gold-color;
+  }
+}
+
+.closePanel {
+  background: none;
+  border: none;
+  color: $text-muted;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  @include flex-center;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: $text-light;
+  }
+}
+
+.seatPanelContent {
+  padding: 20px;
+}
+
+.seatInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(139, 94, 70, 0.3);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.seatInfoLabel {
+  color: $text-muted;
+  font-size: 13px;
+}
+
+.seatInfoValue {
+  color: $gold-color;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.seatPanelActions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px 20px;
+}
+
+.buyButton {
+  flex: 2;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.cancelButton {
+  flex: 1;
+  background: $primary-accent;
+  color: $text-light;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: lighten($primary-accent, 10%);
+  }
+
+  .seat {
+    width: 36px;
+    height: 36px;
+    font-size: 9px;
+  }
+
+  .seatPanel {
+    width: calc(100% - 40px);
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
