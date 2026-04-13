@@ -1,13 +1,13 @@
-import { useState, useMemo } from 'react';
-import styles from '../Shop.module.scss';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useMemo, useEffect } from 'react';
+import styles from './Shop.module.scss';
 
 type Product = {
     id: number;
-    nazwa: string;
-    cena: number;
-    kategoria: string;
-    obrazek: string;
+    name: string;
+    price: number | string;
+    category: string;
+    subcategory: string;
+    image: string;
 };
 
 type CartItem = {
@@ -15,19 +15,19 @@ type CartItem = {
     quantity: number;
 };
 
-const getProducts = async () => {
-    const res = await fetch('/api/shop/products');
-    if (!res.ok) throw new Error('Problem z pobraniem produktów');
-    return res.json();
-};
-
 const categories = [
-    { id: 'all', name: 'Wszystkie' },
-    { id: 'spodenki', name: 'Spodenki' },
-    { id: 'koszulki', name: 'Koszulki' },
-    { id: 'komplety', name: 'Komplety' },
-    { id: 'pluszaki', name: 'Pluszaki' },
-    { id: 'akcesoria', name: 'Akcesoria' },
+    { id: 'all', name: 'Wszystkie', mainCategory: null, subCategory: null },
+    { id: 'spodenki', name: 'Spodenki', mainCategory: 'spodenki', subCategory: null },
+    { id: 'spodenki_pilkarz', name: 'Spodenki piłkarskie', mainCategory: 'spodenki', subCategory: 'pilkarz' },
+    { id: 'spodenki_bramkarz', name: 'Spodenki bramkarskie', mainCategory: 'spodenki', subCategory: 'bramkarz' },
+    { id: 'koszulki', name: 'Koszulki', mainCategory: 'koszulki', subCategory: null },
+    { id: 'koszulki_pilkarz', name: 'Koszulki piłkarskie', mainCategory: 'koszulki', subCategory: 'pilkarz' },
+    { id: 'koszulki_bramkarz', name: 'Koszulki bramkarskie', mainCategory: 'koszulki', subCategory: 'bramkarz' },
+    { id: 'komplety', name: 'Komplety', mainCategory: 'komplety', subCategory: null },
+    { id: 'komplety_pilkarz', name: 'Komplety piłkarskie', mainCategory: 'komplety', subCategory: 'pilkarz' },
+    { id: 'komplety_bramkarz', name: 'Komplety bramkarskie', mainCategory: 'komplety', subCategory: 'bramkarz' },
+    { id: 'pluszaki', name: 'Pluszaki', mainCategory: 'pluszaki', subCategory: null },
+    { id: 'akcesoria', name: 'Akcesoria', mainCategory: 'akcesoria', subCategory: null },
 ];
 
 export default function Shop() {
@@ -35,31 +35,47 @@ export default function Shop() {
     const [activeCategory, setActiveCategory] = useState('all');
     const [cart, setCart] = useState<CartItem[]>([]);
     const [showCart, setShowCart] = useState(false);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const { data: products, isLoading, isError, error } = useQuery({
-        queryKey: ['products'],
-        queryFn: getProducts,
-    });
+    useEffect(() => {
+        fetch('/api/shop')
+            .then(res => res.json())
+            .then(data => {
+                console.log('Produkty z /api/shop:', data);
+                setProducts(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                setLoading(false);
+            });
+    }, []);
 
     const filteredProducts = useMemo(() => {
-        if (!products) return [];
-
         let filtered = products;
 
-        if (activeCategory !== 'all') {
-            filtered = filtered.filter((p: Product) => p.kategoria === activeCategory);
+        const selectedCat = categories.find(cat => cat.id === activeCategory);
+
+        if (selectedCat && selectedCat.id !== 'all') {
+            if (selectedCat.subCategory) {
+                filtered = filtered.filter(p => p.category === selectedCat.mainCategory && p.subcategory === selectedCat.subCategory);
+            } else if (selectedCat.mainCategory) {
+                filtered = filtered.filter(p => p.category === selectedCat.mainCategory);
+            }
         }
 
         if (searchTerm.trim() !== '') {
             const term = searchTerm.toLowerCase();
-            filtered = filtered.filter((p: Product) => p.nazwa.toLowerCase().includes(term));
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
         }
 
         return filtered;
     }, [searchTerm, activeCategory, products]);
 
-    const formatPrice = (price: number) => {
-        return price.toFixed(2).replace('.', ',') + ' zł';
+    const formatPrice = (price: number | string) => {
+        const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+        return numericPrice.toFixed(2).replace('.', ',') + ' zł';
     };
 
     const addToCart = (product: Product) => {
@@ -99,11 +115,15 @@ export default function Shop() {
     };
 
     const getCartTotal = () => {
-        return cart.reduce((total, item) => total + (item.product.cena * item.quantity), 0);
+        return cart.reduce((total, item) => {
+            const price = typeof item.product.price === 'string' ? parseFloat(item.product.price) : item.product.price;
+            return total + (price * item.quantity);
+        }, 0);
     };
 
-    if (isLoading) return <div className={styles.Shop}>Ładowanie produktów...</div>;
-    if (isError) return <div className={styles.Shop}>Błąd: {error.message}</div>;
+    if (loading) {
+        return <div className={styles.loading}>Ładowanie produktów...</div>;
+    }
 
     return (
         <main className={styles.Shop}>
@@ -142,8 +162,8 @@ export default function Shop() {
                                     {cart.map(item => (
                                         <div key={item.product.id} className={styles.cartItem}>
                                             <div className={styles.cartItemInfo}>
-                                                <p className={styles.cartItemName}>{item.product.nazwa}</p>
-                                                <p className={styles.cartItemPrice}>{formatPrice(item.product.cena)}</p>
+                                                <p className={styles.cartItemName}>{item.product.name}</p>
+                                                <p className={styles.cartItemPrice}>{formatPrice(item.product.price)}</p>
                                             </div>
                                             <div className={styles.cartItemControls}>
                                                 <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
@@ -216,18 +236,18 @@ export default function Shop() {
                         </div>
                     ) : (
                         <div className={styles.shopGrid}>
-                            {filteredProducts.map((product: Product) => (
+                            {filteredProducts.map(product => (
                                 <div className={styles.shopItem} key={product.id}>
                                     <div className={styles.imageWrapper}>
                                         <img
-                                            src={`products/${product.obrazek}`}
-                                            alt={product.nazwa}
+                                            src={`products/${product.image}`}
+                                            alt=""
                                             className={styles.productImage}
                                         />
                                     </div>
                                     <div className={styles.itemInfo}>
-                                        <p className={styles.itemName}>{product.nazwa}</p>
-                                        <p className={styles.itemPrice}>{formatPrice(product.cena)}</p>
+                                        <p className={styles.itemName}>{product.name}</p>
+                                        <p className={styles.itemPrice}>{formatPrice(product.price)}</p>
                                         <button
                                             className={styles.buyButton}
                                             onClick={() => addToCart(product)}
