@@ -8,33 +8,29 @@ datasource db {
 }
 
 model klub {
-  id      Int    @id @default(autoincrement())
-  nazwa   String @db.VarChar(100)
-  miasto  String @db.VarChar(100)
-  stadion String @db.VarChar(255)
-  herb    String @db.VarChar(100)
-  skrot   String @db.VarChar(10)
-  sila    Int    @map("Siła")
-
-  tabela tabela?
-
-  // Czytelniejsze nazwy relacji dla programisty
+  id             Int         @id @default(autoincrement())
+  nazwa          String      @db.VarChar(100)
+  miasto         String      @db.VarChar(100)
+  stadion        String      @db.VarChar(255)
+  herb           String      @db.VarChar(100)
+  skrot          String      @db.VarChar(10)
+  sila           Int         @map("Siła")
+  tabela         tabela?
   meczeGospodarz terminarz[] @relation("terminarz_ID_GospodarzaToklub")
   meczeGosc      terminarz[] @relation("terminarz_ID_Go_ciaToklub")
 }
 
 model tabela {
-  idKlubu      Int @id @map("ID_Klubu")
-  mecze        Int @map("Mecze")
-  zwyciestwa   Int @map("Zwycięstwa")
-  remisy       Int @map("Remisy")
-  porazki      Int @map("Porażki")
-  goleZdobyte  Int @map("Gole_Zdobyte")
-  goleStracone Int @map("Gole_Stracone")
-  bilansBramek Int @map("Bilans_Bramek")
-  punkty       Int @map("Punkty")
-
-  klub klub @relation(fields: [idKlubu], references: [id], onUpdate: Restrict, map: "tabela_ibfk_1")
+  idKlubu      Int  @id @map("ID_Klubu")
+  mecze        Int  @map("Mecze")
+  zwyciestwa   Int  @map("Zwycięstwa")
+  remisy       Int  @map("Remisy")
+  porazki      Int  @map("Porażki")
+  goleZdobyte  Int  @map("Gole_Zdobyte")
+  goleStracone Int  @map("Gole_Stracone")
+  bilansBramek Int  @map("Bilans_Bramek")
+  punkty       Int  @map("Punkty")
+  klub         klub @relation(fields: [idKlubu], references: [id], onUpdate: Restrict, map: "tabela_ibfk_1")
 }
 
 model terminarz {
@@ -42,20 +38,26 @@ model terminarz {
   idGospodarza  Int      @map("ID_Gospodarza")
   idGoscia      Int      @map("ID_Gościa")
   dataSpotkania DateTime @map("Data_Spotkania") @db.DateTime(0)
-
-  gospodarz klub @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
-  gosc      klub @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
-
-  wynik wyniki?
+  gospodarz     klub     @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
+  gosc          klub     @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
+  wynik         wyniki?
 
   @@index([idGospodarza], map: "ID_Gospodarza")
   @@index([idGoscia], map: "ID_Gościa")
 }
 
 model wyniki {
-  idMeczu          Int @id @map("ID_meczu")
-  bramkiGospodarzy Int @map("Bramki_Gospodarzy")
-  bramkiGosci      Int @map("Bramki_Gości")
+  idMeczu          Int       @id @map("ID_meczu")
+  bramkiGospodarzy Int       @map("Bramki_Gospodarzy")
+  bramkiGosci      Int       @map("Bramki_Gości")
+  terminarz        terminarz @relation(fields: [idMeczu], references: [id], onUpdate: Restrict, map: "wyniki_ibfk_1")
+}
 
-  terminarz terminarz @relation(fields: [idMeczu], references: [id], onUpdate: Restrict, map: "wyniki_ibfk_1")
+model produkty {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  price       Decimal @db.Decimal(10, 2)
+  category    String  @db.VarChar(50)
+  subcategory String  @db.VarChar(50)
+  image       String  @db.VarChar(255)
 }
