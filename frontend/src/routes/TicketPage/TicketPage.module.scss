@@ -1,0 +1,117 @@
+.Main {
+  width: 100%;
+  height: 1200px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  .Link_ticket {
+    margin-top: 30px;
+    width: 90%;
+    height: 90%;
+    text-decoration: none;
+    padding: 5px;
+
+    .Ticket_container {
+      background-image: url("../../../public/tickets_photos/stadion.png");
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      position: relative;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      &::before {
+        width: 100%;
+        height: 100%;
+        content: "";
+        position: absolute;
+        z-index: 1;
+        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
+        border-radius: 10px;
+      }
+
+      &:hover {
+        border: 2px solid lightblue;
+        transform: translateY(-20px);
+        box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .Ticket_container_matchup {
+        z-index: 2;
+        width: 100%;
+        height: 40%;
+        font-size: 30px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+
+        .Ticket_container_date {
+          padding: 5px;
+          border: 2px solid black;
+          border-radius: 10px;
+          background-color: rgba(00, 00, 00, 0.5);
+        }
+      }
+    }
+  }
+  .Link_pass {
+    margin-top: 30px;
+    width: 90%;
+    height: 90%;
+    text-decoration: none;
+    padding: 5px;
+
+    .Pass_container {
+      background-image: url("../../logo.png");
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      position: relative;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: column;
+
+      &::before {
+        width: 100%;
+        height: 100%;
+        content: "";
+        position: absolute;
+        z-index: 1;
+        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
+        border-radius: 10px;
+      }
+
+      &:hover {
+        border: 2px solid lightblue;
+        transform: translateY(-20px);
+        box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .Pass_container_title {
+        z-index: 2;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        color: white;}
+
+        .Pass_container_subtitle {
+          color: white;
+          padding: 5px;
+        }
+
+    }
+  }
+}
