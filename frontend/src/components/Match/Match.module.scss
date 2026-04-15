@@ -1,0 +1,26 @@
+.Match{
+  display: grid;
+  height: 10rem;
+  width: 22rem;
+  background-color: #fff;
+  border-radius: 0.2rem;
+  border: 0.2rem solid #2a1a0e;
+  grid-template-columns:1fr 1.2fr 1fr;
+  grid-template-rows: 1fr 10fr;
+  .Top{
+    grid-column: 1/4;
+    grid-row: 1/2;
+  }
+  .Left{
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+  .Center{
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+  .Right{
+    grid-column: 3/4;
+    grid-row: 2/3;
+  }
+}

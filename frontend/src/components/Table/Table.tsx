@@ -1,5 +1,6 @@
 import styles from "./Table.module.scss";
 import useTable from "../../queries/tableQuery.ts";
+import type {Tabela} from "../../types/Tabela.ts";
 
 export default function Table(){
     const { data: tableData, isLoading, isError, error } = useTable();
@@ -22,7 +23,7 @@ export default function Table(){
                 </tr>
             </thead>
             <tbody>
-            {tableData?.map((k) => {
+            {tableData?.map((k: Tabela) => {
                 return (
                     <tr key={k.idKlubu}>
                         <td className={styles.desc}><img src={`logos/${k.klub.herb}`} alt='logo'/><p>{k.klub.nazwa}</p> </td>
