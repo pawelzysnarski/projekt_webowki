@@ -9,6 +9,8 @@ import ContactPage from "./routes/ContactPage/ContactPage.tsx";
 import Tickets from "./routes/TicketPage/Tickets/Tickets.tsx";
 import Ticket from "./components/Ticket/Ticket.tsx";
 import SeasonTicket from "./components/SeasonTicket/SeasonTicket.tsx";
+import TeamPage from "./routes/TeamPage/TeamPage.tsx";
+import PlayerDesc from "./components/PlayerDesc/PlayerDesc.tsx";
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
             <Route path="/bilety/:id/:type_id" element={<Ticket/>}/>
             <Route path="/bilety/karnet" element={<SeasonTicket/>}/>
             <Route path="/kontakt" element={<ContactPage/>}/>
+            <Route path="druzyna" element={<TeamPage/>}/>
+            <Route path="/zawodnik/:id" element={<PlayerDesc />} />
         </Routes>
     </BrowserRouter>
   )

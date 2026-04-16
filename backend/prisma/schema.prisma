@@ -38,6 +38,7 @@ model terminarz {
   idGospodarza  Int      @map("ID_Gospodarza")
   idGoscia      Int      @map("ID_Gościa")
   dataSpotkania DateTime @map("Data_Spotkania") @db.DateTime(0)
+  Numer_Kolejki Int
   gospodarz     klub     @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
   gosc          klub     @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
   wynik         wyniki?
@@ -60,4 +61,59 @@ model produkty {
   category    String  @db.VarChar(50)
   subcategory String  @db.VarChar(50)
   image       String  @db.VarChar(255)
+}
+
+model akapity {
+  ID            Int        @id @default(autoincrement())
+  ID_Wiadomo_ci Int        @map("ID_Wiadomości")
+  Tre__         String     @map("Treść") @db.VarChar(1000)
+  wiadomo_ci    wiadomo_ci @relation(fields: [ID_Wiadomo_ci], references: [ID], onUpdate: Restrict, map: "akapity_ibfk_1")
+
+  @@index([ID_Wiadomo_ci], map: "ID_Wiadomości")
+}
+
+model dru_yna {
+  ID             Int       @id @default(autoincrement())
+  Imie           String    @db.VarChar(40)
+  Nazwisko       String    @db.VarChar(40)
+  Pozycja        String    @db.VarChar(30)
+  Numer          Int
+  Waga           Int
+  Wzrost         Int
+  Kraj           String    @db.VarChar(50)
+  Data_Urodzenia DateTime? @db.Date
+  Mecze          Int
+  Bramki         Int
+  Asysty         Int
+
+  @@map("drużyna")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model personel {
+  ID       Int
+  Imie     String @db.VarChar(40)
+  Nazwisko String @db.VarChar(40)
+  Profesja String @db.VarChar(100)
+  Kraj     String @db.VarChar(50)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model u_ytkownik {
+  ID    Int
+  Login String @db.VarChar(255)
+  Has_o String @map("Hasło") @db.VarChar(255)
+
+  @@map("użytkownik")
+  @@ignore
+}
+
+model wiadomo_ci {
+  ID      Int       @id @default(autoincrement())
+  Zdj_cie String    @map("Zdjęcie") @db.VarChar(100)
+  akapity akapity[]
+
+  @@map("wiadomości")
 }
