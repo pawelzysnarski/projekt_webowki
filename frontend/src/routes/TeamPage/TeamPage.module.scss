@@ -1,0 +1,50 @@
+$colormenu: #61331c;
+
+.Container {
+  padding: 2rem 6rem;
+  background: linear-gradient(45deg, darken(#61331c, 12%), darken(#423129, 12%));
+  min-height: 100vh;
+}
+
+.Heading {
+  color: lighten($colormenu, 10%);
+  font-size: 1.8rem;
+  margin: 40px 0 20px 0;
+  text-transform: uppercase;
+  font-family: "Bookman Old Style", sans-serif;
+  border-left: 5px solid $colormenu;
+  padding-left: 15px;
+}
+
+.Grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 25px;
+  justify-content: flex-start;
+  margin-bottom: 40px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+
+  // To blokuje zmniejszanie się kart:
+  & > div {
+    flex: 0 0 auto;
+  }
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: darken($colormenu, 20%);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $colormenu;
+    border-radius: 10px;
+    &:hover {
+      background: lighten($colormenu, 10%);
+    }
+  }
+}

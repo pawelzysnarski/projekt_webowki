@@ -63,3 +63,28 @@ INSERT INTO `produkty` (`id`, `name`, `price`, `category`, `subcategory`, `image
 (25, 'misiek_bramkarz1', 69.99, 'pluszaki', 'bramkarz', 'misiek_bramkarz1.png'),
 (26, 'misiek_bramkarz2', 69.99, 'pluszaki', 'bramkarz', 'misiek_bramkarz2.png'),
 (27, 'misiek_bramkarz3', 69.99, 'pluszaki', 'bramkarz', 'misiek_bramkarz3.png');
+
+INSERT INTO `drużyna` (`ID`, `Imie`, `Nazwisko`, `Pozycja`, `Numer`, `Waga`, `Wzrost`, `Kraj`, `Data_Urodzenia`, `Mecze`, `Bramki`, `Asysty`) VALUES
+(1, 'Tomasz', 'Piotrkowski', 'Pomocnik', 67, 70, 175, 'Polska', NULL, 130, 45, 81),
+(2, 'Pietro', 'Nucleus', 'Obrońca', 68, 68, 181, 'Włochy', NULL, 42, 3, 7),
+(3, 'Gustaw', 'Grzybek', 'Pomocnik', 19, 76, 183, 'Polska', NULL, 95, 2, 12),
+(4, 'Muhammad', 'Mahalahi', 'Napastnik', 7, 64, 190, 'Indie', NULL, 12, 3, 1),
+(5, 'Doktor', 'Epstein', 'Obrońca', 33, 82, 192, 'Czechy', NULL, 45, 0, 5),
+(6, 'Carlos', 'Morales', 'Pomocnik', 4, 64, 165, 'Peru', NULL, 32, 12, 11),
+(7, 'Juan', 'Alcacaz', 'Obrońca', 2, 78, 193, 'Hiszpania', NULL, 123, 15, 3),
+(8, 'Horsoso', 'Mambo', 'Napastnik', 10, 69, 172, 'Niemcy', NULL, 21, 20, 6),
+(9, 'Joan', 'Pereira', 'Pomocnik', 92, 62, 166, 'Brazylia', NULL, 3, 0, 0),
+(10, 'Rafał', 'Andrzejewski', 'Obrońca', 13, 83, 198, 'Polska', NULL, 15, 1, 0),
+(11, 'Erik', 'Carl', 'Napastnik', 50, 73, 187, 'Szwajcaria', NULL, 64, 23, 9),
+(12, 'Radosław', 'Królewski', 'Obrońca', 24, 68, 179, 'Polska', NULL, 82, 4, 12),
+(13, 'Jan', 'Niski', 'Pomocnik', 16, 56, 162, 'Polska', NULL, 2, 0, 0),
+(14, 'Yayo', 'Watermelele', 'Napastnik', 69, 69, 169, 'Republika Południowej Afryki', NULL, 102, 71, 31),
+(15, 'Henryk', 'Nowak', 'Napastnik', 81, 73, 175, 'Polska', NULL, 0, 0, 0),
+(16, 'Jamal', 'Chickiko', 'Pomocnik', 5, 61, 176, 'Nigeria', NULL, 4, 1, 1),
+(17, 'Jude', 'Jojojo', 'Obrońca', 3, 78, 189, 'Kenia', NULL, 56, 0, 0),
+(18, 'Adam', 'Nowakowski', 'Napastnik', 99, 64, 168, 'Polska', NULL, 0, 0, 0),
+(19, 'John', 'Saveman', 'Bramkarz', 1, 72, 201, 'Walia', NULL, 134, 0, 2),
+(20, 'Tuoko', 'Babrata', 'Bramkarz', 79, 82, 199, 'Etiopia', NULL, 5, 0, 0),
+(21, 'Filip', 'Borowiak', 'Bramkarz', 23, 73, 192, 'Polska', NULL, 1, 0, 1),
+(22, 'Antoti', 'Jakubiak', 'Pomocnik', 12, 68, 183, 'Polska', NULL, 3, 1, 1),
+(23, 'Marco', 'Gaspario', 'Obrońca', 41, 73, 188, 'San Marino', NULL, 9, 1, 0);

@@ -35,10 +35,10 @@ model tabela {
 
 model terminarz {
   id            Int      @id @default(autoincrement()) @map("ID")
-  Numer_Kolejki Int
   idGospodarza  Int      @map("ID_Gospodarza")
   idGoscia      Int      @map("ID_Gościa")
   dataSpotkania DateTime @map("Data_Spotkania") @db.DateTime(0)
+  Numer_Kolejki Int
   gospodarz     klub     @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
   gosc          klub     @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
   wynik         wyniki?
@@ -73,17 +73,18 @@ model akapity {
 }
 
 model dru_yna {
-  ID       Int    @id @default(autoincrement())
-  Imie     String @db.VarChar(40)
-  Nazwisko String @db.VarChar(40)
-  Pozycja  String @db.VarChar(30)
-  Numer    Int
-  Waga     Int
-  Wzrost   Int
-  Kraj     String @db.VarChar(50)
-  Mecze    Int
-  Bramki   Int
-  Asysty   Int
+  ID             Int       @id @default(autoincrement())
+  Imie           String    @db.VarChar(40)
+  Nazwisko       String    @db.VarChar(40)
+  Pozycja        String    @db.VarChar(30)
+  Numer          Int
+  Waga           Int
+  Wzrost         Int
+  Kraj           String    @db.VarChar(50)
+  Data_Urodzenia DateTime? @db.Date
+  Mecze          Int
+  Bramki         Int
+  Asysty         Int
 
   @@map("drużyna")
 }
