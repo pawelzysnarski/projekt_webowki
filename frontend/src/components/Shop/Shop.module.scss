@@ -505,3 +505,162 @@ $transition: all 0.2s ease;
     }
   }
 }
+
+.filtersSection {
+  margin-top: 1.5rem;
+  background: white;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(97, 51, 28, 0.08);
+  border: 1px solid #e0d5cc;
+}
+
+.filterToggle {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: Cambria, sans-serif;
+  color: #61331c;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sortSection, .priceRangeSection {
+  margin-top: 1rem;
+}
+
+.sortSection h3, .priceRangeSection h3 {
+  font-family: Cambria, sans-serif;
+  font-size: 0.9rem;
+  color: #61331c;
+  margin-bottom: 0.5rem;
+}
+
+.sortSelect {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #e0d5cc;
+  border-radius: 0.5rem;
+  font-family: Cambria, sans-serif;
+  background: white;
+  cursor: pointer;
+}
+
+.priceInputs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.priceInputs .priceInput {
+  flex: 1;
+  padding: 0.5rem;
+  border: 2px solid #e0d5cc;
+  border-radius: 0.5rem;
+  font-family: Cambria, sans-serif;
+  font-size: 0.85rem;
+}
+
+.priceInputs .priceInput:first-child {
+  min-width: 0;
+}
+
+.priceInputs .priceInput:last-child {
+  min-width: 0;
+}
+
+.priceInputs span {
+  color: #61331c;
+}
+
+.priceSliderContainer {
+  position: relative;
+  height: 4px;
+  margin: 1rem 0;
+}
+
+.priceSlider {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: #c8922a;
+  border-radius: 2px;
+  outline: none;
+}
+
+.priceSliderMin {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: transparent;
+  border-radius: 2px;
+  outline: none;
+}
+
+.priceSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #c8922a;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+}
+
+.priceSliderMin::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #c8922a;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+}
+
+.priceLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #a08060;
+}
+
+.resetFiltersButton {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #f5f0ea;
+  border: 2px solid #c8922a;
+  border-radius: 0.5rem;
+  color: #61331c;
+  font-family: Cambria, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.resetFiltersButton:hover {
+  background: #c8922a;
+  color: white;
+}
+
+.shopItem {
+  cursor: pointer;
+}
+
+.cartItemImage {
+  flex-shrink: 0;
+}
+
+.cartItemSize {
+  font-size: 0.8rem;
+  color: #a68b7c;
+  margin: 0;
+  font-style: italic;
+}
