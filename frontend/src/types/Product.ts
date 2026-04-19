@@ -12,4 +12,5 @@ export interface CartItemWithSize {
     product: Product;
     size: string;
     quantity: number;
+    playerName?: string;
 }
