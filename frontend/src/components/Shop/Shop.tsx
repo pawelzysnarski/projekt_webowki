@@ -175,6 +175,11 @@ export default function Shop() {
         return total;
     };
 
+    const clearCart = (): void => {
+        localStorage.removeItem('cart');
+        window.dispatchEvent(new Event('cartUpdated'));
+    };
+
     const resetFilters = () => {
         setSearchTerm('');
         setActiveCategory('all');
@@ -214,9 +219,9 @@ export default function Shop() {
             </div>
 
             {showCart && (
-                <div className={styles.cartModal}>
-                    <div className={styles.cartModalContent}>
-                        <div className={styles.cartModalHeader}>
+                <div className={styles.cart}>
+                    <div className={styles.cartContent}>
+                        <div className={styles.cartHeader}>
                             <h3>Twój koszyk</h3>
                             <button onClick={() => setShowCart(false)} className={styles.closeCart}>✕</button>
                         </div>
@@ -229,12 +234,29 @@ export default function Shop() {
                                         const itemPrice = typeof item.product.price === 'number' ? item.product.price : parseFloat(item.product.price as string);
                                         return (
                                             <div key={item.id} className={styles.cartItem}>
-                                                <div className={styles.cartItemImage}>
-                                                    <img src={`/products/${item.product.image}`} alt={item.product.name} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                                                <div
+                                                    className={styles.cartItemImage}
+                                                    onClick={() => {
+                                                        setShowCart(false);
+                                                        navigate(`/product/${item.product.id}`);
+                                                    }}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <img src={`/products/${item.product.image}`} alt={item.product.name} />
                                                 </div>
                                                 <div className={styles.cartItemInfo}>
-                                                    <p className={styles.cartItemName}>{item.product.name}</p>
+                                                    <p
+                                                        className={styles.cartItemName}
+                                                        onClick={() => {
+                                                            setShowCart(false);
+                                                            navigate(`/product/${item.product.id}`);
+                                                        }}
+                                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                    >
+                                                        {item.product.name}
+                                                    </p>
                                                     {item.size && <p className={styles.cartItemSize}>Rozmiar: {item.size}</p>}
+                                                    {item.playerName && <p className={styles.cartItemPlayer}>Nadruk: {item.playerName}</p>}
                                                     <p className={styles.cartItemPrice}>{formatPrice(itemPrice)}</p>
                                                 </div>
                                                 <div className={styles.cartItemControls}>
@@ -249,6 +271,7 @@ export default function Shop() {
                                     <div className={styles.cartTotal}>
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
+                                    <button className={styles.clearCartButton} onClick={clearCart}>🗑️ Opróżnij koszyk</button>
                                     <button className={styles.checkoutButton}>Złóż zamówienie</button>
                                 </>
                             )}
