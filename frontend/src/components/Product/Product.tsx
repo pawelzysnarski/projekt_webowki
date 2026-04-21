@@ -20,6 +20,8 @@ export default function Product() {
     const [cartCount, setCartCount] = useState(0);
     const [selectedView, setSelectedView] = useState<'front' | 'back'>('front');
     const [selectedPlayer, setSelectedPlayer] = useState<string>('');
+    const [customName, setCustomName] = useState('');
+    const [customNumber, setCustomNumber] = useState('');
 
     const { data: product, isLoading, error } = useProduct(id);
     const { data: allProducts } = useShop();
@@ -55,16 +57,6 @@ export default function Product() {
         return () => window.removeEventListener('cartUpdated', handleCartUpdate);
     }, []);
 
-    useEffect(() => {
-        if (players && players.length > 0 && showPlayerSelection()) {
-            const filteredPlayers = getFilteredPlayers();
-            if (filteredPlayers.length > 0 && !selectedPlayer) {
-                const firstPlayer = filteredPlayers[0];
-                setSelectedPlayer(`${firstPlayer.Numer}_${firstPlayer.Nazwisko.toLowerCase()}`);
-            }
-        }
-    }, [players, product]);
-
     const isClothing = (): boolean => {
         if (!product) return false;
         const cat = product.category?.toLowerCase() || '';
@@ -79,7 +71,7 @@ export default function Product() {
         return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
     };
 
-    const showPlayerSelection = (): boolean => {
+    const showPersonalization = (): boolean => {
         if (!product) return false;
         const cat = product.category?.toLowerCase() || '';
         const name = product.name.toLowerCase();
@@ -109,51 +101,100 @@ export default function Product() {
         return playerValue;
     };
 
-    const getPlayerFileName = (): string => {
-        if (!selectedPlayer) return '';
-        const match = selectedPlayer.match(/^\d+_(.+)$/);
-        if (match) {
-            return match[1];
-        }
-        return selectedPlayer;
+    const getBackImage = (): string => {
+        if (!product) return '';
+        const baseName = product.image.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+        return `/products/${baseName}_tył.jpg`;
     };
 
     const getProductImage = (): string => {
         if (!product) return '';
-
-        const baseName = product.image.replace('.png', '').replace('.jpg', '');
-        const extension = '.jpg';
-
-        if (selectedView === 'back' && showBackView() && selectedPlayer) {
-            const playerFileName = getPlayerFileName();
-            return `/products/${baseName}_${playerFileName}${extension}`;
+        if (selectedView === 'back' && showBackView()) {
+            return getBackImage();
         }
-
         return `/products/${product.image}`;
     };
 
     const getThumbnailImage = (view: 'front' | 'back'): string => {
         if (!product) return '';
-
-        const baseName = product.image.replace('.png', '').replace('.jpg', '');
-        const extension = '.jpg';
-
         if (view === 'back' && showBackView()) {
-            const filteredPlayers = getFilteredPlayers();
-            if (filteredPlayers.length > 0) {
-                const firstPlayer = filteredPlayers[0];
-                const firstPlayerFileName = `${firstPlayer.Numer}_${firstPlayer.Nazwisko.toLowerCase()}`;
-                return `/products/${baseName}_${firstPlayerFileName}${extension}`;
-            }
-            return `/products/${baseName}_back${extension}`;
+            return getBackImage();
         }
-
         return `/products/${product.image}`;
+    };
+
+    const getDisplayText = (): { name: string; number: string } => {
+        if (selectedPlayer) {
+            const match = selectedPlayer.match(/^(\d+)_(.+)$/);
+            if (match) {
+                return { name: match[2].toUpperCase(), number: match[1] };
+            }
+        }
+        if (customName && customNumber) {
+            return { name: customName.toUpperCase(), number: customNumber };
+        }
+        return { name: '', number: '' };
     };
 
     const extractNumber = (name: string): string => {
         const match = name.match(/\d+/);
         return match ? match[0] : '';
+    };
+
+    const getFontSize = (text: string): string => {
+        const length = text.length;
+        if (length <= 8) return '2.5rem';
+        if (length <= 9) return '2.3rem';
+        if (length <= 10) return '2rem';
+        if (length <= 12) return '1.8rem';
+        if (length <= 13) return '1.5rem';
+        if (length <= 15) return '1.3rem';
+        if (length <= 18) return '1.1rem';
+        if (length <= 20) return '1rem';
+        return '1.8rem';
+    };
+
+    const getNumberFontSize = (number: string): string => {
+        const numLength = number.length;
+        if (numLength === 1) return '10rem';
+        if (numLength === 2) return '10rem';
+        return '1.5rem';
+    };
+
+    const [customNameError, setCustomNameError] = useState('');
+    const [customNumberError, setCustomNumberError] = useState('');
+
+    const validateCustomName = (name: string): boolean => {
+        if (name.length > 20) {
+            setCustomNameError('Nazwisko jest zbyt długie (max 20 znaków)');
+            return false;
+        }
+        const lettersOnly = /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$/;
+        if (name !== '' && !lettersOnly.test(name)) {
+            setCustomNameError('Nazwisko może zawierać tylko litery');
+            return false;
+        }
+        setCustomNameError('');
+        return true;
+    };
+
+    const validateCustomNumber = (number: string): boolean => {
+        if (number === '') {
+            setCustomNumberError('');
+            return true;
+        }
+        const digitsOnly = /^\d+$/;
+        if (!digitsOnly.test(number)) {
+            setCustomNumberError('Numer może zawierać tylko cyfry');
+            return false;
+        }
+        const num = parseInt(number);
+        if (num < 1 || num > 99) {
+            setCustomNumberError('Numer musi być między 1 a 99');
+            return false;
+        }
+        setCustomNumberError('');
+        return true;
     };
 
     const getSimilarProducts = (): Product[] => {
@@ -415,12 +456,19 @@ export default function Product() {
             return;
         }
 
+        let printText = '';
+        if (selectedPlayer) {
+            printText = getPlayerDisplayName(selectedPlayer);
+        } else if (customName && customNumber) {
+            printText = `${customNumber} ${customName.toUpperCase()}`;
+        }
+
         const cartItem: CartItemWithSize = {
-            id: isClothing() ? `${product.id}_${selectedSize}_${selectedPlayer}` : `${product.id}`,
+            id: isClothing() ? `${product.id}_${selectedSize}_${selectedPlayer}_${customName}_${customNumber}` : `${product.id}`,
             product,
             size: selectedSize,
             quantity,
-            playerName: selectedPlayer ? getPlayerDisplayName(selectedPlayer) : undefined,
+            playerName: printText || undefined,
         };
 
         const existingCart: CartItemWithSize[] = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -448,6 +496,7 @@ export default function Product() {
 
     const numericPrice = typeof product.price === 'number' ? product.price : parseFloat(product.price as string);
     const filteredPlayers = getFilteredPlayers();
+    const displayText = getDisplayText();
 
     return (
         <div className={styles.productPage}>
@@ -521,8 +570,10 @@ export default function Product() {
                                     <div className={styles.cartTotal}>
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
-                                    <button className={styles.clearCartButton} onClick={clearCart}>🗑️ Opróżnij koszyk</button>
                                     <button className={styles.checkoutButton}>Złóż zamówienie</button>
+                                    <button className={styles.clearCartButton} onClick={clearCart}>
+                                        🗑️ Opróżnij koszyk
+                                    </button>
                                 </>
                             )}
                         </div>
@@ -532,7 +583,15 @@ export default function Product() {
 
             <div className={styles.productContainer}>
                 <div className={styles.imageSection}>
-                    <img src={getProductImage()} alt={product.name} />
+                    <div className={styles.imageWrapper}>
+                        <img src={getProductImage()} alt={product.name} />
+                        {selectedView === 'back' && showBackView() && (displayText.name || displayText.number) && (
+                            <div className={styles.textOverlay}>
+                                <div className={styles.playerName} style={{ fontSize: getFontSize(displayText.name) }}>{displayText.name}</div>
+                                <div className={styles.playerNumber} style={{ fontSize: getNumberFontSize(displayText.number) }}>{displayText.number}</div>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className={styles.infoSection}>
@@ -565,26 +624,65 @@ export default function Product() {
                         </div>
                     </div>
 
-                    {showPlayerSelection() && filteredPlayers.length > 0 && (
-                        <div className={styles.playerSection}>
-                            <h3>Zawodnik na tyle</h3>
-                            <select
-                                className={styles.playerSelect}
-                                value={selectedPlayer}
-                                onChange={(e) => {
-                                    setSelectedPlayer(e.target.value);
-                                    if (selectedView === 'back') {
-                                        setSelectedView('front');
-                                        setTimeout(() => setSelectedView('back'), 50);
-                                    }
-                                }}
-                            >
-                                {filteredPlayers.map((player: Zawodnik) => (
-                                    <option key={player.ID} value={`${player.Numer}_${player.Nazwisko.toLowerCase()}`}>
-                                        {player.Numer}. {player.Imie} {player.Nazwisko}
-                                    </option>
-                                ))}
-                            </select>
+                    {showPersonalization() && (
+                        <div className={styles.personalizationSection}>
+                            <h3>Personalizacja</h3>
+
+                            <div className={styles.playerSelectWrapper}>
+                                <label>Wybierz zawodnika:</label>
+                                <select
+                                    className={styles.playerSelect}
+                                    value={selectedPlayer}
+                                    onChange={(e) => {
+                                        setSelectedPlayer(e.target.value);
+                                        if (e.target.value) {
+                                            setCustomName('');
+                                            setCustomNumber('');
+                                        }
+                                    }}
+                                >
+                                    <option value="">Brak nadruku</option>
+                                    {filteredPlayers.map((player: Zawodnik) => (
+                                        <option key={player.ID} value={`${player.Numer}_${player.Nazwisko.toLowerCase()}`}>
+                                            {player.Numer}. {player.Imie} {player.Nazwisko}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className={styles.customWrapper}>
+                                <p className={styles.customOr}>lub</p>
+                                <label>Własny nadruk:</label>
+                                <input
+                                    type="text"
+                                    placeholder="Nazwisko"
+                                    className={styles.customInput}
+                                    value={customName}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (validateCustomName(value)) {
+                                            setCustomName(value);
+                                            if (value) setSelectedPlayer('');
+                                        }
+                                    }}
+                                />
+                                {customNameError && <p className={styles.errorMessage}>{customNameError}</p>}
+
+                                <input
+                                    type="text"
+                                    placeholder="Numer"
+                                    className={styles.customInput}
+                                    value={customNumber}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (validateCustomNumber(value)) {
+                                            setCustomNumber(value);
+                                            if (value) setSelectedPlayer('');
+                                        }
+                                    }}
+                                />
+                                {customNumberError && <p className={styles.errorMessage}>{customNumberError}</p>}
+                            </div>
                         </div>
                     )}
 
