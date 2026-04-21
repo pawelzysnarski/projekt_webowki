@@ -2,43 +2,48 @@ import styles from "./Table.module.scss";
 import useTable from "../../queries/tableQuery.ts";
 import type {Tabela} from "../../types/Tabela.ts";
 
-export default function Table(){
-    const { data: tableData, isLoading, isError, error } = useTable();
+export default function Table() {
+    const {data: tableData, isLoading, isError, error} = useTable();
 
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;
-    return(
-        <table className={styles.Table}>
-            <thead>
+    return (
+        <div className={styles.TableContainer}>
+            <table className={styles.Table}>
+                <thead>
                 <tr>
-                    <th>Klub</th>
+                    <th>Lp.</th>
+                    <th className={styles.LeftAlign}>Klub</th>
                     <th>M</th>
                     <th>Z</th>
                     <th>R</th>
                     <th>P</th>
-                    <th>GZ</th>
-                    <th>GS</th>
-                    <th>BB</th>
+                    <th>G+</th>
+                    <th>G-</th>
+                    <th>+/-</th>
                     <th>PKT</th>
                 </tr>
-            </thead>
-            <tbody>
-            {tableData?.map((k: Tabela) => {
-                return (
-                    <tr key={k.idKlubu}>
-                        <td className={styles.desc}><img src={`logos/${k.klub.herb}`} alt='logo'/><p>{k.klub.nazwa}</p> </td>
+                </thead>
+                <tbody>
+                {tableData?.map((k: Tabela, index: number) => (
+                    <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
+                        <td className={styles.Pos}>{index + 1}</td>
+                        <td className={styles.desc}>
+                            <img src={`logos/${k.klub.herb}`} alt='logo'/>
+                            <p>{k.klub.nazwa}</p>
+                        </td>
                         <td>{k.mecze}</td>
                         <td>{k.zwyciestwa}</td>
                         <td>{k.remisy}</td>
                         <td>{k.porazki}</td>
                         <td>{k.goleZdobyte}</td>
                         <td>{k.goleStracone}</td>
-                        <td>{k.bilansBramek}</td>
-                        <td>{k.punkty}</td>
+                        <td className={styles.Bilans}>{k.bilansBramek > 0 ? `+${k.bilansBramek}` : k.bilansBramek}</td>
+                        <td className={styles.Points}>{k.punkty}</td>
                     </tr>
-                );
-            })}
-            </tbody>
-        </table>
-    )
+                ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
