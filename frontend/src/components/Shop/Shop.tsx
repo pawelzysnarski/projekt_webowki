@@ -1,21 +1,11 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useShop from '../../queries/shopQuery';
+import type { Product, Category } from '../../types/Shop';
+import type { CartItemWithSize } from '../../types/Product';
 import styles from './Shop.module.scss';
 
-type Product = {
-    id: number;
-    name: string;
-    price: number | string;
-    category: string;
-    subcategory: string;
-    image: string;
-};
-
-type CartItem = {
-    product: Product;
-    quantity: number;
-};
-
-const categories = [
+const categories: Category[] = [
     { id: 'all', name: 'Wszystkie', mainCategory: null, subCategory: null },
     { id: 'spodenki', name: 'Spodenki', mainCategory: 'spodenki', subCategory: null },
     { id: 'spodenki_pilkarz', name: 'Spodenki piłkarskie', mainCategory: 'spodenki', subCategory: 'pilkarz' },
@@ -31,98 +21,179 @@ const categories = [
 ];
 
 export default function Shop() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [activeCategory, setActiveCategory] = useState('all');
-    const [cart, setCart] = useState<CartItem[]>([]);
-    const [showCart, setShowCart] = useState(false);
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [activeCategory, setActiveCategory] = useState<string>('all');
+    const [cart, setCart] = useState<CartItemWithSize[]>([]);
+    const [showCart, setShowCart] = useState<boolean>(false);
+    const [sortOrder, setSortOrder] = useState<string>('default');
+    const [priceMin, setPriceMin] = useState<number>(0);
+    const [priceMax, setPriceMax] = useState<number>(500);
+    const [showFilters, setShowFilters] = useState<boolean>(false);
+    const [cartCount, setCartCount] = useState<number>(0);
+
+    const { data: products, isLoading, error } = useShop();
 
     useEffect(() => {
-        fetch('/api/shop')
-            .then(res => res.json())
-            .then(data => {
-                console.log('Produkty z /api/shop:', data);
-                setProducts(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Błąd:', error);
-                setLoading(false);
-            });
+        const loadCart = () => {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const parsedCart: CartItemWithSize[] = JSON.parse(savedCart);
+                setCart(parsedCart);
+                const count = parsedCart.reduce((total: number, item: CartItemWithSize) => total + item.quantity, 0);
+                setCartCount(count);
+            }
+        };
+
+        loadCart();
+
+        const handleCartUpdate = () => {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const parsedCart: CartItemWithSize[] = JSON.parse(savedCart);
+                setCart(parsedCart);
+                const count = parsedCart.reduce((total: number, item: CartItemWithSize) => total + item.quantity, 0);
+                setCartCount(count);
+            } else {
+                setCart([]);
+                setCartCount(0);
+            }
+        };
+
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        return () => window.removeEventListener('cartUpdated', handleCartUpdate);
     }, []);
 
-    const filteredProducts = useMemo(() => {
-        let filtered = products;
+    const maxPriceValue = useMemo(() => {
+        if (!products || products.length === 0) return 500;
+        let max = 0;
+        for (const p of products) {
+            const price = typeof p.price === 'number' ? p.price : parseFloat(p.price as string);
+            if (price > max) max = price;
+        }
+        return max;
+    }, [products]);
 
-        const selectedCat = categories.find(cat => cat.id === activeCategory);
+    const minPriceValue = useMemo(() => {
+        if (!products || products.length === 0) return 0;
+        let min = Infinity;
+        for (const p of products) {
+            const price = typeof p.price === 'number' ? p.price : parseFloat(p.price as string);
+            if (price < min) min = price;
+        }
+        return min;
+    }, [products]);
+
+    useEffect(() => {
+        setPriceMin(minPriceValue);
+        setPriceMax(maxPriceValue);
+    }, [minPriceValue, maxPriceValue]);
+
+    const handlePriceMinChange = (value: number) => {
+        const newMin = Math.max(minPriceValue, Math.min(value, priceMax - 1));
+        setPriceMin(newMin);
+    };
+
+    const handlePriceMaxChange = (value: number) => {
+        const newMax = Math.min(maxPriceValue, Math.max(value, priceMin + 1));
+        setPriceMax(newMax);
+    };
+
+    const filteredProducts = useMemo(() => {
+        if (!products) return [];
+
+        let filtered = [...products];
+
+        const selectedCat = categories.find((cat: Category) => cat.id === activeCategory);
 
         if (selectedCat && selectedCat.id !== 'all') {
             if (selectedCat.subCategory) {
-                filtered = filtered.filter(p => p.category === selectedCat.mainCategory && p.subcategory === selectedCat.subCategory);
+                filtered = filtered.filter((p: Product) => p.category === selectedCat.mainCategory && p.subcategory === selectedCat.subCategory);
             } else if (selectedCat.mainCategory) {
-                filtered = filtered.filter(p => p.category === selectedCat.mainCategory);
+                filtered = filtered.filter((p: Product) => p.category === selectedCat.mainCategory);
             }
         }
 
         if (searchTerm.trim() !== '') {
             const term = searchTerm.toLowerCase();
-            filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
+            filtered = filtered.filter((p: Product) => p.name.toLowerCase().includes(term));
+        }
+
+        filtered = filtered.filter((p: Product) => {
+            const price = typeof p.price === 'number' ? p.price : parseFloat(p.price as string);
+            return price >= priceMin && price <= priceMax;
+        });
+
+        if (sortOrder === 'asc') {
+            filtered.sort((a: Product, b: Product) => {
+                const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price as string);
+                const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price as string);
+                return priceA - priceB;
+            });
+        } else if (sortOrder === 'desc') {
+            filtered.sort((a: Product, b: Product) => {
+                const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price as string);
+                const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price as string);
+                return priceB - priceA;
+            });
         }
 
         return filtered;
-    }, [searchTerm, activeCategory, products]);
+    }, [searchTerm, activeCategory, products, sortOrder, priceMin, priceMax]);
 
-    const formatPrice = (price: number | string) => {
-        const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
-        return numericPrice.toFixed(2).replace('.', ',') + ' zł';
+    const formatPrice = (price: number): string => {
+        return price.toFixed(2).replace('.', ',') + ' zł';
     };
 
-    const addToCart = (product: Product) => {
-        setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.product.id === product.id);
-            if (existingItem) {
-                return prevCart.map(item =>
-                    item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                );
-            }
-            return [...prevCart, { product, quantity: 1 }];
-        });
+    const removeFromCart = (itemId: string): void => {
+        const existingCart: CartItemWithSize[] = JSON.parse(localStorage.getItem('cart') || '[]');
+        const filteredCart = existingCart.filter((item: CartItemWithSize) => item.id !== itemId);
+        localStorage.setItem('cart', JSON.stringify(filteredCart));
+        window.dispatchEvent(new Event('cartUpdated'));
     };
 
-    const removeFromCart = (productId: number) => {
-        setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
-    };
-
-    const updateQuantity = (productId: number, newQuantity: number) => {
+    const updateQuantity = (itemId: string, newQuantity: number): void => {
         if (newQuantity <= 0) {
-            removeFromCart(productId);
+            removeFromCart(itemId);
             return;
         }
-        setCart(prevCart =>
-            prevCart.map(item =>
-                item.product.id === productId
-                    ? { ...item, quantity: newQuantity }
-                    : item
-            )
+
+        const existingCart: CartItemWithSize[] = JSON.parse(localStorage.getItem('cart') || '[]');
+        const updatedCart = existingCart.map((item: CartItemWithSize) =>
+            item.id === itemId ? { ...item, quantity: newQuantity } : item
         );
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new Event('cartUpdated'));
     };
 
-    const getCartItemCount = () => {
-        return cart.reduce((total, item) => total + item.quantity, 0);
+    const getCartTotal = (): number => {
+        let total = 0;
+        for (const item of cart) {
+            const price = typeof item.product.price === 'number' ? item.product.price : parseFloat(item.product.price as string);
+            total += price * item.quantity;
+        }
+        return total;
     };
 
-    const getCartTotal = () => {
-        return cart.reduce((total, item) => {
-            const price = typeof item.product.price === 'string' ? parseFloat(item.product.price) : item.product.price;
-            return total + (price * item.quantity);
-        }, 0);
+    const clearCart = (): void => {
+        localStorage.removeItem('cart');
+        window.dispatchEvent(new Event('cartUpdated'));
     };
 
-    if (loading) {
+    const resetFilters = () => {
+        setSearchTerm('');
+        setActiveCategory('all');
+        setPriceMin(minPriceValue);
+        setPriceMax(maxPriceValue);
+        setSortOrder('default');
+    };
+
+    if (isLoading) {
         return <div className={styles.loading}>Ładowanie produktów...</div>;
+    }
+
+    if (error) {
+        return <div className={styles.error}>Błąd: {error.message}</div>;
     }
 
     return (
@@ -139,8 +210,8 @@ export default function Shop() {
                             onClick={() => setShowCart(!showCart)}
                         >
                             🛒 Koszyk
-                            {getCartItemCount() > 0 && (
-                                <span className={styles.cartCount}>{getCartItemCount()}</span>
+                            {cartCount > 0 && (
+                                <span className={styles.cartCount}>{cartCount}</span>
                             )}
                         </button>
                     </div>
@@ -148,9 +219,9 @@ export default function Shop() {
             </div>
 
             {showCart && (
-                <div className={styles.cartModal}>
-                    <div className={styles.cartModalContent}>
-                        <div className={styles.cartModalHeader}>
+                <div className={styles.cart}>
+                    <div className={styles.cartContent}>
+                        <div className={styles.cartHeader}>
                             <h3>Twój koszyk</h3>
                             <button onClick={() => setShowCart(false)} className={styles.closeCart}>✕</button>
                         </div>
@@ -159,23 +230,48 @@ export default function Shop() {
                                 <p className={styles.emptyCart}>Koszyk jest pusty</p>
                             ) : (
                                 <>
-                                    {cart.map(item => (
-                                        <div key={item.product.id} className={styles.cartItem}>
-                                            <div className={styles.cartItemInfo}>
-                                                <p className={styles.cartItemName}>{item.product.name}</p>
-                                                <p className={styles.cartItemPrice}>{formatPrice(item.product.price)}</p>
+                                    {cart.map((item: CartItemWithSize) => {
+                                        const itemPrice = typeof item.product.price === 'number' ? item.product.price : parseFloat(item.product.price as string);
+                                        return (
+                                            <div key={item.id} className={styles.cartItem}>
+                                                <div
+                                                    className={styles.cartItemImage}
+                                                    onClick={() => {
+                                                        setShowCart(false);
+                                                        navigate(`/product/${item.product.id}`);
+                                                    }}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <img src={`/products/${item.product.image}`} alt={item.product.name} />
+                                                </div>
+                                                <div className={styles.cartItemInfo}>
+                                                    <p
+                                                        className={styles.cartItemName}
+                                                        onClick={() => {
+                                                            setShowCart(false);
+                                                            navigate(`/product/${item.product.id}`);
+                                                        }}
+                                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                    >
+                                                        {item.product.name}
+                                                    </p>
+                                                    {item.size && <p className={styles.cartItemSize}>Rozmiar: {item.size}</p>}
+                                                    {item.playerName && <p className={styles.cartItemPlayer}>Nadruk: {item.playerName}</p>}
+                                                    <p className={styles.cartItemPrice}>{formatPrice(itemPrice)}</p>
+                                                </div>
+                                                <div className={styles.cartItemControls}>
+                                                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                                                    <span>{item.quantity}</span>
+                                                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                                                    <button onClick={() => removeFromCart(item.id)} className={styles.removeItem}>Usuń</button>
+                                                </div>
                                             </div>
-                                            <div className={styles.cartItemControls}>
-                                                <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
-                                                <span>{item.quantity}</span>
-                                                <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
-                                                <button onClick={() => removeFromCart(item.product.id)} className={styles.removeItem}>Usuń</button>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                     <div className={styles.cartTotal}>
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
+                                    <button className={styles.clearCartButton} onClick={clearCart}>🗑️ Opróżnij koszyk</button>
                                     <button className={styles.checkoutButton}>Złóż zamówienie</button>
                                 </>
                             )}
@@ -189,7 +285,7 @@ export default function Shop() {
                     <div className={styles.categoriesSection}>
                         <h3>Kategorie</h3>
                         <ul className={styles.categoryList}>
-                            {categories.map(cat => (
+                            {categories.map((cat: Category) => (
                                 <li key={cat.id}>
                                     <button
                                         className={`${styles.categoryButton} ${activeCategory === cat.id ? styles.active : ''}`}
@@ -201,6 +297,86 @@ export default function Shop() {
                             ))}
                         </ul>
                     </div>
+
+                    <div className={styles.filtersSection}>
+                        <button
+                            className={styles.filterToggle}
+                            onClick={() => setShowFilters(!showFilters)}
+                        >
+                            {showFilters ? '▲ Filtry' : '▼ Filtry'}
+                        </button>
+
+                        {showFilters && (
+                            <>
+                                <div className={styles.sortSection}>
+                                    <h3>Sortowanie</h3>
+                                    <select
+                                        value={sortOrder}
+                                        onChange={(e) => setSortOrder(e.target.value)}
+                                        className={styles.sortSelect}
+                                    >
+                                        <option value="default">Domyślne</option>
+                                        <option value="asc">Cena rosnąco</option>
+                                        <option value="desc">Cena malejąco</option>
+                                    </select>
+                                </div>
+
+                                <div className={styles.priceRangeSection}>
+                                    <h3>Zakres cen</h3>
+                                    <div className={styles.priceInputs}>
+                                        <input
+                                            type="number"
+                                            placeholder="Min"
+                                            value={priceMin}
+                                            onChange={(e) => handlePriceMinChange(Number(e.target.value))}
+                                            className={styles.priceInput}
+                                            min={minPriceValue}
+                                            max={priceMax - 1}
+                                        />
+                                        <span>-</span>
+                                        <input
+                                            type="number"
+                                            placeholder="Max"
+                                            value={priceMax}
+                                            onChange={(e) => handlePriceMaxChange(Number(e.target.value))}
+                                            className={styles.priceInput}
+                                            min={priceMin + 1}
+                                            max={maxPriceValue}
+                                        />
+                                    </div>
+                                    <div className={styles.priceSliderContainer}>
+                                        <input
+                                            type="range"
+                                            min={minPriceValue}
+                                            max={maxPriceValue}
+                                            value={priceMin}
+                                            onChange={(e) => handlePriceMinChange(Number(e.target.value))}
+                                            className={styles.priceSlider}
+                                        />
+                                        <input
+                                            type="range"
+                                            min={minPriceValue}
+                                            max={maxPriceValue}
+                                            value={priceMax}
+                                            onChange={(e) => handlePriceMaxChange(Number(e.target.value))}
+                                            className={styles.priceSliderMin}
+                                        />
+                                    </div>
+                                    <div className={styles.priceLabels}>
+                                        <span>{formatPrice(priceMin)}</span>
+                                        <span>{formatPrice(priceMax)}</span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    className={styles.resetFiltersButton}
+                                    onClick={resetFilters}
+                                >
+                                    Resetuj filtry
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </aside>
 
                 <div className={styles.mainContent}>
@@ -210,7 +386,7 @@ export default function Shop() {
                                 type="text"
                                 placeholder="Szukaj produktu..."
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                                 className={styles.searchInput}
                             />
                             {searchTerm && (
@@ -230,33 +406,34 @@ export default function Shop() {
                     {filteredProducts.length === 0 ? (
                         <div className={styles.noResults}>
                             <p>Nie znaleziono produktów</p>
-                            <button onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}>
+                            <button onClick={resetFilters}>
                                 Wyświetl wszystkie
                             </button>
                         </div>
                     ) : (
                         <div className={styles.shopGrid}>
-                            {filteredProducts.map(product => (
-                                <div className={styles.shopItem} key={product.id}>
-                                    <div className={styles.imageWrapper}>
-                                        <img
-                                            src={`products/${product.image}`}
-                                            alt=""
-                                            className={styles.productImage}
-                                        />
+                            {filteredProducts.map((product: Product) => {
+                                const productPrice = typeof product.price === 'number' ? product.price : parseFloat(product.price as string);
+                                return (
+                                    <div
+                                        className={styles.shopItem}
+                                        key={product.id}
+                                        onClick={() => navigate(`/product/${product.id}`)}
+                                    >
+                                        <div className={styles.imageWrapper}>
+                                            <img
+                                                src={`/products/${product.image}`}
+                                                alt=""
+                                                className={styles.productImage}
+                                            />
+                                        </div>
+                                        <div className={styles.itemInfo}>
+                                            <p className={styles.itemName}>{product.name}</p>
+                                            <p className={styles.itemPrice}>{formatPrice(productPrice)}</p>
+                                        </div>
                                     </div>
-                                    <div className={styles.itemInfo}>
-                                        <p className={styles.itemName}>{product.name}</p>
-                                        <p className={styles.itemPrice}>{formatPrice(product.price)}</p>
-                                        <button
-                                            className={styles.buyButton}
-                                            onClick={() => addToCart(product)}
-                                        >
-                                            Dodaj do koszyka
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
                 </div>
