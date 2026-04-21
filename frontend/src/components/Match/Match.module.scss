@@ -1,26 +1,86 @@
-.Match{
-  display: grid;
-  height: 10rem;
-  width: 22rem;
-  background-color: #fff;
-  border-radius: 0.2rem;
-  border: 0.2rem solid #2a1a0e;
-  grid-template-columns:1fr 1.2fr 1fr;
-  grid-template-rows: 1fr 10fr;
-  .Top{
-    grid-column: 1/4;
-    grid-row: 1/2;
+$colormenu: #61331c;
+
+.MatchCard {
+  width: 320px; // Sztywna szerokość, żeby działał poziomy scroll w .Grid
+  background: rgba(darken($colormenu, 20%), 0.6); // Półprzezroczysty brąz
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  border: 1px solid rgba($colormenu, 0.3);
+  backdrop-filter: blur(10px); // Efekt szklanej karty na gradiencie tła
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  &:hover {
+    background: rgba(darken($colormenu, 15%), 0.8);
+    border-color: $colormenu;
+    transform: translateY(-5px);
   }
-  .Left{
-    grid-column: 1/2;
-    grid-row: 2/3;
+
+  .Top {
+    text-align: center;
+    h6 {
+      margin: 0;
+      font-size: 0.65rem;
+      color: lighten($colormenu, 20%);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: "Bookman Old Style", sans-serif;
+    }
   }
-  .Center{
-    grid-column: 2/3;
-    grid-row: 2/3;
-  }
-  .Right{
-    grid-column: 3/4;
-    grid-row: 2/3;
+
+  .TeamsRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+
+    .Team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      }
+
+      span {
+        font-family: "Bookman Old Style", sans-serif;
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        // Ucinanie tekstu jeśli klub ma bardzo długą nazwę
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .TimeBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .Hour {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: lighten($colormenu, 25%);
+        line-height: 1;
+      }
+
+      .Date {
+        font-size: 0.7rem;
+        color: rgba(white, 0.5);
+        margin-top: 5px;
+      }
+    }
   }
 }

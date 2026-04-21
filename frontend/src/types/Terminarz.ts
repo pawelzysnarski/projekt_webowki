@@ -5,6 +5,6 @@ export interface Terminarz {
     idGospodarza: number;
     idGoscia: number;
     dataSpotkania: Date;
-    klubGospodarza: Klub;
-    klubGoscia: Klub;
+    gospodarz: Klub;
+    gosc: Klub;
 }
