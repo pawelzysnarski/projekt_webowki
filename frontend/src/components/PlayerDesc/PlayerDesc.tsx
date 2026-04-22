@@ -7,8 +7,6 @@ export default function PlayerDesc() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: players } = usePlayers();
-
-    // Szukamy konkretnego zawodnika po ID
     const player = players?.find((p:Zawodnik) => p.ID === Number(id));
 
     if (!player) return <div className={styles.NotFound}>Nie znaleziono zawodnika</div>;

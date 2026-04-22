@@ -5,8 +5,6 @@ export default function PlayerData({ player }: { player: Zawodnik }) {
     return (
         <div className={styles.Contener}>
             <img src={`/players/${player.Numer}.png`} alt="player" className={styles.PImage}/>
-
-            {/* Dodatkowy panel widoczny po najechaniu */}
             <div className={styles.Overlay}>
                 <span className={styles.Number}>#{player.Numer}</span>
                 <span className={styles.Country}>{player.Kraj}</span>

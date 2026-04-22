@@ -331,3 +331,10 @@ INSERT INTO `terminarz` (`ID`, `ID_Gospodarza`, `ID_Gościa`, `Data_Spotkania`, 
 (238, 3, 13, '2026-08-30 17:30:00', 30),
 (239, 2, 14, '2026-08-31 18:00:00', 30),
 (240, 1, 15, '2026-08-31 20:00:00', 30);
+
+INSERT INTO `personel` (`ID`, `Imie`, `Nazwisko`, `Profesja`, `Kraj`) VALUES
+(1, 'Erik', 'Ten Van', 'Trener', 'Holandia'),
+(2, 'John', 'Carvnick', 'Asystent trenera', 'Irlandia'),
+(3, 'Zbyszek', 'Spóźnialski', 'Lekarz', 'Polska'),
+(4, 'Anissa', 'Woman', 'Trenerka fitness', 'Stany Zjednoczone Ameryki'),
+(5, 'Jan', 'Wąski', 'Trener bramkarzy', 'Polska');
