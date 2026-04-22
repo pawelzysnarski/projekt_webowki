@@ -12,6 +12,7 @@ import SeasonTicket from "./components/SeasonTicket/SeasonTicket.tsx";
 import TeamPage from "./routes/TeamPage/TeamPage.tsx";
 import PlayerDesc from "./components/PlayerDesc/PlayerDesc.tsx";
 import ProductPage from "./routes/ProductPage/ProductPage.tsx"
+import OrderPage from "./routes/OrderPage/OrderPage.tsx";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="druzyna" element={<TeamPage/>}/>
             <Route path="/zawodnik/:id" element={<PlayerDesc />} />
             <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/zamowienie" element={<OrderPage />} />
         </Routes>
     </BrowserRouter>
   )

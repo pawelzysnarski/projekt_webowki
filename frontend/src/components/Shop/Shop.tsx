@@ -272,7 +272,9 @@ export default function Shop() {
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
                                     <button className={styles.clearCartButton} onClick={clearCart}>🗑️ Opróżnij koszyk</button>
-                                    <button className={styles.checkoutButton}>Złóż zamówienie</button>
+                                    <button className={styles.checkoutButton} onClick={() => navigate('/zamowienie')}>
+                                        Złóż zamówienie
+                                    </button>
                                 </>
                             )}
                         </div>

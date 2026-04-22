@@ -161,6 +161,46 @@ export default function Product() {
         return '1.5rem';
     };
 
+    const isWhiteProduct = (): boolean => {
+        if (!product) return false;
+        const name = product.name.toLowerCase();
+        return name === 'koszulka2' || name === 'komplet2' || name === 'misiek2';
+    };
+
+    const getTextColor = (): string => {
+        if (!product) return 'white';
+        const name = product.name.toLowerCase();
+        if (name === 'koszulka2' || name === 'komplet2' || name === 'misiek2') {
+            return '#888888';
+        }
+        return 'white';
+    };
+
+    const getTextPosition = (): { top: string } => {
+        if (!product) return { top: '50%' };
+        const name = product.name.toLowerCase();
+        if (name.includes('misiek')) {
+            return { top: '45%' };
+        }
+        if (name.includes('komplet') && name!="komplet1") {
+            return { top: '30%' };
+        }
+        return { top: '35%' };
+    };
+
+    const getTextSize = (): { nameSize: string; numberSize: string } => {
+        if (!product) return { nameSize: '1rem', numberSize: '2rem' };
+        const name = product.name.toLowerCase();
+        if (name.includes('misiek')) {
+
+            return { nameSize: '1rem', numberSize: '5rem' };
+        }
+        return { nameSize: '1rem', numberSize: '2rem' };
+    };
+
+    const textPosition = getTextPosition();
+    const { nameSize, numberSize } = getTextSize();
+
     const [customNameError, setCustomNameError] = useState('');
     const [customNumberError, setCustomNumberError] = useState('');
 
@@ -570,9 +610,11 @@ export default function Product() {
                                     <div className={styles.cartTotal}>
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
-                                    <button className={styles.checkoutButton}>Złóż zamówienie</button>
                                     <button className={styles.clearCartButton} onClick={clearCart}>
                                         🗑️ Opróżnij koszyk
+                                    </button>
+                                    <button className={styles.checkoutButton} onClick={() => navigate('/zamowienie')}>
+                                        Złóż zamówienie
                                     </button>
                                 </>
                             )}
@@ -586,9 +628,27 @@ export default function Product() {
                     <div className={styles.imageWrapper}>
                         <img src={getProductImage()} alt={product.name} />
                         {selectedView === 'back' && showBackView() && (displayText.name || displayText.number) && (
-                            <div className={styles.textOverlay}>
-                                <div className={styles.playerName} style={{ fontSize: getFontSize(displayText.name) }}>{displayText.name}</div>
-                                <div className={styles.playerNumber} style={{ fontSize: getNumberFontSize(displayText.number) }}>{displayText.number}</div>
+                            <div className={styles.textOverlay} style={{ top: textPosition.top }}>
+                                <div
+                                    className={styles.playerName}
+                                    style={{
+                                        fontSize: product?.name.toLowerCase().includes('misiek') ? nameSize : getFontSize(displayText.name),
+                                        color: getTextColor(),
+                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
+                                    }}
+                                >
+                                    {displayText.name}
+                                </div>
+                                <div
+                                    className={styles.playerNumber}
+                                    style={{
+                                        fontSize: product?.name.toLowerCase().includes('misiek') ? numberSize : getNumberFontSize(displayText.number),
+                                        color: getTextColor(),
+                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
+                                    }}
+                                >
+                                    {displayText.number}
+                                </div>
                             </div>
                         )}
                     </div>
