@@ -1,67 +1,105 @@
+version: '3.8'
+
 services:
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "8000:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-    stdin_open: true
-    tty: true
-    depends_on:
-      - backend
-  db:
+  mariadb:
     image: mariadb:10.4.32
-    container_name: mariadb
-    restart: always
-    ports:
-      - "3306:3306"
+    container_name: project_mariadb_dev
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword123}
+      MYSQL_DATABASE: ${DB_NAME:-chaber}
+      MYSQL_USER: ${DB_USER:-app_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-SecurePassword123!}
+    ports:
+      - "3307:3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_dev_data:/var/lib/mysql
+      - ./backend/prisma/init-users.sql:/docker-entrypoint-initdb.d/02-init-users.sql
+    networks:
+      - app_network
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword123}"]
       interval: 10s
       timeout: 5s
       retries: 5
+
   backend:
-    build: ./backend
-    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: project_backend_dev
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USER=${DB_USER:-app_user}
+      - DB_PASSWORD=${DB_PASSWORD:-SecurePassword123!}
+      - DB_NAME=${DB_NAME:-chaber}
+      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-rootpassword123}
+      - DATABASE_URL=mysql://app_user:SecurePassword123!@mariadb:3306/chaber?connect_timeout=60&pool_timeout=60
+      - PORT=3000
+      - RUN_MIGRATIONS=true
     ports:
       - "3000:3000"
-    environment:
-      - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@db:3306/${DB_NAME}
-      - NODE_ENV=development
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - ./backend/prisma:/app/prisma
     depends_on:
-      db:
+      mariadb:
         condition: service_healthy
-    stdin_open: true
-    tty: true
-  init-db:
-    build: ./backend
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@db:3306/${DB_NAME}
+    networks:
+      - app_network
     command: >
       sh -c "
-        npx prisma migrate dev --name init &&
-        mysql -h db -u root -p${DB_ROOT_PASSWORD} ${DB_NAME} < prisma/dane.sql
+        echo '🔄 Oczekiwanie na gotowość bazy danych...' &&
+        while ! nc -z mariadb 3306; do sleep 2; done &&
+        echo '✅ Baza danych gotowa!' &&
+      
+        echo '📦 Uruchamianie migracji Prisma...' &&
+        npx prisma migrate deploy &&
+      
+        echo '🚀 Uruchamianie aplikacji...' &&
+        npm run dev
       "
-    profiles:
-      - init
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: project_frontend_dev
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:3000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app_network
+
+  adminer:
+    image: adminer:latest
+    container_name: project_adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    depends_on:
+      - mariadb
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
 
 volumes:
-  mariadb_data:
+  mariadb_dev_data:
+    name: project_mariadb_dev_data

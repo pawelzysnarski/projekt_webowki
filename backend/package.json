@@ -9,6 +9,9 @@
     "start": "node src/index.ts",
     "dev": "tsx watch src/index.ts"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/client": "^7.6.0",
