@@ -1,6 +1,6 @@
 import {NavLink} from "react-router-dom";
 import styles from "./Menu.module.scss"
-import logo from "../../logo.png"
+import logo from "/logos/chaber.png"
 import sponsor from "../../sponsor.png"
 export default function Menu(){
     return(

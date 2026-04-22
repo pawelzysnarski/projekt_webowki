@@ -12,6 +12,7 @@ import SeasonTicket from "./components/SeasonTicket/SeasonTicket.tsx";
 import TeamPage from "./routes/TeamPage/TeamPage.tsx";
 import PlayerDesc from "./components/PlayerDesc/PlayerDesc.tsx";
 import ProductPage from "./routes/ProductPage/ProductPage.tsx"
+import StaffDesc from "./components/StaffDesc/StaffDesc.tsx";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/kontakt" element={<ContactPage/>}/>
             <Route path="druzyna" element={<TeamPage/>}/>
             <Route path="/zawodnik/:id" element={<PlayerDesc />} />
+            <Route path="/personel/:id" element={<StaffDesc />}/>
             <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
     </BrowserRouter>

@@ -91,13 +91,12 @@ model dru_yna {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model personel {
-  ID       Int
+  ID       Int    @id @default(autoincrement())
   Imie     String @db.VarChar(40)
   Nazwisko String @db.VarChar(40)
   Profesja String @db.VarChar(100)
   Kraj     String @db.VarChar(50)
 
-  @@ignore
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
