@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import prisma from "../prismaDb.ts";
+import prisma from "../prismaDb";
 const staffDbRouter = Router();
 staffDbRouter.use(express.json());
 staffDbRouter.get("/", async (req, res) => {

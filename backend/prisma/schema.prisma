@@ -96,7 +96,6 @@ model personel {
   Nazwisko String @db.VarChar(40)
   Profesja String @db.VarChar(100)
   Kraj     String @db.VarChar(50)
-
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.

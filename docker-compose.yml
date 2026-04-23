@@ -1,24 +1,19 @@
-version: '3.8'
-
 services:
   mariadb:
     image: mariadb:10.4.32
-    container_name: project_mariadb_dev
+    container_name: chaber_mariadb_dev
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword123}
-      MYSQL_DATABASE: ${DB_NAME:-chaber}
-      MYSQL_USER: ${DB_USER:-app_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-SecurePassword123!}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3307:3306"
     volumes:
       - mariadb_dev_data:/var/lib/mysql
-      - ./backend/prisma/init-users.sql:/docker-entrypoint-initdb.d/02-init-users.sql
     networks:
-      - app_network
+      - chaber_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword123}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,40 +22,32 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: project_backend_dev
+    container_name: chaber_backend_dev
     restart: unless-stopped
     environment:
-      - NODE_ENV=development
-      - DB_HOST=mariadb
-      - DB_PORT=3306
-      - DB_USER=${DB_USER:-app_user}
-      - DB_PASSWORD=${DB_PASSWORD:-SecurePassword123!}
-      - DB_NAME=${DB_NAME:-chaber}
-      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-rootpassword123}
-      - DATABASE_URL=mysql://app_user:SecurePassword123!@mariadb:3306/chaber?connect_timeout=60&pool_timeout=60
-      - PORT=3000
-      - RUN_MIGRATIONS=true
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${PORT}
     ports:
       - "3000:3000"
     volumes:
       - ./backend:/app
       - /app/node_modules
-      - ./backend/prisma:/app/prisma
     depends_on:
       mariadb:
         condition: service_healthy
     networks:
-      - app_network
+      - chaber_network
     command: >
       sh -c "
-        echo '🔄 Oczekiwanie na gotowość bazy danych...' &&
-        while ! nc -z mariadb 3306; do sleep 2; done &&
-        echo '✅ Baza danych gotowa!' &&
-      
-        echo '📦 Uruchamianie migracji Prisma...' &&
+        echo '⏳ Waiting for database...' &&
+        sleep 10 &&
+        echo '📦 Running Prisma migrations...' &&
         npx prisma migrate deploy &&
-      
-        echo '🚀 Uruchamianie aplikacji...' &&
+        echo '📥 Importing data from SQL...' &&
+        mariadb -h mariadb -u root -prootpassword123 --ssl=0 chaber < /app/prisma/dane.sql 2>/dev/null || echo '⚠️ Import done (some data may already exist)' &&
+        echo '✅ Data import completed' &&
+        echo '🚀 Starting backend...' &&
         npm run dev
       "
 
@@ -68,11 +55,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: project_frontend_dev
+    container_name: chaber_frontend_dev
     restart: unless-stopped
     environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:3000
+      NODE_ENV: development
+      VITE_API_URL: ${VITE_API_URL}
     ports:
       - "5173:5173"
     volumes:
@@ -81,25 +68,25 @@ services:
     depends_on:
       - backend
     networks:
-      - app_network
+      - chaber_network
 
   adminer:
     image: adminer:latest
-    container_name: project_adminer
+    container_name: chaber_adminer
     restart: unless-stopped
     ports:
-      - "${ADMINER_PORT:-8080}:8080"
+      - "${ADMINER_PORT}:8080"
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
     depends_on:
       - mariadb
     networks:
-      - app_network
+      - chaber_network
 
 networks:
-  app_network:
+  chaber_network:
     driver: bridge
 
 volumes:
   mariadb_dev_data:
-    name: project_mariadb_dev_data
+    name: chaber_mariadb_dev_data

@@ -1,73 +1,53 @@
-import { PrismaClient } from '@prisma/client'
 import * as fs from 'fs'
 import * as path from 'path'
+import {PrismaClient} from '../generated/prisma/client'
+import {PrismaMariaDb} from "@prisma/adapter-mariadb";
 
-const prisma = new PrismaClient()
+const adapter = new PrismaMariaDb({
+    host: process.env.DB_HOST || 'mariadb',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'rootpassword123',
+    database: process.env.DB_NAME || 'chaber',
+});
 
-async function createCrudUser() {
-    console.log('👤 Tworzenie użytkownika CRUD...')
+const prisma = new PrismaClient({adapter})
 
-    try {
-        // Sprawdź czy użytkownik istnieje
-        const users = await prisma.$queryRaw`
-      SELECT user FROM mysql.user WHERE user = 'crud_user'
-    ` as any[]
+async function main() {
+    console.log('🌱 Seeding database...')
 
-        if (users.length === 0) {
-            await prisma.$executeRaw`CREATE USER 'crud_user'@'%' IDENTIFIED BY 'CrudPass123!'`
-            await prisma.$executeRaw`CREATE USER 'crud_user'@'localhost' IDENTIFIED BY 'CrudPass123!'`
-            console.log('✅ Użytkownik crud_user utworzony')
-        } else {
-            console.log('✅ Użytkownik crud_user już istnieje')
-        }
-
-        await prisma.$executeRaw`GRANT SELECT, INSERT, UPDATE, DELETE ON chaber.* TO 'crud_user'@'%'`
-        await prisma.$executeRaw`GRANT SELECT, INSERT, UPDATE, DELETE ON chaber.* TO 'crud_user'@'localhost'`
-        await prisma.$executeRaw`FLUSH PRIVILEGES`
-
-        console.log('✅ Uprawnienia CRUD nadane')
-    } catch (error) {
-        console.error('❌ Błąd tworzenia użytkownika CRUD:', error)
-    }
-}
-
-async function loadDaneSql() {
     const sqlPath = path.join(__dirname, 'dane.sql')
+    console.log(`📂 Looking for: ${sqlPath}`)
 
     if (!fs.existsSync(sqlPath)) {
-        console.log('⚠️  Plik dane.sql nie istnieje, pomijam')
+        console.log('⚠️  dane.sql not found, skipping')
         return
     }
 
-    console.log('📄 Wykonywanie dane.sql...')
     const sql = fs.readFileSync(sqlPath, 'utf-8')
+    console.log(`📄 SQL file loaded (${sql.length} bytes)`)
 
-    const queries = sql
+    const statements = sql
         .split(';')
-        .map(q => q.trim())
-        .filter(q => q.length > 0 && !q.startsWith('--')) // Pomijaj komentarze
+        .map(s => s.trim())
+        .filter(s => s.length > 0 && !s.startsWith('--') && !s.startsWith('/*'))
 
-    console.log(`📊 Znaleziono ${queries.length} zapytań`)
+    console.log(`📊 Found ${statements.length} statements`)
 
-    for (let i = 0; i < queries.length; i++) {
+    for (let i = 0; i < statements.length; i++) {
         try {
-            await prisma.$executeRawUnsafe(queries[i])
-            console.log(`✅ Zapytanie ${i + 1}/${queries.length} wykonane`)
-        } catch (error) {
-            console.error(`❌ Błąd w zapytaniu ${i + 1}:`, error.message)
+            await prisma.$executeRawUnsafe(statements[i])
+            console.log(`✅ Statement ${i + 1}/${statements.length} OK`)
+        } catch (error: any) {
+            if (!error.message?.includes('Duplicate') && !error.message?.includes('already exists')) {
+                console.error(`❌ Error ${i + 1}: ${error.message}`)
+            }
         }
     }
-}
 
-async function main() {
-    console.log('🌱 Rozpoczynanie inicjalizacji bazy danych...')
-
-    await createCrudUser()
-    await loadDaneSql()
-
-    console.log('✅ Inicjalizacja zakończona!')
+    console.log('✅ Seed completed!')
 }
 
 main()
-    .catch((e) => console.error('❌ Błąd:', e))
-    .finally(async () => await prisma.$disconnect())
+    .catch(console.error)
+    .finally(() => prisma.$disconnect())

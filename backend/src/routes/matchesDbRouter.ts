@@ -1,9 +1,8 @@
 import express, { Router } from "express";
-import prisma from "../prismaDb.ts";
+import prisma from "../prismaDb";
 
 const matchesDbRouter = Router();
 matchesDbRouter.use(express.json());
-
 matchesDbRouter.get("/:round", async (req, res) => {
     const { round } = req.params;
     const roundNumber = parseInt(round);

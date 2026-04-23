@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import prisma from "../prismaDb.js";
+import prisma from "../prismaDb";
 const shopDbRouter = Router();
 shopDbRouter.use(express.json());
 shopDbRouter.get("/", async (req, res)=>{

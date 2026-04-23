@@ -1,4 +1,4 @@
-import type {Terminarz} from "../../types/Terminarz.ts";
+import type {Terminarz} from "../../types/Terminarz";
 import styles from "./Match.module.scss";
 
 export default function Match(mecz: Terminarz) {
