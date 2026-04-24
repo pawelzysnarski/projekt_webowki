@@ -1,4 +1,3 @@
-// src/components/StadiumMap.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
@@ -40,7 +39,8 @@ export default function StadiumMap() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const generatedSectors = generateSectors(currentTicketType);
+        const generatedSectors = generateSectors();
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSectors(generatedSectors);
         setIsLoading(false);
     }, [currentTicketType]);
@@ -355,7 +355,7 @@ const SectorDetailView: React.FC<{
     );
 };
 
-function generateSectors(currentTicketType?: TicketType): Sector[] {
+function generateSectors(): Sector[] {
     const sectors: Sector[] = [];
 
     const sectorDefs = [

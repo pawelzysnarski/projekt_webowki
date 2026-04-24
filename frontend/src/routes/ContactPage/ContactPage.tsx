@@ -6,7 +6,7 @@ export default function ContactPage() {
     const [message, setMessage] = useState("");
     const [status, setStatus] = useState("");
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setStatus("Wysyłanie...");
 

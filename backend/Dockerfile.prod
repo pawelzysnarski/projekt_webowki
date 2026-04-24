@@ -2,18 +2,16 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN apk add --no-cache mysql-client bash
 
-RUN npm ci --only=production
+COPY package*.json ./
+RUN npm install
 
 COPY prisma ./prisma/
-
 RUN npx prisma generate
 
 COPY . .
 
-RUN npm run build 2>/dev/null || echo "No build script, skipping..."
-
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+CMD sh -c "echo '⏳ Waiting for database...' && sleep 10 && echo '📦 Running migrations...' && npx prisma migrate deploy && echo '📥 Importing data...' && mariadb -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} --ssl=0 ${MYSQL_DATABASE} < /app/prisma/dane.sql 2>/dev/null || echo '⚠️ Data import done' && echo '🚀 Starting backend...' && npx tsx src/index.ts"

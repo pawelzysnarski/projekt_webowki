@@ -94,18 +94,11 @@ const SeasonTicket: React.FC = () => {
         console.log('Kupuję karnet:', {
             ...selectedTicket,
             paymentType: selectedPayment,
-            totalPrice: selectedPayment === 'oneTime' ? selectedTicket?.price : selectedTicket?.pricePerMonth * 12
+            totalPrice: selectedPayment === 'oneTime' ? selectedTicket?.price : (selectedTicket?.pricePerMonth || 0) * 12
         });
 
         alert(`Dziękujemy za wybór karnetu ${selectedTicket?.name}! Za chwilę zostaniesz przekierowany do płatności.`);
     };
-
-    const getTotalPrice = () => {
-        const ticket = ticketTiers.find(t => t.id === selectedTier);
-        if (!ticket) return 0;
-        return selectedPayment === 'oneTime' ? ticket.price : ticket.pricePerMonth;
-    };
-
     return (
         <div className={styles.seasonTicket}>
             <section className={styles.hero}>

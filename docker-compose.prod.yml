@@ -6,6 +6,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3307:3306"
     volumes:
       - mariadb_prod_data:/var/lib/mysql
     networks:
@@ -26,6 +28,8 @@ services:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       PORT: ${PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3000:3000"
     depends_on:
