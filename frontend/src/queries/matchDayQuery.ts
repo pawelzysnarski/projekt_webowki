@@ -10,5 +10,8 @@ export default function useMatches(round: number) {
             return res.json();
         },
         enabled: !!round && !isNaN(round),
+        retry:10,
+        retryDelay:3000,
+        staleTime:0,
     });
 }

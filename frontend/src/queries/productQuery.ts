@@ -11,5 +11,8 @@ export default function useProduct(id: string | undefined) {
             return data;
         },
         enabled: !!id,
+        retry:10,
+        retryDelay:3000,
+        staleTime:0,
     });
 }
