@@ -13,6 +13,7 @@ import TeamPage from "./routes/TeamPage/TeamPage.tsx";
 import PlayerDesc from "./components/PlayerDesc/PlayerDesc.tsx";
 import ProductPage from "./routes/ProductPage/ProductPage.tsx"
 import StaffDesc from "./components/StaffDesc/StaffDesc.tsx";
+import NewsPage from "./routes/NewsPage/NewsPage.tsx";
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Routes>
             <Route path="/" element={<MainPage/>}/>
             <Route path="/sklep" element={<ShopPage/>}/>
-            <Route path="/terminarz" element={<TablePage round={1}/>}/>
+            <Route path="/terminarz" element={<TablePage />}/>
             <Route path="/bilety" element={<TicketPage/>}/>
             <Route path="/bilety/:id" element={<Tickets/>}/>
             <Route path="/bilety/:id/:type_id" element={<Ticket/>}/>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/zawodnik/:id" element={<PlayerDesc />} />
             <Route path="/personel/:id" element={<StaffDesc />}/>
             <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/aktualnosci" element={<NewsPage/>}/>
         </Routes>
     </BrowserRouter>
   )

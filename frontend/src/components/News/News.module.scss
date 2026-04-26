@@ -1,0 +1,59 @@
+$colormenu: #61331c;
+
+.Article {
+  width: 100%;
+  background: rgba(darken($colormenu, 20%), 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba($colormenu, 0.3);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .ImageWrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .Content {
+    padding: 1.5rem;
+
+    .Meta {
+      margin-bottom: 0.5rem;
+      time {
+        color: lighten($colormenu, 30%);
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+
+    .Title {
+      font-family: "Bookman Old Style", sans-serif;
+      color: lighten($colormenu, 40%);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba($colormenu, 0.3);
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      color: white;
+      font-family: "Bookman Old Style", sans-serif;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+}

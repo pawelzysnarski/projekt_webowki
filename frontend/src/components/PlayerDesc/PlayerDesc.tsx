@@ -7,7 +7,7 @@ export default function PlayerDesc() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: players } = usePlayers();
-    const player = players?.find((p:Zawodnik) => p.ID === Number(id));
+    const player = players?.find((p: Zawodnik) => p.ID === Number(id));
 
     if (!player) return <div className={styles.NotFound}>Nie znaleziono zawodnika</div>;
 
@@ -45,6 +45,10 @@ export default function PlayerDesc() {
                 <div className={styles.Details}>
                     <div className={styles.DetailItem}>
                         <strong>Kraj:</strong> <span>{player.Kraj}</span>
+                    </div>
+                    <div className={styles.DetailItem}>
+                        <strong>Urodzony:</strong>
+                        <span>{player.Data_Urodzenia ? new Date(player.Data_Urodzenia).toLocaleDateString('pl-PL') : '-'}</span>
                     </div>
                     <div className={styles.DetailItem}>
                         <strong>Wzrost:</strong> <span>{player.Wzrost} cm</span>

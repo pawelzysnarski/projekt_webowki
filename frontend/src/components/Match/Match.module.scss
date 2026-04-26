@@ -1,17 +1,24 @@
 $colormenu: #61331c;
 
 .MatchCard {
-  width: 320px; // Sztywna szerokość, żeby działał poziomy scroll w .Grid
-  background: rgba(darken($colormenu, 20%), 0.6); // Półprzezroczysty brąz
+  background: rgba(darken($colormenu, 20%), 0.6);
   border-radius: 12px;
   padding: 1.5rem 1rem;
   border: 1px solid rgba($colormenu, 0.3);
-  backdrop-filter: blur(10px); // Efekt szklanej karty na gradiencie tła
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  &.MyMatch {
+    background: rgba(darken($colormenu, 10%), 0.9);
+    border: 2px solid lighten($colormenu, 15%);
+    box-shadow: 0 0 15px rgba($colormenu, 0.5);
 
+    .Hour, .Score {
+      color: #ffd700;
+    }
+  }
   &:hover {
     background: rgba(darken($colormenu, 15%), 0.8);
     border-color: $colormenu;
@@ -56,7 +63,6 @@ $colormenu: #61331c;
         font-weight: bold;
         color: white;
         text-align: center;
-        // Ucinanie tekstu jeśli klub ma bardzo długą nazwę
         max-width: 100px;
         white-space: nowrap;
         overflow: hidden;
@@ -68,12 +74,18 @@ $colormenu: #61331c;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-width: 80px;
 
-      .Hour {
+      .Hour, .Score {
         font-size: 1.5rem;
         font-weight: 900;
         color: lighten($colormenu, 25%);
         line-height: 1;
+      }
+
+      .Score {
+        color: #fff;
+        letter-spacing: 2px;
       }
 
       .Date {
@@ -81,6 +93,20 @@ $colormenu: #61331c;
         color: rgba(white, 0.5);
         margin-top: 5px;
       }
+
+      .Live {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #ff4444;
+        animation: pulse 2s infinite;
+      }
     }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
   }
 }

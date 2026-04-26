@@ -7,4 +7,6 @@ export interface Terminarz {
     dataSpotkania: Date;
     gospodarz: Klub;
     gosc: Klub;
+    Numer_Kolejki: number;
+    wynik: number;
 }

@@ -109,9 +109,11 @@ model u_ytkownik {
 }
 
 model wiadomo_ci {
-  ID      Int       @id @default(autoincrement())
-  Zdj_cie String    @map("Zdjęcie") @db.VarChar(100)
-  akapity akapity[]
+  ID       Int       @id @default(autoincrement())
+  Nag__wek String    @map("Nagłówek") @db.VarChar(100)
+  Zdj_cie  String    @map("Zdjęcie") @db.VarChar(100)
+  Data     DateTime  @default(now()) @db.Date
+  akapity  akapity[]
 
   @@map("wiadomości")
 }
