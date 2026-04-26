@@ -1,10 +1,10 @@
-$primary-dark: #2d1b12;      // ciemny brąz
-$primary-darker: #1a0f09;    // bardzo ciemny brąz
-$primary-accent: #714a36;     // główny kolor akcentu
-$primary-light: #8b5e46;      // jaśniejszy brąz
-$text-light: #f5e6d9;         // kremowy biały
-$text-muted: #c4a58b;         // jasny brąz
-$border-color: #8b5e46;       // krawędzie w kolorze akcentu
+$primary-dark: #2d1b12;
+$primary-darker: #1a0f09;
+$primary-accent: #714a36;
+$primary-light: #8b5e46;
+$text-light: #f5e6d9;
+$text-muted: #c4a58b;
+$border-color: #8b5e46;
 
 $gold-color: #d4af37;
 $silver-color: #a8a8a8;
@@ -140,6 +140,7 @@ $bronze-color: #cd7f32;
   font-weight: 500;
   backdrop-filter: blur(8px);
   border-top: 1px solid $primary-accent;
+  z-index: 100;
 }
 
 .loading {
@@ -259,9 +260,9 @@ $bronze-color: #cd7f32;
 }
 
 .seatSelected {
-  background: linear-gradient(135deg, #eab308, #ca8a04);
-  color: #1a1a2e;
-  box-shadow: 0 0 0 2px $primary-accent, 0 4px 12px rgba(234, 179, 8, 0.5);
+  background: linear-gradient(135deg, $gold-color, darken($gold-color, 10%));
+  color: $primary-darker;
+  box-shadow: 0 0 0 2px $primary-accent, 0 4px 12px rgba(212, 175, 55, 0.5);
   transform: scale(1.02);
 }
 
@@ -396,23 +397,5 @@ $bronze-color: #cd7f32;
 
   &:hover {
     background: lighten($primary-accent, 10%);
-  }
-
-  .seat {
-    width: 36px;
-    height: 36px;
-    font-size: 9px;
-  }
-
-  .seatPanel {
-    width: calc(100% - 40px);
-    bottom: 20px;
-    right: 20px;
-    left: 20px;
-  }
-
-  .legend {
-    flex-wrap: wrap;
-    justify-content: center;
   }
 }

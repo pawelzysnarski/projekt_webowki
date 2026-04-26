@@ -1,131 +1,214 @@
-.Main{
+.Main {
   width: 100%;
-  height: 600px;
+  min-height: 600px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: flex-start;
   flex-wrap: wrap;
-  .Ticket{
-    margin: 20px;
-    width: 30%;
-    height: 90%;
-    text-decoration: none;
-    .Ticket_container_1,.Ticket_container_2,.Ticket_container_3 {
-      width: 100%;
-      height: 100%;
-      background-color: white;
-      border-radius: 10px;
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      &:hover {
-        border: 2px solid lightblue;
-        transform: translateY(-20px);
-        box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
-      }
-      .Ticket_container_matchup {
-        text-align: center;
-        z-index: 2;
-        width: 100%;
-        height: 40%;
-        font-size: 30px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-        color: white;
+  gap: 20px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #1a0f09 0%, #2d1b12 100%);
+}
 
-        .Ticket_container_date {
-          padding: 5px;
-          border: 2px solid black;
-          border-radius: 10px;
-          background-color: rgba(00, 00, 00, 0.5);
-        }
-      }
-        .Ticket_container_type{
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          color: white;
-          z-index: 2;
-          width: 100%;
-          height: 80%;
-        }
-      }
-    .Ticket_container_1{
-      background-image: url("../../../../public/tickets_photos/brazowy_los.png");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      &::before{
-        width: 100%;
-        height: 100%;
-        content: "";
-        position: absolute;
-        z-index: 1;
-        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
-        border-radius: 10px;
-      }
+.Ticket {
+  margin: 0;
+  width: 320px;
+  height: 420px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+.Ticket_container_1,
+.Ticket_container_2,
+.Ticket_container_3,
+.Ticket_container_away {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  &::before {
+    width: 100%;
+    height: 100%;
+    content: "";
+    position: absolute;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.85) 100%);
+    border-radius: 16px;
+  }
+
+  .Ticket_container_matchup {
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    padding: 30px 20px 10px;
+    color: white;
+
+    .Ticket_container_title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
-    .Ticket_container_2{
-      background-image: url("../../../../public/tickets_photos/srebrny_jez.png");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      &::before{
-        width: 100%;
-        height: 100%;
-        content: "";
-        position: absolute;
-        z-index: 1;
-        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
-        border-radius: 10px;
-      }
-    }
-    .Ticket_container_3{
-      background-image: url("../../../../public/tickets_photos/zloty_jelen.png");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      &::before{
-        width: 100%;
-        height: 100%;
-        content: "";
-        position: absolute;
-        z-index: 1;
-        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
-        border-radius: 10px;
-      }
+
+    .Ticket_container_date {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
     }
   }
-.Learn_more{
-  width: 100%;
-  height:auto;
-  .Learn_more_link{
-    text-decoration: none;
-    width: 100%;
-    height: 10%;
+
+  .Ticket_container_type {
     display: flex;
-    justify-content: flex-end;
-    .Learn_more_button{
-      margin: 5px;
-      z-index: 2;
-      width: auto;
-      height: 50px;
-      border-radius: 10px;
-      border: none;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+    z-index: 2;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1px;
+  }
+}
+.Ticket_container_1 {
+  background-image: url("../../../../public/tickets_photos/brazowy_los.png");
+}
+
+.Ticket_container_2 {
+  background-image: url("../../../../public/tickets_photos/srebrny_jez.png");
+}
+
+.Ticket_container_3 {
+  background-image: url("../../../../public/tickets_photos/zloty_jelen.png");
+}
+
+.Ticket_container_away {
+  background-image: url("../../../../public/tickets_photos/stadion.png");
+  border: 2px solid #3b82f6;
+}
+.Ticket_container_price {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+  font-size: 1.4rem;
+  color: #d4af37;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.Ticket_container_info {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+  font-size: 0.85rem;
+  color: #c4a58b;
+  padding: 4px 12px;
+
+  span {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+}
+.awayWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.awayHeader {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  padding: 24px;
+  background: rgba(26, 58, 92, 0.3);
+  border-radius: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+
+  .awayIcon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    color: #f5e6d9;
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: #c4a58b;
+    margin: 4px 0;
+    font-size: 1rem;
+  }
+
+  .awayStadium {
+    color: #60a5fa;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    font-style: italic;
+  }
+}
+.Learn_more {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .Learn_more_link {
+    text-decoration: none;
+
+    .Learn_more_button {
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 1px solid #8b5e46;
       background: #553928;
       color: #f5e6d9;
-      padding: 10px 20px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       transition: all 0.2s ease;
+
       &:hover {
-        background: lighten(#432d1f, 10%);
-        transform: translateX(-2px);
+        background: #6b4835;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
     }
   }
-  }
+}
+.loading {
+  color: #c4a58b;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 60px;
+  width: 100%;
 }

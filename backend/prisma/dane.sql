@@ -338,3 +338,158 @@ INSERT INTO `personel` (`ID`, `Imie`, `Nazwisko`, `Profesja`, `Kraj`) VALUES
 (3, 'Zbyszek', 'Spóźnialski', 'Lekarz', 'Polska'),
 (4, 'Anissa', 'Woman', 'Trenerka fitness', 'Stany Zjednoczone Ameryki'),
 (5, 'Jan', 'Wąski', 'Trener bramkarzy', 'Polska');
+
+
+INSERT INTO `mecze` (`przeciwnik`, `czy_domowy`, `data_meczu`, `stadion`, `miasto`, `id_terminarza`) VALUES
+-- Kolejka 1: Chaber (1) vs Mleczne Ptaki (16) - DOMOWY
+('Mleczne Ptaki', 1, '2026-02-06 20:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 1),
+-- Kolejka 2: Chaber (1) vs Zatyłek (2) - DOMOWY (derby!)
+('Zatyłek Pobiedziska', 1, '2026-02-16 20:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 16),
+-- Kolejka 3: Ćwikła (3) vs Chaber (1) - WYJAZDOWY
+('Ćwikła Opalenica', 0, '2026-02-20 20:30:00', 'Pole Buraków', 'Opalenica', 18),
+-- Kolejka 4: Chaber (1) vs Maczeta (4) - DOMOWY
+('Maczeta Dębiec', 1, '2026-03-02 18:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 31),
+-- Kolejka 5: Piotrki (5) vs Chaber (1) - WYJAZDOWY
+('Piotrki Tomaszów', 0, '2026-03-07 15:00:00', 'CWL Arena', 'Tomaszów', 35),
+-- Kolejka 6: Chaber (1) vs Tęczowi (6) - DOMOWY
+('Tęczowi Grecja', 1, '2026-03-15 17:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 46),
+-- Kolejka 7: Lustro (7) vs Chaber (1) - WYJAZDOWY
+('Lustro Puszczykowo', 0, '2026-03-21 17:30:00', 'Stadion Szklanek i Garnków', 'Puszczykowo', 52),
+-- Kolejka 8: Chaber (1) vs Drzwi (8) - DOMOWY
+('Drzwi Chludowo', 1, '2026-03-29 15:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 61),
+-- Kolejka 9: Lodówka (9) vs Chaber (1) - WYJAZDOWY
+('Lodówka Luboń', 0, '2026-04-05 15:00:00', 'Stadion imienia Górki Papieskiej', 'Luboń', 69),
+-- Kolejka 10: Chaber (1) vs Stypa (10) - DOMOWY
+('Stypa Budapeszt', 1, '2026-04-11 17:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 76),
+-- Kolejka 11: Rajdowcy (11) vs Chaber (1) - WYJAZDOWY
+('Rajdowcy Zbąszynek', 0, '2026-04-19 17:30:00', 'Arena Wyścigów Rajdowych', 'Zbąszynek', 86),
+-- Kolejka 12: Chaber (1) vs Karni (12) - DOMOWY
+('Karni Wronki', 1, '2026-04-25 15:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 91),
+-- Kolejka 13: Insomnia (13) vs Chaber (1) - WYJAZDOWY
+('Insomnia Pobiedziska', 0, '2026-05-04 18:00:00', 'Arena Głębokiego Snu', 'Pobiedziska', 103),
+-- Kolejka 14: Chaber (1) vs Tchórze (14) - DOMOWY
+('Tchórze Marianowo', 1, '2026-05-08 20:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 106),
+-- Kolejka 15: Bidul (15) vs Chaber (1) - WYJAZDOWY
+('Bidul Dębiec', 0, '2026-05-18 20:00:00', 'Arena Bursa 2', 'Dębiec', 120),
+-- Kolejka 16: Mleczne Ptaki (16) vs Chaber (1) - WYJAZDOWY
+('Mleczne Ptaki', 0, '2026-05-22 20:00:00', 'Stadion Cytatów i Mądrości', 'Ptaki', 121),
+-- Kolejka 17: Zatyłek (2) vs Chaber (1) - WYJAZDOWY (derby wyjazdowe!)
+('Zatyłek Pobiedziska', 0, '2026-06-01 20:00:00', 'Fanservice Stadium', 'Pobiedziska', 136),
+-- Kolejka 18: Chaber (1) vs Ćwikła (3) - DOMOWY
+('Ćwikła Opalenica', 1, '2026-06-05 20:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 138),
+-- Kolejka 19: Maczeta (4) vs Chaber (1) - WYJAZDOWY
+('Maczeta Dębiec', 0, '2026-06-15 18:00:00', 'Arena Za Garażami', 'Dębiec', 151),
+-- Kolejka 20: Chaber (1) vs Piotrki (5) - DOMOWY
+('Piotrki Tomaszów', 1, '2026-06-20 15:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 155),
+-- Kolejka 21: Tęczowi (6) vs Chaber (1) - WYJAZDOWY
+('Tęczowi Grecja', 0, '2026-06-28 17:30:00', 'Olimp', 'Grecja', 166),
+-- Kolejka 22: Chaber (1) vs Lustro (7) - DOMOWY
+('Lustro Puszczykowo', 1, '2026-07-04 17:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 172),
+-- Kolejka 23: Drzwi (8) vs Chaber (1) - WYJAZDOWY
+('Drzwi Chludowo', 0, '2026-07-12 15:00:00', 'Arena Dworcowa', 'Chludowo', 181),
+-- Kolejka 24: Chaber (1) vs Lodówka (9) - DOMOWY
+('Lodówka Luboń', 1, '2026-07-19 15:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 189),
+-- Kolejka 25: Stypa (10) vs Chaber (1) - WYJAZDOWY
+('Stypa Budapeszt', 0, '2026-07-25 17:30:00', 'Stadion Miejski 5m^2', 'Budapeszt', 196),
+-- Kolejka 26: Chaber (1) vs Rajdowcy (11) - DOMOWY
+('Rajdowcy Zbąszynek', 1, '2026-08-02 17:30:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 206),
+-- Kolejka 27: Karni (12) vs Chaber (1) - WYJAZDOWY
+('Karni Wronki', 0, '2026-08-08 15:00:00', 'Stadion Obok Zakładu Karnego', 'Wronki', 211),
+-- Kolejka 28: Chaber (1) vs Insomnia (13) - DOMOWY
+('Insomnia Pobiedziska', 1, '2026-08-17 18:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 223),
+-- Kolejka 29: Tchórze (14) vs Chaber (1) - WYJAZDOWY
+('Tchórze Marianowo', 0, '2026-08-21 20:30:00', 'Stadion imienia Uciekinierów i Tchórzy', 'Marianowo', 226),
+-- Kolejka 30: Chaber (1) vs Bidul (15) - DOMOWY (ostatnia kolejka!)
+('Bidul Dębiec', 1, '2026-08-31 20:00:00', 'Arena imienia Tomasza Piotrkowskiego', 'Pobiedziska', 240);
+
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu) VALUES
+                                                                                      ('A1','A',1,0,50,'brazowy_los',1),('A1','A',2,0,50,'brazowy_los',1),('A1','A',3,0,50,'brazowy_los',1),('A1','A',4,0,50,'brazowy_los',1),('A1','A',5,0,50,'brazowy_los',1),('A1','A',6,0,50,'brazowy_los',1),('A1','A',7,0,50,'brazowy_los',1),('A1','A',8,0,50,'brazowy_los',1),('A1','A',9,0,50,'brazowy_los',1),('A1','A',10,0,50,'brazowy_los',1),
+                                                                                      ('A1','B',1,0,52,'brazowy_los',1),('A1','B',2,0,52,'brazowy_los',1),('A1','B',3,0,52,'brazowy_los',1),('A1','B',4,0,52,'brazowy_los',1),('A1','B',5,0,52,'brazowy_los',1),('A1','B',6,0,52,'brazowy_los',1),('A1','B',7,0,52,'brazowy_los',1),('A1','B',8,0,52,'brazowy_los',1),('A1','B',9,0,52,'brazowy_los',1),('A1','B',10,0,52,'brazowy_los',1),
+                                                                                      ('A1','C',1,0,54,'brazowy_los',1),('A1','C',2,0,54,'brazowy_los',1),('A1','C',3,0,54,'brazowy_los',1),('A1','C',4,0,54,'brazowy_los',1),('A1','C',5,0,54,'brazowy_los',1),('A1','C',6,0,54,'brazowy_los',1),('A1','C',7,0,54,'brazowy_los',1),('A1','C',8,0,54,'brazowy_los',1),('A1','C',9,0,54,'brazowy_los',1),('A1','C',10,0,54,'brazowy_los',1),
+                                                                                      ('A1','D',1,0,56,'brazowy_los',1),('A1','D',2,0,56,'brazowy_los',1),('A1','D',3,0,56,'brazowy_los',1),('A1','D',4,0,56,'brazowy_los',1),('A1','D',5,0,56,'brazowy_los',1),('A1','D',6,0,56,'brazowy_los',1),('A1','D',7,0,56,'brazowy_los',1),('A1','D',8,0,56,'brazowy_los',1),('A1','D',9,0,56,'brazowy_los',1),('A1','D',10,0,56,'brazowy_los',1),
+                                                                                      ('A1','E',1,0,58,'brazowy_los',1),('A1','E',2,0,58,'brazowy_los',1),('A1','E',3,0,58,'brazowy_los',1),('A1','E',4,0,58,'brazowy_los',1),('A1','E',5,0,58,'brazowy_los',1),('A1','E',6,0,58,'brazowy_los',1),('A1','E',7,0,58,'brazowy_los',1),('A1','E',8,0,58,'brazowy_los',1),('A1','E',9,0,58,'brazowy_los',1),('A1','E',10,0,58,'brazowy_los',1),
+                                                                                      ('A1','F',1,0,60,'brazowy_los',1),('A1','F',2,0,60,'brazowy_los',1),('A1','F',3,0,60,'brazowy_los',1),('A1','F',4,0,60,'brazowy_los',1),('A1','F',5,0,60,'brazowy_los',1),('A1','F',6,0,60,'brazowy_los',1),('A1','F',7,0,60,'brazowy_los',1),('A1','F',8,0,60,'brazowy_los',1),('A1','F',9,0,60,'brazowy_los',1),('A1','F',10,0,60,'brazowy_los',1);
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'A2', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'A3', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'A4', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'C1', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'C2', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'C3', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'C4', rzad, numer, 0, cena, 'brazowy_los', 1 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu) VALUES
+                                                                                      ('B1','A',1,0,90,'srebrny_jez',1),('B1','A',2,0,90,'srebrny_jez',1),('B1','A',3,0,90,'srebrny_jez',1),('B1','A',4,0,90,'srebrny_jez',1),('B1','A',5,0,90,'srebrny_jez',1),('B1','A',6,0,90,'srebrny_jez',1),('B1','A',7,0,90,'srebrny_jez',1),('B1','A',8,0,90,'srebrny_jez',1),('B1','A',9,0,90,'srebrny_jez',1),('B1','A',10,0,90,'srebrny_jez',1),
+                                                                                      ('B1','B',1,0,93,'srebrny_jez',1),('B1','B',2,0,93,'srebrny_jez',1),('B1','B',3,0,93,'srebrny_jez',1),('B1','B',4,0,93,'srebrny_jez',1),('B1','B',5,0,93,'srebrny_jez',1),('B1','B',6,0,93,'srebrny_jez',1),('B1','B',7,0,93,'srebrny_jez',1),('B1','B',8,0,93,'srebrny_jez',1),('B1','B',9,0,93,'srebrny_jez',1),('B1','B',10,0,93,'srebrny_jez',1),
+                                                                                      ('B1','C',1,0,96,'srebrny_jez',1),('B1','C',2,0,96,'srebrny_jez',1),('B1','C',3,0,96,'srebrny_jez',1),('B1','C',4,0,96,'srebrny_jez',1),('B1','C',5,0,96,'srebrny_jez',1),('B1','C',6,0,96,'srebrny_jez',1),('B1','C',7,0,96,'srebrny_jez',1),('B1','C',8,0,96,'srebrny_jez',1),('B1','C',9,0,96,'srebrny_jez',1),('B1','C',10,0,96,'srebrny_jez',1),
+                                                                                      ('B1','D',1,0,99,'srebrny_jez',1),('B1','D',2,0,99,'srebrny_jez',1),('B1','D',3,0,99,'srebrny_jez',1),('B1','D',4,0,99,'srebrny_jez',1),('B1','D',5,0,99,'srebrny_jez',1),('B1','D',6,0,99,'srebrny_jez',1),('B1','D',7,0,99,'srebrny_jez',1),('B1','D',8,0,99,'srebrny_jez',1),('B1','D',9,0,99,'srebrny_jez',1),('B1','D',10,0,99,'srebrny_jez',1),
+                                                                                      ('B1','E',1,0,102,'srebrny_jez',1),('B1','E',2,0,102,'srebrny_jez',1),('B1','E',3,0,102,'srebrny_jez',1),('B1','E',4,0,102,'srebrny_jez',1),('B1','E',5,0,102,'srebrny_jez',1),('B1','E',6,0,102,'srebrny_jez',1),('B1','E',7,0,102,'srebrny_jez',1),('B1','E',8,0,102,'srebrny_jez',1),('B1','E',9,0,102,'srebrny_jez',1),('B1','E',10,0,102,'srebrny_jez',1),
+                                                                                      ('B1','F',1,0,105,'srebrny_jez',1),('B1','F',2,0,105,'srebrny_jez',1),('B1','F',3,0,105,'srebrny_jez',1),('B1','F',4,0,105,'srebrny_jez',1),('B1','F',5,0,105,'srebrny_jez',1),('B1','F',6,0,105,'srebrny_jez',1),('B1','F',7,0,105,'srebrny_jez',1),('B1','F',8,0,105,'srebrny_jez',1),('B1','F',9,0,105,'srebrny_jez',1),('B1','F',10,0,105,'srebrny_jez',1);
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B2', rzad, numer, 0, cena, 'srebrny_jez', 1 FROM miejsca WHERE sektor='B1' AND id_meczu=1;
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu) VALUES
+                                                                                      ('D1','A',1,0,150,'zloty_jelen',1),('D1','A',2,0,150,'zloty_jelen',1),('D1','A',3,0,150,'zloty_jelen',1),('D1','A',4,0,150,'zloty_jelen',1),('D1','A',5,0,150,'zloty_jelen',1),('D1','A',6,0,150,'zloty_jelen',1),('D1','A',7,0,150,'zloty_jelen',1),('D1','A',8,0,150,'zloty_jelen',1),('D1','A',9,0,150,'zloty_jelen',1),('D1','A',10,0,150,'zloty_jelen',1),
+                                                                                      ('D1','B',1,0,160,'zloty_jelen',1),('D1','B',2,0,160,'zloty_jelen',1),('D1','B',3,0,160,'zloty_jelen',1),('D1','B',4,0,160,'zloty_jelen',1),('D1','B',5,0,160,'zloty_jelen',1),('D1','B',6,0,160,'zloty_jelen',1),('D1','B',7,0,160,'zloty_jelen',1),('D1','B',8,0,160,'zloty_jelen',1),('D1','B',9,0,160,'zloty_jelen',1),('D1','B',10,0,160,'zloty_jelen',1),
+                                                                                      ('D1','C',1,0,170,'zloty_jelen',1),('D1','C',2,0,170,'zloty_jelen',1),('D1','C',3,0,170,'zloty_jelen',1),('D1','C',4,0,170,'zloty_jelen',1),('D1','C',5,0,170,'zloty_jelen',1),('D1','C',6,0,170,'zloty_jelen',1),('D1','C',7,0,170,'zloty_jelen',1),('D1','C',8,0,170,'zloty_jelen',1),('D1','C',9,0,170,'zloty_jelen',1),('D1','C',10,0,170,'zloty_jelen',1);
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'D2', rzad, numer, 0, cena, 'zloty_jelen', 1 FROM miejsca WHERE sektor='D1' AND id_meczu=1;
+
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT sektor, rzad, numer, 0,
+       CASE WHEN id_meczu_docelowy IN (2,28) AND typ_biletu='brazowy_los' THEN cena+10
+            WHEN id_meczu_docelowy IN (2,28) AND typ_biletu='srebrny_jez' THEN cena+8
+            WHEN id_meczu_docelowy IN (2,28) AND typ_biletu='zloty_jelen' THEN cena+5
+            ELSE cena END,
+       typ_biletu, id_meczu_docelowy
+FROM miejsca, (SELECT 2 as id_meczu_docelowy UNION SELECT 4 UNION SELECT 6 UNION SELECT 8 UNION SELECT 10 UNION SELECT 12 UNION SELECT 14 UNION SELECT 18 UNION SELECT 20 UNION SELECT 22 UNION SELECT 24 UNION SELECT 26 UNION SELECT 28 UNION SELECT 30) AS mecze
+WHERE miejsca.id_meczu = 1;
+
+
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 60, 'normalny', 3 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 50, 'normalny', 5 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 55, 'normalny', 7 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 55, 'normalny', 9 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 65, 'normalny', 11 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 70, 'normalny', 13 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 55, 'normalny', 15 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 65, 'normalny', 16 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 80, 'normalny', 17 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 60, 'normalny', 19 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 70, 'normalny', 21 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 50, 'normalny', 23 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 75, 'normalny', 25 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 60, 'normalny', 27 FROM miejsca WHERE sektor='A1' AND id_meczu=1;
+INSERT INTO miejsca (sektor, rzad, numer, czy_zajete, cena, typ_biletu, id_meczu)
+SELECT 'B1', rzad, numer, 0, 45, 'normalny', 29 FROM miejsca WHERE sektor='A1' AND id_meczu=1;

@@ -4,6 +4,7 @@ import shopDbRouter from "./routes/shopDbRouter";
 import playersDbRouter from "./routes/playersDbRouter";
 import matchesDbRouter from "./routes/matchesDbRouter";
 import staffDbRouter from "./routes/staffDbRouter";
+import ticketsRouter from "./routes/ticketsRouter";
 
 const app = express();
 const port = 3000;
@@ -17,6 +18,7 @@ app.use("/api/shop", shopDbRouter);
 app.use("/api/players", playersDbRouter);
 app.use("/api/matches", matchesDbRouter);
 app.use("/api/staff", staffDbRouter);
+app.use("/api/tickets",ticketsRouter);
 
 app.listen(port, () => {
     console.log("Listening on port", port);

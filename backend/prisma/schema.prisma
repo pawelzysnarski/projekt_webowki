@@ -42,6 +42,7 @@ model terminarz {
   gospodarz     klub     @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
   gosc          klub     @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
   wynik         wyniki?
+  mecz          mecz?
 
   @@index([idGospodarza], map: "ID_Gospodarza")
   @@index([idGoscia], map: "ID_Gościa")
@@ -114,4 +115,69 @@ model wiadomo_ci {
   akapity akapity[]
 
   @@map("wiadomości")
+}
+
+model mecz {
+  id            Int        @id @default(autoincrement())
+  przeciwnik    String     @db.VarChar(100)
+  czy_domowy    Boolean
+  data_meczu    DateTime   @db.DateTime(0)
+  stadion       String?    @db.VarChar(255)
+  miasto        String?    @db.VarChar(100)
+  id_terminarza Int?       @unique
+  terminarz     terminarz? @relation(fields: [id_terminarza], references: [id], onDelete: SetNull)
+  miejsca       miejsce[]
+  bilety        bilet[]
+
+  @@map("mecze")
+}
+
+model miejsce {
+  id         Int     @id @default(autoincrement())
+  sektor     String  @db.VarChar(10)
+  rzad       String  @db.VarChar(5)
+  numer      Int
+  czy_zajete Boolean @default(false)
+  cena       Decimal @db.Decimal(10, 2)
+  typ_biletu String  @db.VarChar(50)
+  id_meczu   Int
+  mecz       mecz    @relation(fields: [id_meczu], references: [id], onDelete: Cascade)
+  bilety     bilet[]
+
+  @@unique([id_meczu, sektor, rzad, numer])
+  @@map("miejsca")
+}
+
+model bilet {
+  id           Int      @id @default(autoincrement())
+  id_meczu     Int
+  id_miejsca   Int      @unique
+  imie         String   @db.VarChar(100)
+  nazwisko     String   @db.VarChar(100)
+  email        String   @db.VarChar(255)
+  data_zakupu  DateTime @default(now()) @db.DateTime(0)
+  czy_oplacony Boolean  @default(false)
+  cena         Decimal  @db.Decimal(10, 2)
+  typ_biletu   String   @db.VarChar(50)
+  kod_biletu   String   @unique @db.VarChar(50)
+
+  mecz    mecz    @relation(fields: [id_meczu], references: [id], onDelete: Cascade)
+  miejsce miejsce @relation(fields: [id_miejsca], references: [id], onDelete: Cascade)
+
+  @@map("bilety")
+}
+
+model karnet {
+  id           Int      @id @default(autoincrement())
+  imie         String   @db.VarChar(100)
+  nazwisko     String   @db.VarChar(100)
+  email        String   @db.VarChar(255)
+  typ_karnetu  String   @db.VarChar(50)
+  data_zakupu  DateTime @default(now()) @db.DateTime(0)
+  czy_oplacony Boolean  @default(false)
+  cena         Decimal  @db.Decimal(10, 2)
+  sezon        String   @db.VarChar(9)
+  kod_karnetu  String   @unique @db.VarChar(50)
+
+  @@map("karnety")
 }
