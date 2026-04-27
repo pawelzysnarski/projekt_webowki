@@ -84,20 +84,47 @@ const SeasonTicket: React.FC = () => {
         { id: '4', title: 'Wydarzenia ekskluzywne', description: 'Spotkania z zawodnikami i treningi drużyny', icon: '🎯' }
     ];
 
-    const handleBuyTicket = () => {
+    const handleBuyTicket = async () => {
         if (!agreedToTerms) {
             alert('Zaakceptuj regulamin, aby kontynuować');
             return;
         }
 
         const selectedTicket = ticketTiers.find(t => t.id === selectedTier);
-        console.log('Kupuję karnet:', {
-            ...selectedTicket,
-            paymentType: selectedPayment,
-            totalPrice: selectedPayment === 'oneTime' ? selectedTicket?.price : (selectedTicket?.pricePerMonth || 0) * 12
-        });
+        if (!selectedTicket) return;
 
-        alert(`Dziękujemy za wybór karnetu ${selectedTicket?.name}! Za chwilę zostaniesz przekierowany do płatności.`);
+        const ticketTypeMap: Record<string, string> = {
+            'basic': 'Brązowy Łoś',
+            'standard': 'Srebrny Jeż',
+            'premium': 'Złoty Jeleń'
+        };
+
+        const price = selectedPayment === 'oneTime' ? selectedTicket.price : selectedTicket.pricePerMonth * 12;
+
+        try {
+            const response = await fetch('/api/tickets/season-ticket/buy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: 'Effie',
+                    lastName: 'Heathcote',
+                    email: 'effie.heathcote@ethereal.email',
+                    ticketType: selectedTier,
+                    price: price
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert(`Dziękujemy za zakup karnetu ${selectedTicket.name}!\nKod karnetu: ${data.seasonTicket.kod_karnetu}\nZarezerwowano ${data.occupiedSeats.length} miejsc na mecze domowe.`);
+            } else {
+                alert('Błąd zakupu karnetu');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Błąd zakupu karnetu');
+        }
     };
     return (
         <div className={styles.seasonTicket}>

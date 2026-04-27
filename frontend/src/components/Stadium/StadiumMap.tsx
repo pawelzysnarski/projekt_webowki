@@ -49,15 +49,10 @@ export default function StadiumMap() {
                 setIsLoading(true);
                 setError(null);
 
-                console.log('Fetching data for match:', matchId);
-
                 const [matchData, seats] = await Promise.all([
                     matchQuery.getMatch(matchId),
                     stadiumQuery.getSeats(matchId)
                 ]);
-
-                console.log('Match data:', matchData);
-                console.log('Seats data:', seats);
 
                 setMatch(matchData);
                 setSeatsData(seats);
@@ -81,8 +76,6 @@ export default function StadiumMap() {
                     sectorMap.get(seat.sektor)!.push(seat);
                 });
 
-                console.log('Sectors found:', Array.from(sectorMap.keys()));
-
                 const sectorColors: Record<string, string> = {
                     'A1': '#cd7f32', 'A2': '#cd7f32', 'A3': '#cd7f32', 'A4': '#cd7f32',
                     'C1': '#cd7f32', 'C2': '#cd7f32', 'C3': '#cd7f32', 'C4': '#cd7f32',
@@ -99,32 +92,30 @@ export default function StadiumMap() {
                     'C2': ['brazowy_los'],
                     'C3': ['brazowy_los'],
                     'C4': ['brazowy_los'],
-                    'B1': ['srebrny_jez','normalny'],
+                    'B1': ['srebrny_jez', 'normalny'],
                     'B2': ['srebrny_jez'],
                     'D1': ['zloty_jelen'],
                     'D2': ['zloty_jelen'],
                 };
 
                 const positions: Record<string, { x: number; y: number; width: number; height: number }> = {
-                    'A1': { x: 130, y: 120, width: 90, height: 70 },
-                    'A2': { x: 230, y: 120, width: 90, height: 70 },
-                    'A3': { x: 330, y: 120, width: 90, height: 70 },
-                    'A4': { x: 430, y: 120, width: 90, height: 70 },
-                    'B1': { x: 530, y: 170, width: 60, height: 110 },
-                    'B2': { x: 530, y: 290, width: 60, height: 110 },
-                    'C1': { x: 130, y: 410, width: 90, height: 70 },
-                    'C2': { x: 230, y: 410, width: 90, height: 70 },
-                    'C3': { x: 330, y: 410, width: 90, height: 70 },
-                    'C4': { x: 430, y: 410, width: 90, height: 70 },
-                    'D1': { x: 60, y: 170, width: 60, height: 110 },
-                    'D2': { x: 60, y: 290, width: 60, height: 110 },
+                    'A1': { x: 55, y: 100, width: 80, height: 65 },
+                    'A2': { x: 145, y: 100, width: 80, height: 65 },
+                    'A3': { x: 235, y: 100, width: 80, height: 65 },
+                    'A4': { x: 325, y: 100, width: 80, height: 65 },
+                    'B1': { x: 415, y: 145, width: 55, height: 100 },
+                    'B2': { x: 415, y: 255, width: 55, height: 100 },
+                    'C1': { x: 55, y: 375, width: 80, height: 65 },
+                    'C2': { x: 145, y: 375, width: 80, height: 65 },
+                    'C3': { x: 235, y: 375, width: 80, height: 65 },
+                    'C4': { x: 325, y: 375, width: 80, height: 65 },
+                    'D1': { x: 0, y: 145, width: 55, height: 100 },
+                    'D2': { x: 0, y: 255, width: 55, height: 100 },
                 };
 
                 const generatedSectors: Sector[] = [];
 
-                const allSectorNames = seats.is_home
-                    ? ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2']
-                    : ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2'];
+                const allSectorNames = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2'];
 
                 for (const sectorName of allSectorNames) {
                     const sectorSeats = sectorMap.get(sectorName) || [];
@@ -145,7 +136,6 @@ export default function StadiumMap() {
                     });
                 }
 
-                console.log('Generated sectors:', generatedSectors.length);
                 setSectors(generatedSectors);
 
             } catch (err) {
@@ -160,7 +150,7 @@ export default function StadiumMap() {
     }, [matchId]);
 
     const handleSectorClick = (sector: Sector) => {
-        if (!sector.allowedTicketTypes.includes(currentTicketType) && currentTicketType!="normalny") {
+        if (!sector.allowedTicketTypes.includes(currentTicketType) && currentTicketType !== "normalny") {
             const typeName = getTicketTypeName(currentTicketType);
             const requiredTypes = sector.allowedTicketTypes.map(t => getTicketTypeName(t)).join(' lub ');
             alert(`Sektor ${sector.name} wymaga biletu typu: ${requiredTypes}\nTwój bilet: ${typeName}`);
@@ -177,11 +167,15 @@ export default function StadiumMap() {
 
     const handleSeatClick = (seat: Seat) => {
         if (seat.czy_zajete) return;
-        setSelectedSeat(seat);
+        if (selectedSeat?.id === seat.id) {
+            setSelectedSeat(null);
+        } else {
+            setSelectedSeat(seat);
+        }
     };
 
     const getTicketTypeName = (type: TicketType): string => {
-        switch(type) {
+        switch (type) {
             case 'zloty_jelen': return 'Złoty Jeleń';
             case 'srebrny_jez': return 'Srebrny Jeż';
             case 'brazowy_los': return 'Brązowy Łoś';
@@ -191,7 +185,7 @@ export default function StadiumMap() {
     };
 
     const getTicketTypeColor = (type: TicketType): string => {
-        switch(type) {
+        switch (type) {
             case 'zloty_jelen': return '#d4af37';
             case 'srebrny_jez': return '#a8a8a8';
             case 'brazowy_los': return '#cd7f32';
@@ -238,6 +232,7 @@ export default function StadiumMap() {
                 selectedSeat={selectedSeat}
                 isHome={seatsData?.is_home ?? true}
                 currentTicketType={currentTicketType}
+                matchId={matchId}
             />
         );
     }
@@ -262,34 +257,22 @@ export default function StadiumMap() {
             </header>
 
             <div className={styles.stageWrapper}>
-                <Stage width={650} height={601}>
-                    {/* Boisko */}
+                <Stage width={475} height={540}>
                     <Layer>
-                        <Rect
-                            x={175}
-                            y={195}
-                            width={300}
-                            height={210}
-                            fill="#22c55e"
-                            stroke="#166534"
-                            strokeWidth={3}
-                            cornerRadius={10}
-                        />
-                        <Circle x={325} y={300} radius={35} stroke="white" strokeWidth={2} />
-                        <Circle x={325} y={300} radius={12} stroke="white" fill="white" strokeWidth={2} />
-                        <Rect x={185} y={205} width={280} height={190} stroke="white" strokeWidth={2} cornerRadius={10} />
-                        <Rect x={325} y={205} width={1} height={190} stroke="white" strokeWidth={2} />
+                        <Rect x={87} y={180} width={300} height={180} fill="#22c55e" stroke="#166534" strokeWidth={3} cornerRadius={10} />
+                        <Circle x={237} y={270} radius={30} stroke="white" strokeWidth={2} />
+                        <Circle x={237} y={270} radius={10} stroke="white" fill="white" strokeWidth={2} />
+                        <Rect x={97} y={190} width={280} height={160} stroke="white" strokeWidth={2} cornerRadius={10} />
+                        <Rect x={237} y={190} width={1} height={160} stroke="white" strokeWidth={2} />
                     </Layer>
 
-                    {/* Etykiety trybun */}
                     <Layer>
-                        <Text x={260} y={165} width={130} fontSize={16} text={"Trybuna Północna"} fill="#1a0f09" fontStyle="bold" align="center" />
-                        <Text x={260} y={415} width={130} fontSize={16} text={"Trybuna Południowa"} fill="#1a0f09" fontStyle="bold" align="center" />
-                        <Text x={480} y={380} width={130} rotation={-90} fontSize={16} text={"Trybuna Wschodnia"} fill="#1a0f09" fontStyle="bold" />
-                        <Text x={115} y={230} width={130} rotation={90} fontSize={16} text={"Trybuna Zachodnia"} fill="#1a0f09" fontStyle="bold" />
+                        <Text x={145} y={162} width={185} fontSize={13} text={"Trybuna Północna"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={145} y={360} width={185} fontSize={13} text={"Trybuna Południowa"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={390} y={320} width={130} rotation={-90} fontSize={13} text={"Trybuna Wschodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={80} y={210} width={130} rotation={90} fontSize={13} text={"Trybuna Zachodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
                     </Layer>
 
-                    {/* Sektory */}
                     <Layer>
                         {sectors.map((sector) => {
                             const isAvailable = sector.allowedTicketTypes.includes(currentTicketType);
@@ -306,15 +289,12 @@ export default function StadiumMap() {
                                         fill={sector.color}
                                         stroke={isAvailable ? "white" : "#475569"}
                                         strokeWidth={2}
-                                        cornerRadius={8}
+                                        cornerRadius={6}
                                         opacity={hasSeats ? (isAvailable ? 0.9 : 0.5) : 0.3}
                                         onClick={() => hasSeats && handleSectorClick(sector)}
                                         onMouseEnter={(e) => {
                                             const container = e.target.getStage()?.container();
-                                            if(currentTicketType=="normalny"){
-                                                container.style.cursor = isAvailable ? 'pointer' : 'not-allowed';
-                                            }
-                                            else if (container && hasSeats) {
+                                            if (container && hasSeats) {
                                                 container.style.cursor = isAvailable ? 'pointer' : 'not-allowed';
                                             }
                                         }}
@@ -325,9 +305,9 @@ export default function StadiumMap() {
                                     />
                                     <Text
                                         x={sector.x}
-                                        y={sector.y + sector.height / 2 - 20}
+                                        y={sector.y + sector.height / 2 - 15}
                                         text={hasSeats ? `${sector.name}\n${wolneMiejsca} wolnych` : sector.name}
-                                        fontSize={12}
+                                        fontSize={11}
                                         fontStyle="bold"
                                         fill="white"
                                         width={sector.width}
@@ -342,7 +322,7 @@ export default function StadiumMap() {
 
             <div className={styles.instruction}>
                 💡 {!isHomeMatch
-                ? 'Tylko sektor G (niebieski) jest dostępny dla kibiców gości'
+                ? 'Tylko sektor B1 jest dostępny dla kibiców gości'
                 : `Kliknij na sektor dostępny dla ${getTicketTypeName(currentTicketType)}`
             }
             </div>
@@ -357,7 +337,8 @@ const SectorDetailView: React.FC<{
     selectedSeat: Seat | null;
     isHome: boolean;
     currentTicketType: TicketType;
-}> = ({ sector, onBack, onSeatClick, selectedSeat, currentTicketType }) => {
+    matchId: number;
+}> = ({ sector, onBack, onSeatClick, selectedSeat, currentTicketType, matchId }) => {
     const seatsByRow: { [key: string]: Seat[] } = {};
     sector.seats.forEach(seat => {
         if (!seatsByRow[seat.rzad]) seatsByRow[seat.rzad] = [];
@@ -373,8 +354,9 @@ const SectorDetailView: React.FC<{
     };
 
     const wolneMiejsca = sector.seats.filter(s => !s.czy_zajete).length;
+
     const getTicketTypeName = (type: TicketType): string => {
-        switch(type) {
+        switch (type) {
             case 'zloty_jelen': return 'Złoty Jeleń';
             case 'srebrny_jez': return 'Srebrny Jeż';
             case 'brazowy_los': return 'Brązowy Łoś';
@@ -458,8 +440,39 @@ const SectorDetailView: React.FC<{
                         </div>
                     </div>
                     <div className={styles.seatPanelActions}>
-                        <button className={styles.buyButton}>Kup bilet</button>
-                        <button onClick={() => onSeatClick(selectedSeat)} className={styles.cancelButton}>Anuluj</button>
+                        <button className={styles.buyButton} onClick={async () => {
+                            if (!selectedSeat) return;
+                            try {
+                                const response = await fetch('/api/tickets/tickets/buy', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        matchId: matchId,
+                                        seatId: selectedSeat.id,
+                                        firstName: 'Kibic',
+                                        lastName: 'Testowy',
+                                        email: 'kibic@test.pl',
+                                        ticketType: currentTicketType
+                                    })
+                                });
+                                const data = await response.json();
+                                if (data.success) {
+                                    alert(`Bilet zakupiony!\nKod: ${data.ticket.kod_biletu}`);
+                                    onBack();
+                                    window.location.reload();
+                                } else {
+                                    alert('Błąd: ' + (data.error || 'Nieznany błąd'));
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                alert('Błąd zakupu biletu');
+                            }
+                        }}>
+                            Kup bilet
+                        </button>
+                        <button onClick={() => onSeatClick(selectedSeat!)} className={styles.cancelButton}>
+                            Anuluj
+                        </button>
                     </div>
                 </div>
             )}

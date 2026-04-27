@@ -1,12 +1,11 @@
 import { Router, Request, Response } from 'express';
 import prisma from "../prismaDb"
+import { sendTicketEmail, generateTicketEmailHtml, generateSeasonTicketEmailHtml } from '../emailService';
 
 const router = Router();
 
 router.get('/matches/upcoming', async (req: Request, res: Response) => {
     try {
-        console.log('Fetching upcoming matches...');
-
         const matches = await prisma.mecz.findMany({
             where: {
                 data_meczu: {
@@ -19,8 +18,6 @@ router.get('/matches/upcoming', async (req: Request, res: Response) => {
             take: 2
         });
 
-        console.log(`Found ${matches.length} matches`);
-
         const matchesWithInfo = matches.map((match: { czy_domowy: any; stadion: any; miasto: any; }) => ({
             ...match,
             match_type: match.czy_domowy ? 'home' : 'away',
@@ -32,17 +29,13 @@ router.get('/matches/upcoming', async (req: Request, res: Response) => {
         res.json(matchesWithInfo);
     } catch (error) {
         console.error('Error fetching matches:', error);
-        res.status(500).json({
-            error: 'Error fetching matches',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        res.status(500).json({ error: 'Error fetching matches' });
     }
 });
 
 router.get('/matches/:id', async (req: Request, res: Response) => {
     try {
         const matchId = parseInt(<string>req.params.id);
-        console.log(`Fetching match with ID: ${matchId}`);
 
         const match = await prisma.mecz.findUnique({
             where: { id: matchId },
@@ -58,11 +51,8 @@ router.get('/matches/:id', async (req: Request, res: Response) => {
         });
 
         if (!match) {
-            console.log(`Match ${matchId} not found`);
             return res.status(404).json({ error: 'Match not found' });
         }
-
-        console.log(`Match found: ${match.przeciwnik}, is_home: ${match.czy_domowy}`);
 
         res.json({
             ...match,
@@ -73,10 +63,7 @@ router.get('/matches/:id', async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error('Error fetching match:', error);
-        res.status(500).json({
-            error: 'Error fetching match',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        res.status(500).json({ error: 'Error fetching match' });
     }
 });
 
@@ -85,21 +72,15 @@ router.get('/matches/:id/seats', async (req: Request, res: Response) => {
         const { sector, row } = req.query;
         const matchId = parseInt(<string>req.params.id);
 
-        console.log(`Fetching seats for match ${matchId}, sector: ${sector}, row: ${row}`);
-
         const match = await prisma.mecz.findUnique({
             where: { id: matchId }
         });
 
         if (!match) {
-            console.log(`Match ${matchId} not found`);
             return res.status(404).json({ error: 'Match not found' });
         }
 
-        const where: any = {
-            id_meczu: matchId
-        };
-
+        const where: any = { id_meczu: matchId };
         if (sector) where.sektor = sector;
         if (row) where.rzad = row;
 
@@ -112,8 +93,6 @@ router.get('/matches/:id/seats', async (req: Request, res: Response) => {
             ]
         });
 
-        console.log(`Found ${seats.length} seats for match ${matchId}, is_home: ${match.czy_domowy}`);
-
         res.json({
             is_home: match.czy_domowy,
             seats: seats,
@@ -123,11 +102,7 @@ router.get('/matches/:id/seats', async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error('Error fetching seats:', error);
-        res.status(500).json({
-            error: 'Error fetching seats',
-            details: error instanceof Error ? error.message : 'Unknown error',
-            stack: error instanceof Error ? error.stack : undefined
-        });
+        res.status(500).json({ error: 'Error fetching seats' });
     }
 });
 
@@ -144,16 +119,10 @@ router.get('/matches/:matchId/seats/:seatId/check', async (req: Request, res: Re
             }
         });
 
-        res.json({
-            available: !!seat,
-            seat: seat || null
-        });
+        res.json({ available: !!seat, seat: seat || null });
     } catch (error) {
         console.error('Error checking seat:', error);
-        res.status(500).json({
-            error: 'Error checking seat',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        res.status(500).json({ error: 'Error checking seat' });
     }
 });
 
@@ -209,42 +178,47 @@ router.post('/tickets/buy', async (req: Request, res: Response) => {
             })
         ]);
 
+        const matchInfo = `${match.czy_domowy ? 'Chaber' : match.przeciwnik} vs ${match.czy_domowy ? match.przeciwnik : 'Chaber'} - ${new Date(match.data_meczu).toLocaleDateString('pl-PL')}`;
+
+        const emailHtml = generateTicketEmailHtml({
+            firstName,
+            lastName,
+            matchInfo,
+            ticketType: finalTicketType === 'brazowy_los' ? 'Brązowy Łoś' :
+                finalTicketType === 'srebrny_jez' ? 'Srebrny Jeż' :
+                    finalTicketType === 'zloty_jelen' ? 'Złoty Jeleń' : 'Bilet normalny',
+            sector: seat.sektor,
+            seat: seat.numer.toString(),
+            row: seat.rzad,
+            price: Number(seat.cena).toFixed(2),
+            ticketCode,
+            isHome: match.czy_domowy
+        });
+
+        await sendTicketEmail(email, 'Twój bilet na mecz Chaber Pobiedziska', emailHtml);
+
         res.json({
             success: true,
             ticket: result[0],
-            message: `Ticket for ${match.czy_domowy ? 'home' : 'away'} match has been reserved`
+            message: `Bilet został zakupiony!`
         });
     } catch (error) {
         console.error('Error buying ticket:', error);
-        res.status(500).json({
-            error: 'Error buying ticket',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        res.status(500).json({ error: 'Error buying ticket' });
     }
 });
 
 router.get('/tickets/user/:email', async (req: Request, res: Response) => {
     try {
         const tickets = await prisma.bilet.findMany({
-            where: {
-                email: <string>req.params.email
-            },
-            include: {
-                mecz: true,
-                miejsce: true
-            },
-            orderBy: {
-                data_zakupu: 'desc'
-            }
+            where: { email: <string>req.params.email },
+            include: { mecz: true, miejsce: true },
+            orderBy: { data_zakupu: 'desc' }
         });
-
         res.json(tickets);
     } catch (error) {
         console.error('Error fetching tickets:', error);
-        res.status(500).json({
-            error: 'Error fetching tickets',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        res.status(500).json({ error: 'Error fetching tickets' });
     }
 });
 
@@ -261,27 +235,129 @@ router.post('/tickets/:id/cancel', async (req: Request, res: Response) => {
         }
 
         await prisma.$transaction([
-            prisma.bilet.delete({
-                where: { id: ticketId }
-            }),
+            prisma.bilet.delete({ where: { id: ticketId } }),
             prisma.miejsca.update({
                 where: { id: ticket.id_miejsca },
                 data: { czy_zajete: false }
             })
         ]);
 
-        res.json({
-            success: true,
-            message: 'Ticket cancelled, seat has been released'
-        });
+        res.json({ success: true, message: 'Ticket cancelled, seat has been released' });
     } catch (error) {
         console.error('Error cancelling ticket:', error);
+        res.status(500).json({ error: 'Error cancelling ticket' });
+    }
+});
+
+router.post('/season-ticket/buy', async (req: Request, res: Response) => {
+    try {
+        const { firstName, lastName, email, ticketType, price } = req.body;
+
+        if (!firstName || !lastName || !email || !ticketType || !price) {
+            return res.status(400).json({ error: 'Missing data' });
+        }
+
+        const passCode = `KARNET-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+        const season = '2026';
+
+        const ticketTypeMap: Record<string, string> = {
+            'basic': 'brazowy_los',
+            'standard': 'srebrny_jez',
+            'premium': 'zloty_jelen'
+        };
+
+        const mappedType = ticketTypeMap[ticketType] || 'brazowy_los';
+        const sectorMap: Record<string, string[]> = {
+            'brazowy_los': ['A1', 'A2', 'A3', 'A4', 'C1', 'C2', 'C3', 'C4'],
+            'srebrny_jez': ['B1', 'B2'],
+            'zloty_jelen': ['D1', 'D2']
+        };
+
+        const sectors = sectorMap[mappedType] || ['A1'];
+
+        const seasonTicket = await prisma.karnet.create({
+            data: {
+                imie: firstName,
+                nazwisko: lastName,
+                email: email,
+                typ_karnetu: mappedType,
+                cena: parseFloat(price),
+                sezon: season,
+                kod_karnetu: passCode,
+                czy_oplacony: false
+            }
+        });
+
+        const futureHomeMatches = await prisma.mecz.findMany({
+            where: {
+                czy_domowy: true,
+                data_meczu: {
+                    gte: new Date()
+                }
+            }
+        });
+
+        const occupiedSeats: any[] = [];
+
+        for (const match of futureHomeMatches) {
+            const freeSeat = await prisma.miejsca.findFirst({
+                where: {
+                    id_meczu: match.id,
+                    sektor: { in: sectors },
+                    czy_zajete: false
+                },
+                orderBy: [
+                    { sektor: 'asc' },
+                    { rzad: 'asc' },
+                    { numer: 'asc' }
+                ]
+            });
+
+            if (freeSeat) {
+                await prisma.miejsca.update({
+                    where: { id: freeSeat.id },
+                    data: { czy_zajete: true }
+                });
+
+                occupiedSeats.push({
+                    matchId: match.id,
+                    opponent: match.przeciwnik,
+                    date: match.data_meczu,
+                    sector: freeSeat.sektor,
+                    seat: freeSeat.numer,
+                    row: freeSeat.rzad
+                });
+            }
+        }
+
+        const ticketTypeName = mappedType === 'brazowy_los' ? 'Brązowy Łoś' :
+            mappedType === 'srebrny_jez' ? 'Srebrny Jeż' : 'Złoty Jeleń';
+
+        const emailHtml = generateSeasonTicketEmailHtml({
+            firstName,
+            lastName,
+            ticketType: ticketTypeName,
+            price: price.toString(),
+            passCode,
+            occupiedSeats
+        });
+
+        await sendTicketEmail(email, 'Twój karnet sezonowy Chaber Pobiedziska 2026', emailHtml);
+
+        res.json({
+            success: true,
+            seasonTicket,
+            occupiedSeats,
+            message: 'Karnet został zakupiony, miejsca zarezerwowane na mecze domowe'
+        });
+
+    } catch (error) {
+        console.error('Error buying season ticket:', error);
         res.status(500).json({
-            error: 'Error cancelling ticket',
+            error: 'Error buying season ticket',
             details: error instanceof Error ? error.message : 'Unknown error'
         });
     }
 });
-
 
 export default router;
