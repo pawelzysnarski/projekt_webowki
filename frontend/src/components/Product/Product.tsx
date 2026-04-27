@@ -63,27 +63,21 @@ export default function Product() {
         return cat === 'spodenki' || cat === 'koszulki' || cat === 'komplety';
     };
 
-    const showBackView = (): boolean => {
-        if (!product) return false;
-        const cat = product.category?.toLowerCase() || '';
-        const name = product.name.toLowerCase();
-        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
-        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
-    };
-
     const showPersonalization = (): boolean => {
         if (!product) return false;
-        const cat = product.category?.toLowerCase() || '';
         const name = product.name.toLowerCase();
-        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
-        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
+        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
+        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
     };
 
     const getFilteredPlayers = (): Zawodnik[] => {
         if (!players || !product) return [];
 
         const name = product.name.toLowerCase();
-        const isGoalkeeperProduct = name.includes('bramkarz');
+        const isGoalkeeperProduct = name.includes('bramkarsk') || name.includes('bramkarz');
+        const isShirtOrKit = name.includes('koszulka') || name.includes('komplet') || name.includes('misiek');
+
+        if (!isShirtOrKit) return [];
 
         if (isGoalkeeperProduct) {
             return players.filter((p: Zawodnik) => p.Pozycja === 'Bramkarz');
@@ -101,26 +95,40 @@ export default function Product() {
         return playerValue;
     };
 
-    const getBackImage = (): string => {
-        if (!product) return '';
-        const baseName = product.image.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
-        return `/products/${baseName}_tył.jpg`;
+    const hasBackImage = (): boolean => {
+        if (!product) return false;
+        const name = product.name.toLowerCase();
+        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
+        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
+    };
+
+    const showBackView = (): boolean => {
+        if (!product) return false;
+        return hasBackImage();
     };
 
     const getProductImage = (): string => {
         if (!product) return '';
-        if (selectedView === 'back' && showBackView()) {
-            return getBackImage();
+        if (selectedView === 'back' && hasBackImage()) {
+            if (product.image_back) {
+                return `/products/${product.image_back}`;
+            }
+            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+            return `/products/${baseName}_tył.jpg`;
         }
-        return `/products/${product.image}`;
+        return `/products/${product.image_front || product.image}`;
     };
 
     const getThumbnailImage = (view: 'front' | 'back'): string => {
         if (!product) return '';
-        if (view === 'back' && showBackView()) {
-            return getBackImage();
+        if (view === 'back' && hasBackImage()) {
+            if (product.image_back) {
+                return `/products/${product.image_back}`;
+            }
+            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+            return `/products/${baseName}_tył.jpg`;
         }
-        return `/products/${product.image}`;
+        return `/products/${product.image_front || product.image}`;
     };
 
     const getDisplayText = (): { name: string; number: string } => {
@@ -746,7 +754,7 @@ export default function Product() {
                         </div>
                     )}
 
-                    {showBackView() && (
+                    {hasBackImage() && (
                         <div className={styles.viewSelector}>
                             <button
                                 className={`${styles.viewButton} ${selectedView === 'front' ? styles.activeView : ''}`}

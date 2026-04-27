@@ -657,3 +657,130 @@
   margin-bottom: 0.5rem;
   font-family: Cambria, sans-serif;
 }
+
+@media (min-width: 1025px) {
+  .productContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .shopGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  .similarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .productContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .shopGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .similarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .productName {
+    font-size: 1.8rem;
+  }
+
+  .productPrice {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .productContainer {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .productName {
+    font-size: 1.5rem;
+  }
+
+  .productPrice {
+    font-size: 1.4rem;
+  }
+
+  .shopGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .similarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .shopLayout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .sizeButton {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .viewButton img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .textOverlay {
+    white-space: normal;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .playerName {
+    font-size: 0.7rem;
+  }
+
+  .playerNumber {
+    font-size: 1.2rem;
+  }
+
+  .cartItem {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cartItemControls {
+    justify-content: center;
+  }
+
+  .totalRow {
+    justify-content: center;
+  }
+
+  .savingsRow {
+    justify-content: center;
+  }
+
+  .discountInput {
+    flex-direction: column;
+  }
+
+  .orderItem {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .itemPrice {
+    text-align: center;
+  }
+}

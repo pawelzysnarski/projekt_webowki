@@ -7,7 +7,7 @@ export default function Order() {
     const navigate = useNavigate();
     const [cart, setCart] = useState<CartItemWithSize[]>([]);
     const [discountCode, setDiscountCode] = useState('');
-    const [appliedCodes, setAppliedCodes] = useState<string[]>([]);
+    const [discountApplied, setDiscountApplied] = useState(false);
     const [isMember, setIsMember] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [codeMessage, setCodeMessage] = useState('');
@@ -15,7 +15,8 @@ export default function Order() {
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
-            setCart(JSON.parse(savedCart));
+            const parsedCart = JSON.parse(savedCart);
+            setCart(parsedCart);
         }
     }, []);
 
@@ -28,18 +29,10 @@ export default function Order() {
         return total;
     };
 
-    const getDiscountFromCodes = (): number => {
-        return appliedCodes.length * 0.1;
-    };
-
-    const getMemberDiscount = (): number => {
-        return isMember ? 0.1 : 0;
-    };
-
     const getTotalDiscountPercent = (): number => {
         let totalPercent = 0;
-        totalPercent += getDiscountFromCodes();
-        totalPercent += getMemberDiscount();
+        if (discountApplied) totalPercent += 0.1;
+        if (isMember) totalPercent += 0.1;
         return Math.min(totalPercent, 0.5);
     };
 
@@ -49,24 +42,23 @@ export default function Order() {
             return;
         }
 
-        if (appliedCodes.includes(discountCode.trim())) {
-            setCodeMessage('Ten kod został już użyty');
+        if (discountCode.trim() !== 'Chaber#1') {
+            setCodeMessage('Nieprawidłowy kod rabatowy');
             return;
         }
 
-        if (appliedCodes.length >= 3) {
-            setCodeMessage('Maksymalnie 3 kody rabatowe na zamówienie');
+        if (discountApplied) {
+            setCodeMessage('Kod został już użyty');
             return;
         }
 
-        const newCodes = [...appliedCodes, discountCode.trim()];
-        setAppliedCodes(newCodes);
+        setDiscountApplied(true);
         setDiscountCode('');
-        setCodeMessage(`Kod ${discountCode.trim()} zastosowany! +10% zniżki`);
+        setCodeMessage('Kod Chaber#1 zastosowany! +10% zniżki');
         setTimeout(() => setCodeMessage(''), 3000);
     };
 
-    const getFinalTotal = (): number => {
+    const getFinalTotalValue = (): number => {
         const total = getOriginalTotal();
         const discountPercent = getTotalDiscountPercent();
         return total * (1 - discountPercent);
@@ -98,7 +90,7 @@ export default function Order() {
         const orderNumber = generateOrderNumber();
         const originalTotal = getOriginalTotal();
         const discountPercent = getTotalDiscountPercent();
-        const finalTotal = getFinalTotal();
+        const finalTotal = getFinalTotalValue();
 
         const orderData = {
             orderNumber: `zamowienie_nr_${orderNumber}`,
@@ -120,7 +112,7 @@ export default function Order() {
             discountValue: parseFloat((originalTotal * discountPercent).toFixed(2)),
             discountPercent: parseFloat((discountPercent * 100).toFixed(1)),
             finalTotal: parseFloat(finalTotal.toFixed(2)),
-            discountCodesApplied: appliedCodes.length > 0 ? appliedCodes : null,
+            discountCodeApplied: discountApplied ? 'Chaber#1' : null,
             memberDiscountApplied: isMember
         };
 
@@ -166,13 +158,18 @@ export default function Order() {
     }
 
     const originalTotal = getOriginalTotal();
-    const finalTotal = getFinalTotal();
+    const finalTotal = getFinalTotalValue();
     const discountValue = getDiscountValue();
     const discountPercent = getTotalDiscountPercent();
 
     return (
         <div className={styles.orderContainer}>
-            <h1>Zamówienie</h1>
+            <div className={styles.orderHeader}>
+                <button className={styles.backToShopButton} onClick={() => navigate('/sklep')}>
+                    ← Powrót do sklepu
+                </button>
+                <h1>Zamówienie</h1>
+            </div>
 
             <div className={styles.cartSummary}>
                 <h2>Podsumowanie koszyka</h2>
@@ -223,21 +220,13 @@ export default function Order() {
                         placeholder="Wpisz kod rabatowy"
                         value={discountCode}
                         onChange={(e) => setDiscountCode(e.target.value)}
+                        disabled={discountApplied}
                     />
-                    <button onClick={applyDiscount} disabled={!discountCode.trim() || appliedCodes.length >= 3}>
+                    <button onClick={applyDiscount} disabled={discountApplied || !discountCode.trim()}>
                         Zastosuj
                     </button>
                 </div>
                 {codeMessage && <p className={`${styles.discountInfo} ${codeMessage.includes('zastosowany') ? styles.successInfo : styles.errorInfo}`}>{codeMessage}</p>}
-                {appliedCodes.length > 0 && (
-                    <div className={styles.appliedCodes}>
-                        <span>Zastosowane kody: </span>
-                        {appliedCodes.map((code, index) => (
-                            <span key={index} className={styles.appliedCode}>{code} (+10%)</span>
-                        ))}
-                        <span className={styles.codesLimit}>{appliedCodes.length}/3</span>
-                    </div>
-                )}
             </div>
 
             <div className={styles.memberSection}>
