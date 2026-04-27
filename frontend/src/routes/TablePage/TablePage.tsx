@@ -21,7 +21,10 @@ export default function TablePage() {
 
     return (
         <div className={styles.Container}>
-            <Table />
+            <div className={styles.TableWrapper}>
+                <Table />
+            </div>
+
             <div className={styles.Nav}>
                 <button
                     onClick={() => setUserRound(currentRound - 1)}

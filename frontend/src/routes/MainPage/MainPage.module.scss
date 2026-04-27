@@ -1,109 +1,160 @@
 $colormenu: #61331c;
 
 .MainPage {
-  min-height: 100vh;
-  background-color: #1a0f0a;
-  padding: 2.5rem 2%;
-}
+  padding: 2rem;
 
-.Layout {
-  display: grid;
-  grid-template-columns: 15.625rem 1fr 21.875rem;
-  gap: 1.875rem;
-  max-width: 112.5rem;
-  margin: 0 auto;
-
-  @media (max-width: 87.5rem) {
-    grid-template-columns: 12.5rem 1fr 18.75rem;
-  }
-
-  @media (max-width: 68.75rem) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.SponsorSidebar {
-  width: 100%;
-
-  .SponsorSticky {
-    position: sticky;
-    top: 1.25rem;
-    background: rgba($colormenu, 0.1);
-    border: 0.0625rem solid rgba($colormenu, 0.3);
-    border-radius: 0.75rem;
-    padding: 0.8rem;
-    height: calc(100vh - 5rem);
+  .MainNews {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 1.875rem;
 
-    p {
-      color: #a68b7c;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      margin-bottom: 1.25rem;
-      letter-spacing: 0.125rem;
-    }
+    .NewsGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
 
-    .SponsorImage {
-      width: 100%;
-      height: 100%;
-      img {
-        width: 100%;
-        height: 100%;
+      @media (max-width: 48rem) {
+        grid-template-columns: 1fr;
       }
     }
   }
-}
 
-.CenterContent {
-  display: flex;
-  flex-direction: column;
-  gap: 1.875rem;
-}
+  .Layout {
+    display: grid;
+    grid-template-columns: 15.625rem 1fr 21.875rem;
+    gap: 1.875rem;
+    max-width: 112.5rem;
+    margin: 0 auto;
 
-.QuickActions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-
-  .ActionCard {
-    background: linear-gradient(135deg, darken($colormenu, 10%), darken($colormenu, 25%));
-    padding: 2.5rem;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    text-align: center;
-    border: 0.0625rem solid rgba($colormenu, 0.3);
-    transition: 0.3s;
-
-    &:hover {
-      transform: scale(1.02);
-      border-color: lighten($colormenu, 20%);
+    @media (max-width: 87.5rem) {
+      grid-template-columns: 12.5rem 1fr 18.75rem;
     }
 
-    h2 {
-      color: white;
-      font-family: "Bookman Old Style", serif;
-      font-size: 2rem;
-      margin-bottom: 0.625rem;
-    }
-
-    span {
-      color: lighten($colormenu, 40%);
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.0625rem;
+    @media (max-width: 68.75rem) {
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
     }
   }
-}
 
-.TableSidebar {
-  h3 {
-    color: white;
-    margin-bottom: 1.25rem;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    border-left: 0.25rem solid $colormenu;
-    padding-left: 0.9375rem;
+  .SponsorSidebar {
+    width: 100%;
+
+    @media (max-width: 68.75rem) {
+      display: none;
+    }
+
+    .SponsorSticky {
+      position: sticky;
+      top: 1.25rem;
+      background: rgba($colormenu, 0.1);
+      border: 0.0625rem solid rgba($colormenu, 0.3);
+      border-radius: 0.75rem;
+      padding: 0.8rem;
+      height: calc(100vh - 5rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p {
+        color: #a68b7c;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.125rem;
+      }
+
+      .SponsorImage {
+        width: 100%;
+        height: 100%;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .CenterContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.875rem;
+  }
+
+  .QuickActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+
+    @media (max-width: 48rem) {
+      grid-template-columns: 1fr;
+    }
+
+    .ActionCard {
+      background: linear-gradient(135deg, darken($colormenu, 10%), darken($colormenu, 25%));
+      padding: 2.5rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      text-align: center;
+      border: 0.0625rem solid rgba($colormenu, 0.3);
+      transition: 0.3s;
+
+      @media (max-width: 30rem) {
+        padding: 1.5rem;
+      }
+
+      &:hover {
+        transform: scale(1.02);
+        border-color: lighten($colormenu, 20%);
+      }
+
+      h2 {
+        color: white;
+        font-family: "Bookman Old Style", serif;
+        font-size: 2rem;
+        margin-bottom: 0.625rem;
+
+        @media (max-width: 30rem) {
+          font-size: 1.5rem;
+        }
+      }
+
+      span {
+        color: lighten($colormenu, 40%);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.0625rem;
+      }
+    }
+  }
+
+  .TableSidebar {
+    width: 100%;
+
+    @media (max-width: 68.75rem) {
+      order: 3;
+    }
+
+    .TableSticky {
+      position: sticky;
+      top: 1.25rem;
+      height: calc(100vh - 5rem);
+      display: flex;
+      flex-direction: column;
+
+      @media (max-width: 68.75rem) {
+        position: static;
+        height: auto;
+      }
+
+      h3 {
+        color: white;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+        border-left: 0.25rem solid $colormenu;
+        padding-left: 0.9375rem;
+      }
+    }
   }
 }

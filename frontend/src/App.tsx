@@ -14,6 +14,7 @@ import PlayerDesc from "./components/PlayerDesc/PlayerDesc.tsx";
 import ProductPage from "./routes/ProductPage/ProductPage.tsx"
 import StaffDesc from "./components/StaffDesc/StaffDesc.tsx";
 import NewsPage from "./routes/NewsPage/NewsPage.tsx";
+import AcademyPage from "./routes/AcademyPage/AcademyPage.tsx";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/personel/:id" element={<StaffDesc />}/>
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/aktualnosci" element={<NewsPage/>}/>
+            <Route path="/akademia" element={<AcademyPage/>}/>
         </Routes>
     </BrowserRouter>
   )

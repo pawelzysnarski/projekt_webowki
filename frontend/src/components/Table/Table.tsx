@@ -11,7 +11,7 @@ export default function Table() {
     useEffect(() => {
         const interval = setInterval(() => {
             queryClient.invalidateQueries({ queryKey: ['table'] });
-        }, 5000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [queryClient]);

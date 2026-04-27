@@ -11,7 +11,7 @@ export default function TableMini() {
     useEffect(() => {
         const interval = setInterval(() => {
             queryClient.invalidateQueries({ queryKey: ['table'] });
-        }, 5000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [queryClient]);
@@ -37,7 +37,7 @@ export default function TableMini() {
             </thead>
             <tbody>
             {sortedData.map((k: Tabela) => (
-                <tr key={k.idKlubu}>
+                <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
                     <td className={styles.desc}>
                         <img src={`logos/${k.klub.herb}`} alt='logo'/>
                         <p>{k.klub.nazwa}</p>

@@ -9,7 +9,7 @@ $colormenu: #61331c;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: ease-in 0.3s;
+  transition: ease-in 0.15s;
 
   &:hover {
     transform: translateY(-0.3125rem);
@@ -17,6 +17,7 @@ $colormenu: #61331c;
     border-color: lighten($colormenu, 20%);
     background: rgba(darken($colormenu, 15%), 0.8);
   }
+
   .ImageWrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -36,6 +37,7 @@ $colormenu: #61331c;
 
     .Meta {
       margin-bottom: 0.5rem;
+
       time {
         color: lighten($colormenu, 30%);
         font-size: 0.9rem;
@@ -53,14 +55,6 @@ $colormenu: #61331c;
       letter-spacing: 0.0625rem;
       border-bottom: 0.0625rem solid rgba($colormenu, 0.3);
       padding-bottom: 0.5rem;
-    }
-
-    p {
-      color: white;
-      font-family: "Bookman Old Style", sans-serif;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-      &:last-child { margin-bottom: 0; }
     }
   }
 }

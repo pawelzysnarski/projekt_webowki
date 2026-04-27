@@ -3,6 +3,8 @@ import useNews from "../../queries/newsQuery";
 import News from "../../components/News/News";
 import styles from "./MainPage.module.scss";
 import TableMini from "../../components/Table/TableMini.tsx";
+import type {NewsItem} from "../../types/Wiadomosc.ts";
+import NewsMini from "../../components/News/NewsMini.tsx";
 
 export default function MainPage() {
     const navigate = useNavigate();
@@ -24,6 +26,11 @@ export default function MainPage() {
                 <div className={styles.CenterContent}>
                     <section className={styles.MainNews}>
                         {latestPost && <News item={latestPost} />}
+                        <div className={styles.NewsGrid}>
+                            {news?.slice(1, 5).map((n: NewsItem) => (
+                                <NewsMini key={n.ID} item={n} />
+                            ))}
+                        </div>
                     </section>
 
                     <section className={styles.QuickActions}>
@@ -39,8 +46,10 @@ export default function MainPage() {
                 </div>
 
                 <aside className={styles.TableSidebar}>
-                    <h3>Tabela ligowa</h3>
-                    <TableMini />
+                    <div className={styles.TableSticky}>
+                        <h3>Tabela ligowa</h3>
+                        <TableMini />
+                    </div>
                 </aside>
             </div>
         </main>

@@ -19,3 +19,4 @@ app.use("/api/news",newsDbRouter);
 app.listen(port, () => {
     console.log("Listening on port", port);
 });
+export default app;
