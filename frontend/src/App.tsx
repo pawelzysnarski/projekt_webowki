@@ -15,6 +15,7 @@ import ProductPage from "./routes/ProductPage/ProductPage.tsx"
 import StaffDesc from "./components/StaffDesc/StaffDesc.tsx";
 import NewsPage from "./routes/NewsPage/NewsPage.tsx";
 import AcademyPage from "./routes/AcademyPage/AcademyPage.tsx";
+import AcademyRegister from "./routes/AcademyRegister/AcademyRegister.tsx";
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/aktualnosci" element={<NewsPage/>}/>
             <Route path="/akademia" element={<AcademyPage/>}/>
+            <Route path="/akademia/zapis/:id" element={<AcademyRegister/>}/>
         </Routes>
     </BrowserRouter>
   )

@@ -117,3 +117,25 @@ model wiadomo_ci {
 
   @@map("wiadomości")
 }
+
+model punkty_scoutingowe {
+  ID                     Int       @id @default(autoincrement())
+  szerokosc_geograficzna Decimal?  @db.Decimal(9, 6)
+  dlugosc_geograficzna   Decimal?  @db.Decimal(9, 6)
+  miejsce                String?   @db.VarChar(255)
+  data                   DateTime? @db.Date
+  Ilosc_miejsca          Int
+  zapis                  zapis[]
+}
+
+model zapis {
+  ID                 Int                @id @default(autoincrement())
+  ID_Punktu          Int
+  Imie               String             @db.VarChar(30)
+  Nazwisko           String             @db.VarChar(50)
+  Wiek               Int
+  Email              String             @db.VarChar(70)
+  punkty_scoutingowe punkty_scoutingowe @relation(fields: [ID_Punktu], references: [ID], onUpdate: Restrict, map: "zapis_ibfk_1")
+
+  @@index([ID_Punktu], map: "ID_Punktu")
+}

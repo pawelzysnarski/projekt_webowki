@@ -3,13 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styles from './AcademyPage.module.scss';
-
-const scoutingPoints = [
-    { id: 1, lat: 52.4831, lng: 17.2715, place: "Stadion Miejski", date: "15.05.2024" },
-    { id: 2, lat: 52.4850, lng: 17.2650, place: "Orlik przy Szkole", date: "18.05.2024" },
-    { id: 3, lat: 52.4780, lng: 17.2820, place: "Boisko Leśne", date: "22.05.2024" },
-    { id: 4, lat: 52.4900, lng: 17.2750, place: "Tereny przy Jeziorze", date: "25.05.2024" },
-];
+import useScout from "../../queries/scoutQuery.ts";
 
 const benefits = [
     { title: "Kadra UEFA", desc: "Trenerzy z najwyższymi licencjami.", icon: "⚽" },
@@ -37,7 +31,13 @@ const createCustomIcon = (isActive: boolean) => {
 };
 
 export default function AcademyPage() {
+    const { data: scoutingPoints = [], isLoading } = useScout();
     const [hoveredId, setHoveredId] = useState<number | null>(null);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (isLoading) return <div className={styles.Loading}>Ładowanie danych...</div>;
 
     return (
         <main className={styles.AcademyPage}>
@@ -60,39 +60,59 @@ export default function AcademyPage() {
                 <div className={styles.Info}>
                     <h2>Terminy Scoutingu</h2>
                     <div className={styles.DatesList}>
-                        {scoutingPoints.map(point => (
-                            <div
-                                key={point.id}
-                                className={`${styles.DateCard} ${hoveredId === point.id ? styles.ActiveCard : ''}`}
-                                onMouseEnter={() => setHoveredId(point.id)}
-                                onMouseLeave={() => setHoveredId(null)}
-                            >
-                                <span>{point.date}</span>
-                                <strong>{point.place}</strong>
-                            </div>
-                        ))}
+                        {scoutingPoints?.map(point => {
+                            const eventDate = point.data ? new Date(point.data) : null;
+                            const isPast = eventDate ? eventDate < today : false;
+                            const available = point.Ilosc_miejsca - (point.zapis?.length || 0);
+
+                            return (
+                                <div
+                                    key={point.ID}
+                                    className={`${styles.DateCard} ${hoveredId === point.ID ? styles.ActiveCard : ''} ${isPast ? styles.PastEvent : ''}`}
+                                    onMouseEnter={() => setHoveredId(point.ID)}
+                                    onMouseLeave={() => setHoveredId(null)}
+                                >
+                                    <span>{isPast ? "Zakończone" : eventDate?.toLocaleDateString('pl-PL')}</span>
+                                    <strong>{point.miejsce}</strong>
+                                    {!isPast && (
+                                        <>
+                                            <small>Dostępne miejsca: {available}</small>
+                                            <button
+                                                className={styles.RegisterBtn}
+                                                onClick={() => window.location.href = `/akademia/zapis/${point.ID}`}
+                                            >
+                                                Zapisz się
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
                 <div className={styles.MapWrapper}>
                     <MapContainer center={[52.4831, 17.2715]} zoom={14} className={styles.Map}>
-                        <TileLayer
-                            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                            attribution='&copy; OpenStreetMap'
-                        />
-                        {scoutingPoints.map(point => (
-                            <Marker
-                                key={point.id}
-                                position={[point.lat, point.lng]}
-                                icon={createCustomIcon(hoveredId === point.id)}
-                                zIndexOffset={hoveredId === point.id ? 1000 : 0}
-                            >
-                                <Popup>
-                                    <strong>{point.place}</strong><br />
-                                    {point.date}
-                                </Popup>
-                            </Marker>
-                        ))}
+                        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+                        {scoutingPoints?.map(point => {
+                            const eventDate = point.data ? new Date(point.data) : null;
+                            const isPast = eventDate ? eventDate < today : false;
+                            const available = point.Ilosc_miejsca - (point.zapis?.length || 0);
+
+                            return (
+                                <Marker
+                                    key={point.ID}
+                                    position={[Number(point.szerokosc_geograficzna) || 0, Number(point.dlugosc_geograficzna) || 0]}
+                                    icon={createCustomIcon(hoveredId === point.ID)}
+                                    zIndexOffset={hoveredId === point.ID ? 1000 : 0}
+                                >
+                                    <Popup>
+                                        <strong>{point.miejsce}</strong><br />
+                                        {isPast ? "Zakończone" : `Wolne miejsca: ${available}`}
+                                    </Popup>
+                                </Marker>
+                            );
+                        })}
                     </MapContainer>
                 </div>
             </section>

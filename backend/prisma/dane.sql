@@ -341,7 +341,11 @@ INSERT INTO `personel` (`ID`, `Imie`, `Nazwisko`, `Profesja`, `Kraj`) VALUES
 
 INSERT INTO `wiadomości` (`ID`, `Nagłówek`, `Zdjęcie`, `Data`) VALUES
 (1, 'STRONA OFICJALNA JUŻ URUCHOMIONA!', 'welcome.png', '2026-04-26'),
-(2, 'RUSZYŁA SPRZEDAŻ BILETÓW NA MECZ', 'tickets.png', '2026-04-26');
+(2, 'RUSZYŁA SPRZEDAŻ BILETÓW NA MECZ', 'tickets.png', '2026-04-26'),
+(3, 'SAVEMAN ZOSTAJE Z NAMI DO 2029', 'saveman2029.png', '2026-04-27'),
+(4, 'PIOTRKOWSKI PRZEDŁUŻA UMOWĘ DO 2030', 'piotrkowski2030.png', '2026-04-27'),
+(5, 'RUSZAJĄ NABORY DO AKADEMII NASZEGO KLUBU', 'academy.png', '2026-04-27'),
+(6, 'NOWE ARTYKUŁY W SKLEPIE, SPRWADŹ JUŻ TERAZ', 'shop.png', '2026-04-28');
 
 INSERT INTO `wyniki` (`ID_meczu`, `Bramki_Gospodarzy`, `Bramki_Gości`) VALUES
 (1, 2, 3),
@@ -443,4 +447,21 @@ INSERT INTO `akapity` (`ID`, `ID_Wiadomości`, `Treść`) VALUES
 (3, 1, 'Zachęcamy do regularnego odwiedzania sekcji aktualności, gdzie będziemy publikować ekskluzywne materiały, wywiady z zawodnikami oraz relacje zza kulis treningów. Wierzymy, że ta strona stanie się pomostem łączącym klub z jego najwierniejszymi fanami, budując jeszcze silniejszą społeczność wokół naszych wspólnych barw.'),
 (4, 2, 'Już w najbliższą niedzielę nasza drużyna zmierzy się z odwiecznym rywalem w meczu, który może zadecydować o układzie górnej części tabeli. Atmosfera na stadionie zapowiada się elektryzująco, a doping naszych fanów będzie kluczowym czynnikiem w walce o komplet punktów. To wydarzenie, którego żaden prawdziwy sympatyk futbolu nie może przegapić.'),
 (5, 2, 'Sprzedaż wejściówek ruszyła właśnie w systemie online oraz w punktach stacjonarnych przy stadionie. Przygotowaliśmy specjalną ofertę dla rodzin oraz zniżki dla grup zorganizowanych, aby trybuny mogły zapełnić się do ostatniego miejsca. Prosimy o wcześniejsze przybycie na obiekt, ponieważ przed pierwszym gwizdkiem zaplanowaliśmy dodatkowe atrakcje dla najmłodszych kibiców oraz prezentację nowych nabytków transferowych.'),
-(6, 2, 'Pamiętajcie, że zakup biletu to nie tylko wejście na mecz, ale przede wszystkim realne wsparcie dla rozwoju naszego klubu. Każdy głos z trybun niesie naszych zawodników do zwycięstwa. Spotkajmy się w niedzielę o godzinie 17:00 i wspólnie stwórzmy widowisko, o którym będzie mówiło się przez całe tygodnie. Bilety rozchodzą się błyskawicznie, więc nie zwlekajcie z decyzją!');
+(6, 2, 'Pamiętajcie, że zakup biletu to nie tylko wejście na mecz, ale przede wszystkim realne wsparcie dla rozwoju naszego klubu. Każdy głos z trybun niesie naszych zawodników do zwycięstwa. Spotkajmy się w niedzielę o godzinie 17:00 i wspólnie stwórzmy widowisko, o którym będzie mówiło się przez całe tygodnie. Bilety rozchodzą się błyskawicznie, więc nie zwlekajcie z decyzją!'),
+(7, 3, 'Z satysfakcją informujemy, że Saveman pozostaje zawodnikiem naszego klubu na kolejne sezony. Nowa umowa, obowiązująca do końca rozgrywek 2028/2029, jest ważnym krokiem w kierunku utrzymania stabilnego trzonu drużyny oraz konsekwentnej realizacji założeń sportowych.'),
+(8, 3, 'Saveman od dłuższego czasu stanowi istotną część zespołu, wyróżniając się regularnością, zaangażowaniem oraz profesjonalnym podejściem do codziennej pracy. Przedłużenie kontraktu jest efektem bardzo dobrej współpracy i wspólnej wizji dalszego rozwoju klubu.'),
+(9, 4, 'Z radością przekazujemy kolejną ważną informację kadrową. Piotrkowski podpisał nową umowę, która będzie obowiązywać aż do 2030 roku, co potwierdza długofalowe plany budowy drużyny opartej na sprawdzonych zawodnikach.'),
+(10, 4, 'Długoterminowe związanie się zawodnika z klubem to wyraźny sygnał stabilizacji oraz wzajemnego zaufania. Piotrkowski odgrywa istotną rolę w zespole, a jego dalsza obecność pozwala z optymizmem patrzeć w przyszłość.'),
+(11, 5, 'Z przyjemnością informujemy o rozpoczęciu naborów do Akademii naszego klubu. To idealny moment dla dzieci i młodzieży, aby rozpocząć swoją piłkarską przygodę w środowisku, które sprzyja nauce, rozwojowi i budowaniu sportowych pasji.'),
+(12, 5, 'Akademia naszego klubu to projekt oparty na długofalowym podejściu do szkolenia młodych zawodników. Szczególny nacisk kładziemy na systematyczny rozwój umiejętności piłkarskich, a także na kształtowanie właściwych postaw poprzez sport.'),
+(13, 5, 'Zajęcia treningowe prowadzone są przez wykwalifikowaną kadrę trenerską, posiadającą doświadczenie w pracy z dziećmi i młodzieżą na różnych etapach rozwoju. Treningi dostosowane są do wieku oraz poziomu zaawansowania uczestników.'),
+(14, 5, 'Szczegółowe informacje dotyczące zasad naboru, harmonogramów treningów oraz zapisów dostępne są w zakładce Akademia na naszej stronie internetowej.'),
+(15, 6, 'Miło nam poinformować, że oferta klubowego sklepu została rozszerzona o nowe artykuły i gadżety przeznaczone dla kibiców oraz sympatyków naszej drużyny. To kolejny krok w rozwoju klubowego merchu.'),
+(16, 6, 'W sprzedaży dostępne są nowe produkty z oficjalnym herbem klubu, w tym odzież i gadżety, które pozwalają jeszcze lepiej identyfikować się z barwami zespołu oraz okazać wsparcie w dni meczowe i na co dzień.'),
+(17, 6, 'Zachęcamy do odwiedzenia sklepu internetowego i zapoznania się z aktualną ofertą. Zakup klubowych artykułów to nie tylko świetny gadżet, ale także realne wsparcie dla działalności naszego klubu.');
+
+INSERT INTO `punkty_scoutingowe` (`ID`, `szerokosc_geograficzna`, `dlugosc_geograficzna`, `miejsce`, `data`, `Ilosc_miejsca`) VALUES
+(1, 52.483100, 17.271500, 'Stadion Miejski', '2026-05-26', 20),
+(2, 52.485000, 17.265000, 'Orlik przy Szkole', '2026-05-30', 40),
+(3, 52.478000, 17.282000, 'Boisko Leśne', '2026-06-24', 30),
+(4, 52.490000, 17.275000, 'Tereny przy Jeziorze', '2026-07-14', 15);

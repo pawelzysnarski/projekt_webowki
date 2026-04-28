@@ -51,10 +51,23 @@ $colormenu: #61331c;
   @media (max-width: 64rem) { grid-template-columns: 1fr; }
 }
 
+.Info {
+  display: flex;
+  flex-direction: column;
+  max-height: 31.25rem;
+  h2 { margin-bottom: 1rem; }
+}
+
 .DatesList {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow-y: scroll;
+  padding-right: 0.5rem;
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: rgba($colormenu, 0.1); border-radius: 10px; }
+  &::-webkit-scrollbar-thumb { background: lighten($colormenu, 10%); border-radius: 10px; }
 }
 
 .DateCard {
@@ -69,12 +82,34 @@ $colormenu: #61331c;
 
   span { color: lighten($colormenu, 20%); font-weight: bold; }
   strong { font-size: 1.1rem; margin-top: 0.4rem; }
+  small { color: #a68b7c; margin-top: 0.5rem; font-size: 0.85rem; }
 
   &.ActiveCard {
     background: rgba($colormenu, 0.25);
     border-color: lighten($colormenu, 30%);
-    transform: translateX(0.625rem);
+    transform: translateX(0.325rem);
   }
+
+  &.PastEvent {
+    opacity: 0.5;
+    filter: grayscale(1);
+    cursor: default;
+    &:hover { transform: none; }
+  }
+}
+
+.RegisterBtn {
+  margin-top: 1rem;
+  background-color: lighten($colormenu, 10%);
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover { background-color: lighten($colormenu, 25%); }
 }
 
 .MapWrapper {
@@ -82,14 +117,5 @@ $colormenu: #61331c;
   border-radius: 1rem;
   overflow: hidden;
   border: 0.0625rem solid rgba($colormenu, 0.3);
-
   .Map { height: 100%; width: 100%; }
-
-  :global(.leaflet-marker-icon) {
-    transition: transform 0.2s ease;
-  }
-}
-
-:global(.leaflet-control-attribution) {
-  display: none !important;
 }

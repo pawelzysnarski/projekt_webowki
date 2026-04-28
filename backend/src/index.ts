@@ -5,6 +5,8 @@ import playersDbRouter from "./routes/playersDbRouter";
 import matchesDbRouter from "./routes/matchesDbRouter";
 import staffDbRouter from "./routes/staffDbRouter";
 import newsDbRouter from "./routes/newsDbRouter.ts";
+import scoutDbRouter from "./routes/scoutDbRouter.ts";
+import AcademyRegisterDbRouter from "./routes/academyRegisterDbRouter.ts";
 const app = express();
 const port = 3000;
 app.use(express.json());
@@ -16,6 +18,8 @@ app.use("/api/players", playersDbRouter);
 app.use("/api/matches", matchesDbRouter);
 app.use("/api/staff", staffDbRouter);
 app.use("/api/news",newsDbRouter);
+app.use("/api/scout",scoutDbRouter);
+app.use("/api/academyRegister",AcademyRegisterDbRouter);
 app.listen(port, () => {
     console.log("Listening on port", port);
 });
