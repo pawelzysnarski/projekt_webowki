@@ -160,6 +160,17 @@ $transition: all 0.2s ease;
     flex-wrap: wrap;
   }
 
+  .cartItemImage {
+    flex-shrink: 0;
+
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+  }
+
   .cartItemInfo {
     flex: 1;
 
@@ -168,6 +179,20 @@ $transition: all 0.2s ease;
       color: $colormenu;
       margin: 0 0 0.2rem 0;
       font-family: Cambria, sans-serif;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .cartItemSize, .cartItemPlayer {
+      font-size: 0.8rem;
+      color: #a68b7c;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .cartItemPlayer {
+      color: #c8922a;
+      font-weight: bold;
     }
 
     .cartItemPrice {
@@ -221,7 +246,7 @@ $transition: all 0.2s ease;
     margin-top: 0.5rem;
   }
 
-  .checkoutButton {
+  .checkoutButton, .clearCartButton {
     width: 100%;
     background: $colormenu;
     color: white;
@@ -236,6 +261,15 @@ $transition: all 0.2s ease;
 
     &:hover {
       background: darken($colormenu, 8);
+    }
+  }
+
+  .clearCartButton {
+    background: #e53935;
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: #c62828;
     }
   }
 
@@ -381,6 +415,7 @@ $transition: all 0.2s ease;
     overflow: hidden;
     box-shadow: $shadow-sm;
     transition: $transition;
+    cursor: pointer;
 
     &:hover {
       transform: translateY(-4px);
@@ -423,24 +458,6 @@ $transition: all 0.2s ease;
         font-weight: bold;
         margin: 0;
       }
-
-      .buyButton {
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: $colormenu;
-        color: white;
-        border: none;
-        border-radius: 0.4rem;
-        font-size: 0.9rem;
-        font-weight: bold;
-        cursor: pointer;
-        font-family: Cambria, sans-serif;
-        transition: $transition;
-
-        &:hover {
-          background: darken($colormenu, 8);
-        }
-      }
     }
   }
 
@@ -467,41 +484,6 @@ $transition: all 0.2s ease;
       &:hover {
         background: darken($colormenu, 8);
       }
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-
-    .headerTop {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .shopLayout {
-      flex-direction: column;
-    }
-
-    .sidebar {
-      width: 100%;
-    }
-
-    .searchSection {
-      flex-direction: column;
-      align-items: stretch;
-
-      .searchWrapper {
-        max-width: 100%;
-      }
-    }
-
-    .cartItem {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .cartItemControls {
-      justify-content: flex-end;
     }
   }
 }
@@ -562,14 +544,6 @@ $transition: all 0.2s ease;
   border-radius: 0.5rem;
   font-family: Cambria, sans-serif;
   font-size: 0.85rem;
-}
-
-.priceInputs .priceInput:first-child {
-  min-width: 0;
-}
-
-.priceInputs .priceInput:last-child {
-  min-width: 0;
 }
 
 .priceInputs span {
@@ -650,116 +624,33 @@ $transition: all 0.2s ease;
   color: white;
 }
 
-.shopItem {
-  cursor: pointer;
-}
-
-.cartItemImage {
-  flex-shrink: 0;
-
-  img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-  }
-}
-
-.cartItemSize {
-  font-size: 0.8rem;
-  color: #a68b7c;
-  margin: 0;
-  font-style: italic;
-}
-
-.cartItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem 0;
-  border-bottom: 1px solid #f0e8e0;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.clearCartButton {
-  width: 100%;
-  background: #e53935;
-  color: white;
-  border: none;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #c62828;
-  }
-}
-
-@media (min-width: 1025px) {
-  .productContainer {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-
-  .shopGrid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .productContainer {
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+@media (max-width: 1024px) {
+  .Shop {
+    padding: 1.5rem;
   }
 
   .shopGrid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-
-  .productName {
-    font-size: 1.8rem;
-  }
-
-  .productPrice {
-    font-size: 1.6rem;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 768px) {
-  .productContainer {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .Shop {
     padding: 1rem;
   }
 
-  .productName {
-    font-size: 1.5rem;
-  }
+  .shopHeader {
+    padding: 1rem 0.5rem 1.5rem;
 
-  .productPrice {
-    font-size: 1.4rem;
-  }
+    .headerTop {
+      flex-direction: column;
+      text-align: center;
+    }
 
-  .shopGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
+    h2 {
+      font-size: 1.8rem;
+    }
   }
 
   .shopLayout {
@@ -768,60 +659,59 @@ $transition: all 0.2s ease;
 
   .sidebar {
     width: 100%;
+  }
+
+  .categoriesSection {
     margin-bottom: 1rem;
   }
 
-  .sizeButton {
-    width: 40px;
-    height: 40px;
-    font-size: 0.9rem;
+  .searchSection {
+    flex-direction: column;
+    align-items: stretch;
+
+    .searchWrapper {
+      max-width: 100%;
+    }
   }
 
-  .viewButton img {
-    width: 40px;
-    height: 40px;
+  .shopGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.8rem;
   }
 
-  .textOverlay {
-    white-space: normal;
-    padding: 0.3rem 0.6rem;
-  }
+  .shopItem {
+    .imageWrapper {
+      padding: 1rem;
 
-  .playerName {
-    font-size: 0.7rem;
-  }
+      .productImage {
+        height: 120px;
+      }
+    }
 
-  .playerNumber {
-    font-size: 1.2rem;
+    .itemInfo {
+      padding: 0.8rem;
+
+      .itemName {
+        font-size: 0.85rem;
+      }
+
+      .itemPrice {
+        font-size: 0.95rem;
+      }
+    }
   }
 
   .cartItem {
     flex-direction: column;
-    text-align: center;
+    align-items: stretch;
   }
 
   .cartItemControls {
-    justify-content: center;
+    justify-content: flex-end;
   }
 
-  .totalRow {
-    justify-content: center;
-  }
-
-  .savingsRow {
-    justify-content: center;
-  }
-
-  .discountInput {
-    flex-direction: column;
-  }
-
-  .orderItem {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .itemPrice {
-    text-align: center;
+  .cartButton {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 }

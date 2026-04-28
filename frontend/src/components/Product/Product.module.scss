@@ -11,6 +11,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .backButton {
@@ -20,11 +22,12 @@
   color: #61331c;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  margin-bottom: 2rem;
   font-family: Cambria, sans-serif;
+  transition: all 0.2s ease;
 
   &:hover {
     text-decoration: underline;
+    transform: translateX(-2px);
   }
 }
 
@@ -147,6 +150,7 @@
     width: 50px;
     height: 50px;
     object-fit: contain;
+    cursor: pointer;
   }
 }
 
@@ -158,9 +162,11 @@
     color: #61331c;
     margin: 0 0 0.2rem 0;
     font-family: Cambria, sans-serif;
+    cursor: pointer;
+    text-decoration: underline;
   }
 
-  .cartItemSize {
+  .cartItemSize, .cartItemPlayer {
     font-size: 0.8rem;
     color: #a68b7c;
     margin: 0;
@@ -168,10 +174,7 @@
   }
 
   .cartItemPlayer {
-    font-size: 0.8rem;
     color: #c8922a;
-    margin: 0;
-    font-style: italic;
     font-weight: bold;
   }
 
@@ -226,7 +229,7 @@
   margin-top: 0.5rem;
 }
 
-.checkoutButton {
+.checkoutButton, .clearCartButton {
   width: 100%;
   background: #61331c;
   color: white;
@@ -245,17 +248,8 @@
 }
 
 .clearCartButton {
-  width: 100%;
   background: #e53935;
-  color: white;
-  border: none;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
   margin-top: 0.5rem;
-  transition: all 0.2s ease;
 
   &:hover {
     background: #c62828;
@@ -274,6 +268,8 @@
 }
 
 .imageSection {
+  position: relative;
+
   img {
     width: 100%;
     height: auto;
@@ -302,8 +298,7 @@
 
 .playerName {
   font-weight: bold;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   font-family: 'Arial', sans-serif;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -311,8 +306,7 @@
 
 .playerNumber {
   font-weight: bold;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   font-family: 'Arial', sans-serif;
   letter-spacing: 2px;
   margin-top: 0.2rem;
@@ -339,7 +333,7 @@
   margin: 0;
 }
 
-.sizeSection, .quantitySection {
+.sizeSection, .quantitySection, .playerSection, .personalizationSection {
   h3 {
     font-family: Cambria, sans-serif;
     color: #61331c;
@@ -401,17 +395,6 @@
     font-weight: bold;
     min-width: 40px;
     text-align: center;
-  }
-}
-
-.personalizationSection {
-  margin: 0.5rem 0;
-
-  h3 {
-    font-family: Cambria, sans-serif;
-    color: #61331c;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
   }
 }
 
@@ -479,6 +462,14 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2);
   }
+}
+
+.errorMessage {
+  color: #e53935;
+  font-size: 0.75rem;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+  font-family: Cambria, sans-serif;
 }
 
 .viewSelector {
@@ -619,84 +610,34 @@
   color: #61331c;
 }
 
-@media (max-width: 768px) {
-  .productPage {
-    padding: 1rem;
-  }
-
+@media (max-width: 1024px) {
   .productContainer {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1rem;
-  }
-
-  .productName {
-    font-size: 1.5rem;
-  }
-
-  .productPrice {
-    font-size: 1.4rem;
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-
-  .viewButton {
-    img {
-      width: 40px;
-      height: 40px;
-    }
-  }
-}
-
-.errorMessage {
-  color: #e53935;
-  font-size: 0.75rem;
-  margin-top: -0.3rem;
-  margin-bottom: 0.5rem;
-  font-family: Cambria, sans-serif;
-}
-
-@media (min-width: 1025px) {
-  .productContainer {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-
-  .shopGrid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .productContainer {
-    grid-template-columns: 1fr 1fr;
     gap: 2rem;
-  }
-
-  .shopGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
   .similarGrid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
-
-  .productName {
-    font-size: 1.8rem;
-  }
-
-  .productPrice {
-    font-size: 1.6rem;
-  }
 }
 
 @media (max-width: 768px) {
+  .productPage {
+    padding: 1rem;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .backButton {
+    text-align: center;
+  }
+
+  .cartButton {
+    justify-content: center;
+  }
+
   .productContainer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -709,25 +650,6 @@
 
   .productPrice {
     font-size: 1.4rem;
-  }
-
-  .shopGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-
-  .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
-  }
-
-  .shopLayout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    margin-bottom: 1rem;
   }
 
   .sizeButton {
@@ -739,6 +661,19 @@
   .viewButton img {
     width: 40px;
     height: 40px;
+  }
+
+  .similarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .similarItem img {
+    height: 120px;
+  }
+
+  .similarName {
+    font-size: 0.8rem;
   }
 
   .textOverlay {
@@ -761,26 +696,5 @@
 
   .cartItemControls {
     justify-content: center;
-  }
-
-  .totalRow {
-    justify-content: center;
-  }
-
-  .savingsRow {
-    justify-content: center;
-  }
-
-  .discountInput {
-    flex-direction: column;
-  }
-
-  .orderItem {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .itemPrice {
-    text-align: center;
   }
 }
