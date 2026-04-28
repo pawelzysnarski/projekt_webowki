@@ -63,22 +63,26 @@ export default function Product() {
         return cat === 'spodenki' || cat === 'koszulki' || cat === 'komplety';
     };
 
+    const showBackView = (): boolean => {
+        if (!product) return false;
+        const cat = product.category?.toLowerCase() || '';
+        const name = product.name.toLowerCase();
+        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
+        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
+    };
+
     const showPersonalization = (): boolean => {
         if (!product) return false;
+        const cat = product.category?.toLowerCase() || '';
         const name = product.name.toLowerCase();
-        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
-        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
+        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
+        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
     };
 
     const getFilteredPlayers = (): Zawodnik[] => {
         if (!players || !product) return [];
-
         const name = product.name.toLowerCase();
-        const isGoalkeeperProduct = name.includes('bramkarsk') || name.includes('bramkarz');
-        const isShirtOrKit = name.includes('koszulka') || name.includes('komplet') || name.includes('misiek');
-
-        if (!isShirtOrKit) return [];
-
+        const isGoalkeeperProduct = name.includes('bramkarz');
         if (isGoalkeeperProduct) {
             return players.filter((p: Zawodnik) => p.Pozycja === 'Bramkarz');
         } else {
@@ -89,58 +93,34 @@ export default function Product() {
     const getPlayerDisplayName = (playerValue: string): string => {
         if (!playerValue) return '';
         const match = playerValue.match(/^(\d+)_(.+)$/);
-        if (match) {
-            return `${match[2]} ${match[1]}`;
-        }
+        if (match) return `${match[2]} ${match[1]}`;
         return playerValue;
     };
 
-    const hasBackImage = (): boolean => {
-        if (!product) return false;
-        const name = product.name.toLowerCase();
-        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
-        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
-    };
-
-    const showBackView = (): boolean => {
-        if (!product) return false;
-        return hasBackImage();
+    const getBackImage = (): string => {
+        if (!product) return '';
+        const baseName = product.image.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+        return `/products/${baseName}_tył.jpg`;
     };
 
     const getProductImage = (): string => {
         if (!product) return '';
-        if (selectedView === 'back' && hasBackImage()) {
-            if (product.image_back) {
-                return `/products/${product.image_back}`;
-            }
-            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
-            return `/products/${baseName}_tył.jpg`;
-        }
-        return `/products/${product.image_front || product.image}`;
+        if (selectedView === 'back' && showBackView()) return getBackImage();
+        return `/products/${product.image}`;
     };
 
     const getThumbnailImage = (view: 'front' | 'back'): string => {
         if (!product) return '';
-        if (view === 'back' && hasBackImage()) {
-            if (product.image_back) {
-                return `/products/${product.image_back}`;
-            }
-            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
-            return `/products/${baseName}_tył.jpg`;
-        }
-        return `/products/${product.image_front || product.image}`;
+        if (view === 'back' && showBackView()) return getBackImage();
+        return `/products/${product.image}`;
     };
 
     const getDisplayText = (): { name: string; number: string } => {
         if (selectedPlayer) {
             const match = selectedPlayer.match(/^(\d+)_(.+)$/);
-            if (match) {
-                return { name: match[2].toUpperCase(), number: match[1] };
-            }
+            if (match) return { name: match[2].toUpperCase(), number: match[1] };
         }
-        if (customName && customNumber) {
-            return { name: customName.toUpperCase(), number: customNumber };
-        }
+        if (customName && customNumber) return { name: customName.toUpperCase(), number: customNumber };
         return { name: '', number: '' };
     };
 
@@ -169,291 +149,133 @@ export default function Product() {
         return '1.5rem';
     };
 
-    const isWhiteProduct = (): boolean => {
-        if (!product) return false;
-        const name = product.name.toLowerCase();
-        return name === 'koszulka2' || name === 'komplet2' || name === 'misiek2';
-    };
-
-    const getTextColor = (): string => {
-        if (!product) return 'white';
-        const name = product.name.toLowerCase();
-        if (name === 'koszulka2' || name === 'komplet2' || name === 'misiek2') {
-            return '#888888';
-        }
-        return 'white';
-    };
-
-    const getTextPosition = (): { top: string } => {
-        if (!product) return { top: '50%' };
-        const name = product.name.toLowerCase();
-        if (name.includes('misiek')) {
-            return { top: '45%' };
-        }
-        if (name.includes('komplet') && name!="komplet1") {
-            return { top: '30%' };
-        }
-        return { top: '35%' };
-    };
-
-    const getTextSize = (): { nameSize: string; numberSize: string } => {
-        if (!product) return { nameSize: '1rem', numberSize: '2rem' };
-        const name = product.name.toLowerCase();
-        if (name.includes('misiek')) {
-
-            return { nameSize: '1rem', numberSize: '5rem' };
-        }
-        return { nameSize: '1rem', numberSize: '2rem' };
-    };
-
-    const textPosition = getTextPosition();
-    const { nameSize, numberSize } = getTextSize();
-
     const [customNameError, setCustomNameError] = useState('');
     const [customNumberError, setCustomNumberError] = useState('');
 
     const validateCustomName = (name: string): boolean => {
-        if (name.length > 20) {
-            setCustomNameError('Nazwisko jest zbyt długie (max 20 znaków)');
-            return false;
-        }
+        if (name.length > 20) { setCustomNameError('Nazwisko jest zbyt długie (max 20 znaków)'); return false; }
         const lettersOnly = /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$/;
-        if (name !== '' && !lettersOnly.test(name)) {
-            setCustomNameError('Nazwisko może zawierać tylko litery');
-            return false;
-        }
+        if (name !== '' && !lettersOnly.test(name)) { setCustomNameError('Nazwisko może zawierać tylko litery'); return false; }
         setCustomNameError('');
         return true;
     };
 
     const validateCustomNumber = (number: string): boolean => {
-        if (number === '') {
-            setCustomNumberError('');
-            return true;
-        }
+        if (number === '') { setCustomNumberError(''); return true; }
         const digitsOnly = /^\d+$/;
-        if (!digitsOnly.test(number)) {
-            setCustomNumberError('Numer może zawierać tylko cyfry');
-            return false;
-        }
+        if (!digitsOnly.test(number)) { setCustomNumberError('Numer może zawierać tylko cyfry'); return false; }
         const num = parseInt(number);
-        if (num < 1 || num > 99) {
-            setCustomNumberError('Numer musi być między 1 a 99');
-            return false;
-        }
+        if (num < 1 || num > 99) { setCustomNumberError('Numer musi być między 1 a 99'); return false; }
         setCustomNumberError('');
         return true;
     };
 
     const getSimilarProducts = (): Product[] => {
         if (!allProducts || !product) return [];
-
         const productName = product.name.toLowerCase();
         const productCategory = product.category?.toLowerCase() || '';
         const productNumber = extractNumber(productName);
         const isGoalkeeper = productName.includes('bramkarz');
-
         const allProductsList = [...allProducts];
 
         if (productCategory === 'spodenki') {
             const result: Product[] = [];
-
             for (const p of allProductsList) {
                 if (p.id === product.id) continue;
-
                 const pName = p.name.toLowerCase();
                 const pCat = p.category?.toLowerCase() || '';
                 const pNumber = extractNumber(pName);
                 const pIsGoalkeeper = pName.includes('bramkarz');
-
                 if (pCat !== 'spodenki' && pCat !== 'komplety') continue;
-
                 if (isGoalkeeper) {
                     if (pCat === 'spodenki') {
-                        if (pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (!pIsGoalkeeper && pNumber === productNumber) {
-                            result.push(p);
-                        }
+                        if (pIsGoalkeeper && pNumber !== productNumber) result.push(p);
+                        if (!pIsGoalkeeper && pNumber === productNumber) result.push(p);
                     }
-                    if (pCat === 'komplety') {
-                        if (pName.includes('bramkarz') && pNumber === productNumber) {
-                            result.push(p);
-                        }
-                    }
+                    if (pCat === 'komplety' && pName.includes('bramkarz') && pNumber === productNumber) result.push(p);
                 } else {
                     if (pCat === 'spodenki') {
-                        if (!pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (pIsGoalkeeper) {
-                            result.push(p);
-                        }
+                        if (!pIsGoalkeeper && pNumber !== productNumber) result.push(p);
+                        if (pIsGoalkeeper) result.push(p);
                     }
-                    if (pCat === 'komplety') {
-                        if (!pName.includes('bramkarz') && pNumber === productNumber) {
-                            result.push(p);
-                        }
-                    }
+                    if (pCat === 'komplety' && !pName.includes('bramkarz') && pNumber === productNumber) result.push(p);
                 }
             }
-
             const uniqueIds = new Set();
-            return result.filter(item => {
-                if (uniqueIds.has(item.id)) return false;
-                uniqueIds.add(item.id);
-                return true;
-            }).slice(0, 6);
+            return result.filter(item => { if (uniqueIds.has(item.id)) return false; uniqueIds.add(item.id); return true; }).slice(0, 6);
         }
 
         if (productCategory === 'koszulki') {
             const result: Product[] = [];
-
             for (const p of allProductsList) {
                 if (p.id === product.id) continue;
-
                 const pName = p.name.toLowerCase();
                 const pCat = p.category?.toLowerCase() || '';
                 const pNumber = extractNumber(pName);
                 const pIsGoalkeeper = pName.includes('bramkarz');
-
                 if (pCat !== 'koszulki' && pCat !== 'komplety') continue;
-
                 if (isGoalkeeper) {
                     if (pCat === 'koszulki') {
-                        if (pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (!pIsGoalkeeper && pNumber === productNumber) {
-                            result.push(p);
-                        }
+                        if (pIsGoalkeeper && pNumber !== productNumber) result.push(p);
+                        if (!pIsGoalkeeper && pNumber === productNumber) result.push(p);
                     }
-                    if (pCat === 'komplety') {
-                        if (pName.includes('bramkarz') && pNumber === productNumber) {
-                            result.push(p);
-                        }
-                    }
+                    if (pCat === 'komplety' && pName.includes('bramkarz') && pNumber === productNumber) result.push(p);
                 } else {
                     if (pCat === 'koszulki') {
-                        if (!pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (pIsGoalkeeper) {
-                            result.push(p);
-                        }
+                        if (!pIsGoalkeeper && pNumber !== productNumber) result.push(p);
+                        if (pIsGoalkeeper) result.push(p);
                     }
-                    if (pCat === 'komplety') {
-                        if (!pName.includes('bramkarz') && pNumber === productNumber) {
-                            result.push(p);
-                        }
-                    }
+                    if (pCat === 'komplety' && !pName.includes('bramkarz') && pNumber === productNumber) result.push(p);
                 }
             }
-
             const uniqueIds = new Set();
-            return result.filter(item => {
-                if (uniqueIds.has(item.id)) return false;
-                uniqueIds.add(item.id);
-                return true;
-            }).slice(0, 6);
+            return result.filter(item => { if (uniqueIds.has(item.id)) return false; uniqueIds.add(item.id); return true; }).slice(0, 6);
         }
 
         if (productCategory === 'komplety') {
             const result: Product[] = [];
-
             for (const p of allProductsList) {
                 if (p.id === product.id) continue;
-
                 const pName = p.name.toLowerCase();
                 const pCat = p.category?.toLowerCase() || '';
                 const pNumber = extractNumber(pName);
                 const pIsGoalkeeper = pName.includes('bramkarz');
-
                 if (pCat !== 'komplety' && pCat !== 'spodenki' && pCat !== 'koszulki') continue;
-
                 if (isGoalkeeper) {
-                    if (pCat === 'komplety') {
-                        if (pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (!pIsGoalkeeper) {
-                            result.push(p);
-                        }
-                    }
-                    if ((pCat === 'spodenki' || pCat === 'koszulki') && pIsGoalkeeper && pNumber === productNumber) {
-                        result.push(p);
-                    }
+                    if (pCat === 'komplety') { if (pIsGoalkeeper && pNumber !== productNumber) result.push(p); if (!pIsGoalkeeper) result.push(p); }
+                    if ((pCat === 'spodenki' || pCat === 'koszulki') && pIsGoalkeeper && pNumber === productNumber) result.push(p);
                 } else {
-                    if (pCat === 'komplety') {
-                        if (!pIsGoalkeeper && pNumber !== productNumber) {
-                            result.push(p);
-                        }
-                        if (pIsGoalkeeper) {
-                            result.push(p);
-                        }
-                    }
-                    if ((pCat === 'spodenki' || pCat === 'koszulki') && !pIsGoalkeeper && pNumber === productNumber) {
-                        result.push(p);
-                    }
+                    if (pCat === 'komplety') { if (!pIsGoalkeeper && pNumber !== productNumber) result.push(p); if (pIsGoalkeeper) result.push(p); }
+                    if ((pCat === 'spodenki' || pCat === 'koszulki') && !pIsGoalkeeper && pNumber === productNumber) result.push(p);
                 }
             }
-
             const uniqueIds = new Set();
-            return result.filter(item => {
-                if (uniqueIds.has(item.id)) return false;
-                uniqueIds.add(item.id);
-                return true;
-            }).slice(0, 7);
+            return result.filter(item => { if (uniqueIds.has(item.id)) return false; uniqueIds.add(item.id); return true; }).slice(0, 7);
         }
 
         if (productCategory === 'pluszaki') {
             const result: Product[] = [];
             const isMainBear = productName === 'misiek' && !productName.includes('bramkarz') && !productName.match(/\d+/);
-
             for (const p of allProductsList) {
                 if (p.id === product.id) continue;
-
                 const pName = p.name.toLowerCase();
                 const pCat = p.category?.toLowerCase() || '';
                 const pNumber = extractNumber(pName);
                 const pIsGoalkeeper = pName.includes('bramkarz');
-
                 if (pCat !== 'pluszaki') continue;
-
-                if (isMainBear) {
-                    if (pName.includes('bramkarz') || pName.match(/\d+/)) {
-                        result.push(p);
-                    }
-                } else if (isGoalkeeper) {
-                    if (pName === 'misiek' && !pName.includes('bramkarz')) {
-                        result.push(p);
-                    }
-                    if (pIsGoalkeeper && pNumber !== productNumber) {
-                        result.push(p);
-                    }
-                    if (!pIsGoalkeeper && pName.match(/\d+/) && pNumber === productNumber) {
-                        result.push(p);
-                    }
+                if (isMainBear) { if (pName.includes('bramkarz') || pName.match(/\d+/)) result.push(p); }
+                else if (isGoalkeeper) {
+                    if (pName === 'misiek' && !pName.includes('bramkarz')) result.push(p);
+                    if (pIsGoalkeeper && pNumber !== productNumber) result.push(p);
+                    if (!pIsGoalkeeper && pName.match(/\d+/) && pNumber === productNumber) result.push(p);
                 } else {
-                    if (pName === 'misiek' && !pName.includes('bramkarz') && !productName.match(/\d+/)) {
-                        result.push(p);
-                    }
-                    if (!pIsGoalkeeper && pName.match(/\d+/) && pNumber !== productNumber) {
-                        result.push(p);
-                    }
-                    if (pIsGoalkeeper && pNumber === productNumber) {
-                        result.push(p);
-                    }
+                    if (pName === 'misiek' && !pName.includes('bramkarz') && !productName.match(/\d+/)) result.push(p);
+                    if (!pIsGoalkeeper && pName.match(/\d+/) && pNumber !== productNumber) result.push(p);
+                    if (pIsGoalkeeper && pNumber === productNumber) result.push(p);
                 }
             }
-
             const uniqueIds = new Set();
-            return result.filter(item => {
-                if (uniqueIds.has(item.id)) return false;
-                uniqueIds.add(item.id);
-                return true;
-            }).slice(0, 6);
+            return result.filter(item => { if (uniqueIds.has(item.id)) return false; uniqueIds.add(item.id); return true; }).slice(0, 6);
         }
 
         return [];
@@ -469,11 +291,7 @@ export default function Product() {
     };
 
     const updateQuantity = (itemId: string, newQuantity: number): void => {
-        if (newQuantity <= 0) {
-            removeFromCart(itemId);
-            return;
-        }
-
+        if (newQuantity <= 0) { removeFromCart(itemId); return; }
         const existingCart: CartItemWithSize[] = JSON.parse(localStorage.getItem('cart') || '[]');
         const updatedCart = existingCart.map((item: CartItemWithSize) =>
             item.id === itemId ? { ...item, quantity: newQuantity } : item
@@ -498,36 +316,18 @@ export default function Product() {
 
     const addToCart = (): void => {
         if (!product) return;
-
-        if (isClothing() && !selectedSize) {
-            alert('Wybierz rozmiar');
-            return;
-        }
-
+        if (isClothing() && !selectedSize) { alert('Wybierz rozmiar'); return; }
         let printText = '';
-        if (selectedPlayer) {
-            printText = getPlayerDisplayName(selectedPlayer);
-        } else if (customName && customNumber) {
-            printText = `${customNumber} ${customName.toUpperCase()}`;
-        }
-
+        if (selectedPlayer) { printText = getPlayerDisplayName(selectedPlayer); }
+        else if (customName && customNumber) { printText = `${customNumber} ${customName.toUpperCase()}`; }
         const cartItem: CartItemWithSize = {
             id: isClothing() ? `${product.id}_${selectedSize}_${selectedPlayer}_${customName}_${customNumber}` : `${product.id}`,
-            product,
-            size: selectedSize,
-            quantity,
-            playerName: printText || undefined,
+            product, size: selectedSize, quantity, playerName: printText || undefined,
         };
-
         const existingCart: CartItemWithSize[] = JSON.parse(localStorage.getItem('cart') || '[]');
         const existingIndex = existingCart.findIndex((item: CartItemWithSize) => item.id === cartItem.id);
-
-        if (existingIndex !== -1) {
-            existingCart[existingIndex].quantity += quantity;
-        } else {
-            existingCart.push(cartItem);
-        }
-
+        if (existingIndex !== -1) { existingCart[existingIndex].quantity += quantity; }
+        else { existingCart.push(cartItem); }
         localStorage.setItem('cart', JSON.stringify(existingCart));
         window.dispatchEvent(new Event('cartUpdated'));
         setAddedToCart(true);
@@ -549,18 +349,11 @@ export default function Product() {
     return (
         <div className={styles.productPage}>
             <div className={styles.headerTop}>
-                <button className={styles.backButton} onClick={() => navigate('/sklep')}>
-                    ← Powrót do sklepu
-                </button>
+                <button className={styles.backButton} onClick={() => navigate('/sklep')}>← Powrót do sklepu</button>
                 <div className={styles.cartIconContainer}>
-                    <button
-                        className={styles.cartButton}
-                        onClick={() => setShowCart(!showCart)}
-                    >
+                    <button className={styles.cartButton} onClick={() => setShowCart(!showCart)}>
                         🛒 Koszyk
-                        {cartCount > 0 && (
-                            <span className={styles.cartCount}>{cartCount}</span>
-                        )}
+                        {cartCount > 0 && <span className={styles.cartCount}>{cartCount}</span>}
                     </button>
                 </div>
             </div>
@@ -581,27 +374,11 @@ export default function Product() {
                                         const itemPrice = typeof item.product.price === 'number' ? item.product.price : parseFloat(item.product.price as string);
                                         return (
                                             <div key={item.id} className={styles.cartItem}>
-                                                <div
-                                                    className={styles.cartItemImage}
-                                                    onClick={() => {
-                                                        setShowCart(false);
-                                                        navigate(`/product/${item.product.id}`);
-                                                    }}
-                                                    style={{ cursor: 'pointer' }}
-                                                >
+                                                <div className={styles.cartItemImage} onClick={() => { setShowCart(false); navigate(`/product/${item.product.id}`); }} style={{ cursor: 'pointer' }}>
                                                     <img src={`/products/${item.product.image}`} alt={item.product.name} />
                                                 </div>
                                                 <div className={styles.cartItemInfo}>
-                                                    <p
-                                                        className={styles.cartItemName}
-                                                        onClick={() => {
-                                                            setShowCart(false);
-                                                            navigate(`/product/${item.product.id}`);
-                                                        }}
-                                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                                                    >
-                                                        {item.product.name}
-                                                    </p>
+                                                    <p className={styles.cartItemName} onClick={() => { setShowCart(false); navigate(`/product/${item.product.id}`); }} style={{ cursor: 'pointer', textDecoration: 'underline' }}>{item.product.name}</p>
                                                     {item.size && <p className={styles.cartItemSize}>Rozmiar: {item.size}</p>}
                                                     {item.playerName && <p className={styles.cartItemPlayer}>Nadruk: {item.playerName}</p>}
                                                     <p className={styles.cartItemPrice}>{formatPrice(itemPrice)}</p>
@@ -615,15 +392,9 @@ export default function Product() {
                                             </div>
                                         );
                                     })}
-                                    <div className={styles.cartTotal}>
-                                        <strong>Razem: {formatPrice(getCartTotal())}</strong>
-                                    </div>
-                                    <button className={styles.clearCartButton} onClick={clearCart}>
-                                        🗑️ Opróżnij koszyk
-                                    </button>
-                                    <button className={styles.checkoutButton} onClick={() => navigate('/zamowienie')}>
-                                        Złóż zamówienie
-                                    </button>
+                                    <div className={styles.cartTotal}><strong>Razem: {formatPrice(getCartTotal())}</strong></div>
+                                    <button className={styles.clearCartButton} onClick={clearCart}>🗑️ Opróżnij koszyk</button>
+                                    <button className={styles.checkoutButton} onClick={() => navigate('/zamowienie')}>Złóż zamówienie</button>
                                 </>
                             )}
                         </div>
@@ -636,27 +407,9 @@ export default function Product() {
                     <div className={styles.imageWrapper}>
                         <img src={getProductImage()} alt={product.name} />
                         {selectedView === 'back' && showBackView() && (displayText.name || displayText.number) && (
-                            <div className={styles.textOverlay} style={{ top: textPosition.top }}>
-                                <div
-                                    className={styles.playerName}
-                                    style={{
-                                        fontSize: product?.name.toLowerCase().includes('misiek') ? nameSize : getFontSize(displayText.name),
-                                        color: getTextColor(),
-                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
-                                    }}
-                                >
-                                    {displayText.name}
-                                </div>
-                                <div
-                                    className={styles.playerNumber}
-                                    style={{
-                                        fontSize: product?.name.toLowerCase().includes('misiek') ? numberSize : getNumberFontSize(displayText.number),
-                                        color: getTextColor(),
-                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
-                                    }}
-                                >
-                                    {displayText.number}
-                                </div>
+                            <div className={styles.textOverlay}>
+                                <div className={styles.playerName} style={{ fontSize: getFontSize(displayText.name) }}>{displayText.name}</div>
+                                <div className={styles.playerNumber} style={{ fontSize: getNumberFontSize(displayText.number) }}>{displayText.number}</div>
                             </div>
                         )}
                     </div>
@@ -671,13 +424,7 @@ export default function Product() {
                             <h3>Rozmiar</h3>
                             <div className={styles.sizeButtons}>
                                 {sizes.map(size => (
-                                    <button
-                                        key={size}
-                                        className={`${styles.sizeButton} ${selectedSize === size ? styles.active : ''}`}
-                                        onClick={() => setSelectedSize(size)}
-                                    >
-                                        {size}
-                                    </button>
+                                    <button key={size} className={`${styles.sizeButton} ${selectedSize === size ? styles.active : ''}`} onClick={() => setSelectedSize(size)}>{size}</button>
                                 ))}
                             </div>
                         </div>
@@ -695,93 +442,39 @@ export default function Product() {
                     {showPersonalization() && (
                         <div className={styles.personalizationSection}>
                             <h3>Personalizacja</h3>
-
                             <div className={styles.playerSelectWrapper}>
                                 <label>Wybierz zawodnika:</label>
-                                <select
-                                    className={styles.playerSelect}
-                                    value={selectedPlayer}
-                                    onChange={(e) => {
-                                        setSelectedPlayer(e.target.value);
-                                        if (e.target.value) {
-                                            setCustomName('');
-                                            setCustomNumber('');
-                                        }
-                                    }}
-                                >
+                                <select className={styles.playerSelect} value={selectedPlayer} onChange={(e) => { setSelectedPlayer(e.target.value); if (e.target.value) { setCustomName(''); setCustomNumber(''); } }}>
                                     <option value="">Brak nadruku</option>
                                     {filteredPlayers.map((player: Zawodnik) => (
-                                        <option key={player.ID} value={`${player.Numer}_${player.Nazwisko.toLowerCase()}`}>
-                                            {player.Numer}. {player.Imie} {player.Nazwisko}
-                                        </option>
+                                        <option key={player.ID} value={`${player.Numer}_${player.Nazwisko.toLowerCase()}`}>{player.Numer}. {player.Imie} {player.Nazwisko}</option>
                                     ))}
                                 </select>
                             </div>
-
                             <div className={styles.customWrapper}>
                                 <p className={styles.customOr}>lub</p>
                                 <label>Własny nadruk:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Nazwisko"
-                                    className={styles.customInput}
-                                    value={customName}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (validateCustomName(value)) {
-                                            setCustomName(value);
-                                            if (value) setSelectedPlayer('');
-                                        }
-                                    }}
-                                />
+                                <input type="text" placeholder="Nazwisko" className={styles.customInput} value={customName} onChange={(e) => { const value = e.target.value; if (validateCustomName(value)) { setCustomName(value); if (value) setSelectedPlayer(''); } }} />
                                 {customNameError && <p className={styles.errorMessage}>{customNameError}</p>}
-
-                                <input
-                                    type="text"
-                                    placeholder="Numer"
-                                    className={styles.customInput}
-                                    value={customNumber}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (validateCustomNumber(value)) {
-                                            setCustomNumber(value);
-                                            if (value) setSelectedPlayer('');
-                                        }
-                                    }}
-                                />
+                                <input type="text" placeholder="Numer" className={styles.customInput} value={customNumber} onChange={(e) => { const value = e.target.value; if (validateCustomNumber(value)) { setCustomNumber(value); if (value) setSelectedPlayer(''); } }} />
                                 {customNumberError && <p className={styles.errorMessage}>{customNumberError}</p>}
                             </div>
                         </div>
                     )}
 
-                    {hasBackImage() && (
+                    {showBackView() && (
                         <div className={styles.viewSelector}>
-                            <button
-                                className={`${styles.viewButton} ${selectedView === 'front' ? styles.activeView : ''}`}
-                                onClick={() => setSelectedView('front')}
-                            >
-                                <img src={getThumbnailImage('front')} alt="przód" />
-                                <span>Przód</span>
+                            <button className={`${styles.viewButton} ${selectedView === 'front' ? styles.activeView : ''}`} onClick={() => setSelectedView('front')}>
+                                <img src={getThumbnailImage('front')} alt="przód" /><span>Przód</span>
                             </button>
-                            <button
-                                className={`${styles.viewButton} ${selectedView === 'back' ? styles.activeView : ''}`}
-                                onClick={() => setSelectedView('back')}
-                            >
-                                <img src={getThumbnailImage('back')} alt="tył" />
-                                <span>Tył</span>
+                            <button className={`${styles.viewButton} ${selectedView === 'back' ? styles.activeView : ''}`} onClick={() => setSelectedView('back')}>
+                                <img src={getThumbnailImage('back')} alt="tył" /><span>Tył</span>
                             </button>
                         </div>
                     )}
 
-                    <button className={styles.addToCartButton} onClick={addToCart}>
-                        Dodaj do koszyka
-                    </button>
-
-                    {addedToCart && (
-                        <div className={styles.successMessage}>
-                            Produkt dodany do koszyka!
-                        </div>
-                    )}
+                    <button className={styles.addToCartButton} onClick={addToCart}>Dodaj do koszyka</button>
+                    {addedToCart && <div className={styles.successMessage}>Produkt dodany do koszyka!</div>}
                 </div>
             </div>
 
@@ -792,11 +485,7 @@ export default function Product() {
                         {similarProducts.map(similar => {
                             const similarPrice = typeof similar.price === 'number' ? similar.price : parseFloat(similar.price as string);
                             return (
-                                <div
-                                    key={similar.id}
-                                    className={styles.similarItem}
-                                    onClick={() => navigate(`/product/${similar.id}`)}
-                                >
+                                <div key={similar.id} className={styles.similarItem} onClick={() => navigate(`/product/${similar.id}`)}>
                                     <img src={`/products/${similar.image}`} alt={similar.name} />
                                     <p className={styles.similarName}>{similar.name}</p>
                                     <p className={styles.similarPrice}>{formatPrice(similarPrice)}</p>

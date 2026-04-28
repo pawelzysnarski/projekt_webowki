@@ -1,4 +1,6 @@
 $colormenu: #61331c;
+$colorgold: #c8922a;
+$transition: all 0.2s ease;
 
 .Menu {
   display: flex;
@@ -82,7 +84,55 @@ $colormenu: #61331c;
     }
   }
 }
+.authSection {
+  display: flex;
+  align-items: center;
+}
 
+.loginBtn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 2rem;
+  background: $colorgold;
+  color: white;
+  text-decoration: none;
+  font-family: Cambria, sans-serif;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: $transition;
+
+  &:hover {
+    background: darken($colorgold, 8);
+  }
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  .userName {
+    font-family: Cambria, sans-serif;
+    font-weight: bold;
+    color: white;
+  }
+
+  .logoutBtn {
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(white, 0.4);
+    background: transparent;
+    color: rgba(white, 0.9);
+    cursor: pointer;
+    font-family: Cambria, sans-serif;
+    font-size: 0.85rem;
+    transition: $transition;
+
+    &:hover {
+      background: rgba(white, 0.15);
+      color: white;
+    }
+  }
+}
 @media (max-width: 1024px) {
   .Menu .menuTop {
     gap: 2rem;

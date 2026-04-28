@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
 import { stadiumQuery, type Seat, type SeatsResponse } from '../../queries/stadiumQuery';
 import { matchQuery, type Match } from '../../queries/matchQuery';
+import { useAuth } from '../AuthContext/AuthContext.tsx';
 import styles from './StadiumMap.module.scss';
 
 type TicketType = 'zloty_jelen' | 'srebrny_jez' | 'brazowy_los' | 'normalny';
@@ -22,6 +23,7 @@ interface Sector {
 export default function StadiumMap() {
     const { id, type_id } = useParams<{ id: string; type_id?: string }>();
     const matchId = parseInt(id || '1');
+    const { user } = useAuth();
 
     const getTicketTypeFromUrl = (): TicketType => {
         if (type_id === 'zloty_jelen') return 'zloty_jelen';
@@ -114,7 +116,6 @@ export default function StadiumMap() {
                 };
 
                 const generatedSectors: Sector[] = [];
-
                 const allSectorNames = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2'];
 
                 for (const sectorName of allSectorNames) {
@@ -137,10 +138,9 @@ export default function StadiumMap() {
                 }
 
                 setSectors(generatedSectors);
-
             } catch (err) {
                 console.error('Error loading stadium:', err);
-                setError('Nie udało się załadować danych stadionu. Sprawdź czy backend działa.');
+                setError('Nie udało się załadować danych stadionu.');
             } finally {
                 setIsLoading(false);
             }
@@ -207,9 +207,7 @@ export default function StadiumMap() {
         return (
             <div className={styles.error}>
                 <p>❌ {error}</p>
-                <button onClick={() => window.location.reload()} className={styles.retryButton}>
-                    Spróbuj ponownie
-                </button>
+                <button onClick={() => window.location.reload()} className={styles.retryButton}>Spróbuj ponownie</button>
             </div>
         );
     }
@@ -218,21 +216,21 @@ export default function StadiumMap() {
         return (
             <div className={styles.error}>
                 <p>❌ Brak sektorów dla tego meczu</p>
-                <p>Sprawdź dane w bazie lub skontaktuj się z administratorem</p>
             </div>
         );
     }
 
     if (selectedSector) {
+
         return (
             <SectorDetailView
                 sector={selectedSector}
                 onBack={handleBack}
                 onSeatClick={handleSeatClick}
                 selectedSeat={selectedSeat}
-                isHome={seatsData?.is_home ?? true}
                 currentTicketType={currentTicketType}
                 matchId={matchId}
+                user={user}
             />
         );
     }
@@ -267,10 +265,10 @@ export default function StadiumMap() {
                     </Layer>
 
                     <Layer>
-                        <Text x={145} y={162} width={185} fontSize={13} text={"Trybuna Północna"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={145} y={360} width={185} fontSize={13} text={"Trybuna Południowa"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={390} y={320} width={130} rotation={-90} fontSize={13} text={"Trybuna Wschodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={80} y={210} width={130} rotation={90} fontSize={13} text={"Trybuna Zachodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={145} y={152} width={185} fontSize={13} text={"Trybuna Północna"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={145} y={368} width={185} fontSize={13} text={"Trybuna Południowa"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={345} y={280} width={130} rotation={-90} fontSize={13} text={"Trybuna Wschodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={10} y={280} width={130} rotation={90} fontSize={13} text={"Trybuna Zachodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
                     </Layer>
 
                     <Layer>
@@ -282,21 +280,15 @@ export default function StadiumMap() {
                             return (
                                 <React.Fragment key={sector.id}>
                                     <Rect
-                                        x={sector.x}
-                                        y={sector.y}
-                                        width={sector.width}
-                                        height={sector.height}
+                                        x={sector.x} y={sector.y} width={sector.width} height={sector.height}
                                         fill={sector.color}
                                         stroke={isAvailable ? "white" : "#475569"}
-                                        strokeWidth={2}
-                                        cornerRadius={6}
+                                        strokeWidth={2} cornerRadius={6}
                                         opacity={hasSeats ? (isAvailable ? 0.9 : 0.5) : 0.3}
                                         onClick={() => hasSeats && handleSectorClick(sector)}
                                         onMouseEnter={(e) => {
                                             const container = e.target.getStage()?.container();
-                                            if (container && hasSeats) {
-                                                container.style.cursor = isAvailable ? 'pointer' : 'not-allowed';
-                                            }
+                                            if (container && hasSeats) container.style.cursor = isAvailable ? 'pointer' : 'not-allowed';
                                         }}
                                         onMouseLeave={(e) => {
                                             const container = e.target.getStage()?.container();
@@ -304,14 +296,9 @@ export default function StadiumMap() {
                                         }}
                                     />
                                     <Text
-                                        x={sector.x}
-                                        y={sector.y + sector.height / 2 - 15}
+                                        x={sector.x} y={sector.y + sector.height / 2 - 15}
                                         text={hasSeats ? `${sector.name}\n${wolneMiejsca} wolnych` : sector.name}
-                                        fontSize={11}
-                                        fontStyle="bold"
-                                        fill="white"
-                                        width={sector.width}
-                                        align="center"
+                                        fontSize={11} fontStyle="bold" fill="white" width={sector.width} align="center"
                                     />
                                 </React.Fragment>
                             );
@@ -331,14 +318,14 @@ export default function StadiumMap() {
 }
 
 const SectorDetailView: React.FC<{
-    sector: Sector;
-    onBack: () => void;
-    onSeatClick: (seat: Seat) => void;
-    selectedSeat: Seat | null;
-    isHome: boolean;
-    currentTicketType: TicketType;
-    matchId: number;
-}> = ({ sector, onBack, onSeatClick, selectedSeat, currentTicketType, matchId }) => {
+    sector: Sector,
+    onBack: () => void,
+    onSeatClick: (seat: Seat) => void,
+    selectedSeat: Seat | null,
+    currentTicketType: TicketType,
+    matchId: number,
+    user: any,
+}> = ({sector, onBack, onSeatClick, selectedSeat, currentTicketType, matchId, user}) => {
     const seatsByRow: { [key: string]: Seat[] } = {};
     sector.seats.forEach(seat => {
         if (!seatsByRow[seat.rzad]) seatsByRow[seat.rzad] = [];
@@ -368,9 +355,7 @@ const SectorDetailView: React.FC<{
     return (
         <div>
             <header className={styles.Stadium_header}>
-                <button onClick={onBack} className={styles.backButton}>
-                    ← Powrót do mapy
-                </button>
+                <button onClick={onBack} className={styles.backButton}>← Powrót do mapy</button>
                 <h1 className={styles.Stadium_title}>
                     Sektor {sector.name} - {getTicketTypeName(currentTicketType)}
                     <span className={styles.seatCount}> ({wolneMiejsca} wolnych)</span>
@@ -389,22 +374,20 @@ const SectorDetailView: React.FC<{
                         <div key={row} className={styles.seatRow}>
                             <div className={styles.rowLabel}>{row}</div>
                             <div className={styles.seatsGrid}>
-                                {seatsByRow[row]
-                                    .sort((a, b) => a.numer - b.numer)
-                                    .map((seat) => {
-                                        const status = getSeatStatus(seat);
-                                        return (
-                                            <button
-                                                key={seat.id}
-                                                className={`${styles.seat} ${styles[`seat${status.charAt(0).toUpperCase() + status.slice(1)}`]}`}
-                                                onClick={() => onSeatClick(seat)}
-                                                disabled={seat.czy_zajete}
-                                                title={`Miejsce ${seat.numer} - ${Number(seat.cena).toFixed(2)} zł`}
-                                            >
-                                                <span className={styles.seatNumber}>{seat.numer}</span>
-                                            </button>
-                                        );
-                                    })}
+                                {seatsByRow[row].sort((a, b) => a.numer - b.numer).map((seat) => {
+                                    const status = getSeatStatus(seat);
+                                    return (
+                                        <button
+                                            key={seat.id}
+                                            className={`${styles.seat} ${styles[`seat${status.charAt(0).toUpperCase() + status.slice(1)}`]}`}
+                                            onClick={() => onSeatClick(seat)}
+                                            disabled={seat.czy_zajete}
+                                            title={`Miejsce ${seat.numer} - ${Number(seat.cena).toFixed(2)} zł`}
+                                        >
+                                            <span className={styles.seatNumber}>{seat.numer}</span>
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}
@@ -449,9 +432,9 @@ const SectorDetailView: React.FC<{
                                     body: JSON.stringify({
                                         matchId: matchId,
                                         seatId: selectedSeat.id,
-                                        firstName: 'Kibic',
-                                        lastName: 'Testowy',
-                                        email: 'kibic@test.pl',
+                                        firstName: user?.imie || 'Kibic',
+                                        lastName: user?.nazwisko || 'Testowy',
+                                        email: user?.email || 'kibic@test.pl',
                                         ticketType: currentTicketType
                                     })
                                 });
@@ -467,12 +450,8 @@ const SectorDetailView: React.FC<{
                                 console.error('Error:', error);
                                 alert('Błąd zakupu biletu');
                             }
-                        }}>
-                            Kup bilet
-                        </button>
-                        <button onClick={() => onSeatClick(selectedSeat!)} className={styles.cancelButton}>
-                            Anuluj
-                        </button>
+                        }}>Kup bilet</button>
+                        <button onClick={() => onSeatClick(selectedSeat!)} className={styles.cancelButton}>Anuluj</button>
                     </div>
                 </div>
             )}

@@ -11,7 +11,7 @@ export default function TableMini() {
     useEffect(() => {
         const interval = setInterval(() => {
             queryClient.invalidateQueries({ queryKey: ['table'] });
-        }, 1000);
+        }, 0);
 
         return () => clearInterval(interval);
     }, [queryClient]);

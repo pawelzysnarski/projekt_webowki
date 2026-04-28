@@ -1,4 +1,5 @@
 import type {Klub} from "./Klub.ts";
+import type {Wyniki} from "./Wyniki.ts";
 
 export interface Terminarz {
     id: number;
@@ -8,5 +9,5 @@ export interface Terminarz {
     gospodarz: Klub;
     gosc: Klub;
     Numer_Kolejki: number;
-    wynik: number;
+    wynik: Wyniki;
 }

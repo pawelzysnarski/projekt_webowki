@@ -73,6 +73,7 @@ export function generateSeasonTicketEmailHtml(data: {
     price: string;
     passCode: string;
     occupiedSeats: Array<{ opponent: string; date: string; sector: string; seat: number; row: string }>;
+    discountPercent: number;
 }) {
     const seatsHtml = data.occupiedSeats.map(s => `
         <tr>
@@ -91,12 +92,14 @@ export function generateSeasonTicketEmailHtml(data: {
             </div>
             <div style="padding: 20px; background: #2d1b12; border-radius: 10px; margin-top: 20px;">
                 <h2 style="color: #d4af37; margin: 0 0 10px;">Cześć ${data.firstName} ${data.lastName}!</h2>
-                <p style="margin: 0 0 15px;">Dziękujemy za zakup karnetu sezonowego!</p>
+                <p style="margin: 0 0 15px;">Dziękujemy za zakup karnetu sezonowego! Twoje konto zostało zaktualizowane.</p>
                 <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
                     <tr><td style="padding: 8px; color: #c4a58b;">Typ karnetu:</td><td style="padding: 8px; color: #d4af37; font-weight: bold;">${data.ticketType}</td></tr>
                     <tr><td style="padding: 8px; color: #c4a58b;">Cena:</td><td style="padding: 8px; color: #22c55e; font-weight: bold;">${data.price} zł</td></tr>
+                    <tr><td style="padding: 8px; color: #c4a58b;">Zniżka w sklepie:</td><td style="padding: 8px; color: #22c55e; font-weight: bold;">-${data.discountPercent}% na wszystkie produkty</td></tr>
                     <tr><td style="padding: 8px; color: #c4a58b;">Kod karnetu:</td><td style="padding: 8px; color: #d4af37; font-family: monospace;">${data.passCode}</td></tr>
                 </table>
+                <p style="color: #22c55e; margin-top: 15px; font-weight: bold;">🛍️ Twoja zniżka ${data.discountPercent}% w sklepie klubowym została aktywowana!</p>
                 <h3 style="color: #d4af37; margin-top: 20px;">Twoje miejsca na mecze domowe (${data.occupiedSeats.length}):</h3>
                 <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
                     <tr style="background: #714a36;">
@@ -111,6 +114,37 @@ export function generateSeasonTicketEmailHtml(data: {
             </div>
             <div style="text-align: center; padding: 20px; color: #c4a58b; font-size: 12px;">
                 <p>Chaber Pobiedziska - Bądź częścią naszej rodziny!</p>
+            </div>
+        </div>
+    `;
+}
+
+export function generateContactEmailHtml(data: {
+    imie: string;
+    nazwisko: string;
+    email: string;
+    temat: string;
+    wiadomosc: string;
+}) {
+    return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #1a0f09; color: #f5e6d9;">
+            <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #2d1b12, #714a36); border-radius: 10px;">
+                <h1 style="color: #d4af37; margin: 0;">🏟️ Chaber Pobiedziska</h1>
+                <p style="font-size: 18px; margin: 10px 0 0;">Nowa wiadomość kontaktowa</p>
+            </div>
+            <div style="padding: 20px; background: #2d1b12; border-radius: 10px; margin-top: 20px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr><td style="padding: 8px; color: #c4a58b;">Od:</td><td style="padding: 8px; color: #f5e6d9; font-weight: bold;">${data.imie} ${data.nazwisko}</td></tr>
+                    <tr><td style="padding: 8px; color: #c4a58b;">Email:</td><td style="padding: 8px; color: #d4af37;">${data.email}</td></tr>
+                    <tr><td style="padding: 8px; color: #c4a58b;">Temat:</td><td style="padding: 8px; color: #f5e6d9; font-weight: bold;">${data.temat}</td></tr>
+                </table>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; border-left: 3px solid #d4af37;">
+                    <p style="color: #c4a58b; margin: 0 0 8px;">Treść wiadomości:</p>
+                    <p style="color: #f5e6d9; margin: 0; line-height: 1.6;">${data.wiadomosc}</p>
+                </div>
+            </div>
+            <div style="text-align: center; padding: 20px; color: #c4a58b; font-size: 12px;">
+                <p>Wiadomość wysłana przez formularz kontaktowy</p>
             </div>
         </div>
     `;
