@@ -110,9 +110,11 @@ model u_ytkownik {
 }
 
 model wiadomo_ci {
-  ID      Int       @id @default(autoincrement())
-  Zdj_cie String    @map("Zdjęcie") @db.VarChar(100)
-  akapity akapity[]
+  ID       Int       @id @default(autoincrement())
+  Nag__wek String    @map("Nagłówek") @db.VarChar(100)
+  Zdj_cie  String    @map("Zdjęcie") @db.VarChar(100)
+  Data     DateTime  @default(now()) @db.Date
+  akapity  akapity[]
 
   @@map("wiadomości")
 }
@@ -180,4 +182,26 @@ model karnet {
   kod_karnetu  String   @unique @db.VarChar(50)
 
   @@map("karnety")
+}
+
+model punkty_scoutingowe {
+  ID                     Int       @id @default(autoincrement())
+  szerokosc_geograficzna Decimal?  @db.Decimal(9, 6)
+  dlugosc_geograficzna   Decimal?  @db.Decimal(9, 6)
+  miejsce                String?   @db.VarChar(255)
+  data                   DateTime? @db.Date
+  Ilosc_miejsca          Int
+  zapis                  zapis[]
+}
+
+model zapis {
+  ID                 Int                @id @default(autoincrement())
+  ID_Punktu          Int
+  Imie               String             @db.VarChar(30)
+  Nazwisko           String             @db.VarChar(50)
+  Wiek               Int
+  Email              String             @db.VarChar(70)
+  punkty_scoutingowe punkty_scoutingowe @relation(fields: [ID_Punktu], references: [ID], onUpdate: Restrict, map: "zapis_ibfk_1")
+
+  @@index([ID_Punktu], map: "ID_Punktu")
 }

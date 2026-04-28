@@ -1,0 +1,98 @@
+$colormenu: #61331c;
+
+.RegisterPage {
+  min-height: 100vh;
+  background-color: #1a0f0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  .FormCard {
+    background: rgba($colormenu, 0.1);
+    border: 1px solid rgba($colormenu, 0.3);
+    padding: 3rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 400px;
+
+    h1 { color: white; margin-bottom: 2rem; text-align: center; font-size: 1.5rem; }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba($colormenu, 0.5);
+        padding: 0.8rem;
+        border-radius: 0.5rem;
+        color: white;
+        &:focus { outline: none; border-color: lighten($colormenu, 20%); }
+      }
+
+      button {
+        background: $colormenu;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+        &:hover { background: lighten($colormenu, 10%); }
+        &:disabled { opacity: 0.5; }
+      }
+    }
+  }
+
+  .Success { color: #4caf50; text-align: center; font-weight: bold; }
+  .Error { color: #f44336; font-size: 0.8rem; text-align: center; }
+  $colormenu: #61331c;
+
+  .RegisterPage {
+    min-height: 100vh;
+    background: #1a0f0a;
+    display: grid;
+    place-items: center;
+    color: white;
+
+    .FormCard {
+      background: rgba($colormenu, 0.1);
+      border: 1px solid rgba($colormenu, 0.3);
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 350px;
+
+      h1 { text-align: center; margin-bottom: 1.5rem; }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        input {
+          background: #000;
+          border: 1px solid $colormenu;
+          padding: 0.7rem;
+          border-radius: 0.4rem;
+          color: white;
+        }
+
+        button {
+          background: $colormenu;
+          color: white;
+          border: none;
+          padding: 0.8rem;
+          border-radius: 0.4rem;
+          font-weight: bold;
+          cursor: pointer;
+          &:hover { background: lighten($colormenu, 10%); }
+        }
+      }
+    }
+  }
+
+}

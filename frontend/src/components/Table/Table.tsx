@@ -1,12 +1,30 @@
 import styles from "./Table.module.scss";
 import useTable from "../../queries/tableQuery.ts";
 import type {Tabela} from "../../types/Tabela.ts";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Table() {
+    const queryClient = useQueryClient();
     const {data: tableData, isLoading, isError, error} = useTable();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            queryClient.invalidateQueries({ queryKey: ['table'] });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [queryClient]);
 
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;
+
+    const sortedData = [...(tableData || [])].sort((a, b) => {
+        if (b.punkty !== a.punkty) return b.punkty - a.punkty;
+        if (b.bilansBramek !== a.bilansBramek) return b.bilansBramek - a.bilansBramek;
+        return b.goleZdobyte - a.goleZdobyte;
+    });
+
     return (
         <div className={styles.TableContainer}>
             <table className={styles.Table}>
@@ -25,7 +43,7 @@ export default function Table() {
                 </tr>
                 </thead>
                 <tbody>
-                {tableData?.map((k: Tabela, index: number) => (
+                {sortedData.map((k: Tabela, index: number) => (
                     <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
                         <td className={styles.Pos}>{index + 1}</td>
                         <td className={styles.desc}>
@@ -38,7 +56,9 @@ export default function Table() {
                         <td>{k.porazki}</td>
                         <td>{k.goleZdobyte}</td>
                         <td>{k.goleStracone}</td>
-                        <td className={styles.Bilans}>{k.bilansBramek > 0 ? `+${k.bilansBramek}` : k.bilansBramek}</td>
+                        <td className={styles.Bilans}>
+                            {k.bilansBramek > 0 ? `+${k.bilansBramek}` : k.bilansBramek}
+                        </td>
                         <td className={styles.Points}>{k.punkty}</td>
                     </tr>
                 ))}
