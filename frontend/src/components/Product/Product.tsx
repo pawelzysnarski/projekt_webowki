@@ -63,27 +63,21 @@ export default function Product() {
         return cat === 'spodenki' || cat === 'koszulki' || cat === 'komplety';
     };
 
-    const showBackView = (): boolean => {
-        if (!product) return false;
-        const cat = product.category?.toLowerCase() || '';
-        const name = product.name.toLowerCase();
-        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
-        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
-    };
-
     const showPersonalization = (): boolean => {
         if (!product) return false;
-        const cat = product.category?.toLowerCase() || '';
         const name = product.name.toLowerCase();
-        const isMainBear = name === 'misiek' && !name.includes('bramkarz') && !name.match(/\d+/);
-        return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
+        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
+        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
     };
 
     const getFilteredPlayers = (): Zawodnik[] => {
         if (!players || !product) return [];
 
         const name = product.name.toLowerCase();
-        const isGoalkeeperProduct = name.includes('bramkarz');
+        const isGoalkeeperProduct = name.includes('bramkarsk') || name.includes('bramkarz');
+        const isShirtOrKit = name.includes('koszulka') || name.includes('komplet') || name.includes('misiek');
+
+        if (!isShirtOrKit) return [];
 
         if (isGoalkeeperProduct) {
             return players.filter((p: Zawodnik) => p.Pozycja === 'Bramkarz');
@@ -101,26 +95,40 @@ export default function Product() {
         return playerValue;
     };
 
-    const getBackImage = (): string => {
-        if (!product) return '';
-        const baseName = product.image.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
-        return `/products/${baseName}_tył.jpg`;
+    const hasBackImage = (): boolean => {
+        if (!product) return false;
+        const name = product.name.toLowerCase();
+        const isMainBear = name === 'Pluszowa Maskotka Klubu Chaber Pobiedziska'.toLowerCase();
+        return (name.includes('koszulka') || name.includes('komplet') || (name.includes('misiek') && !isMainBear));
+    };
+
+    const showBackView = (): boolean => {
+        if (!product) return false;
+        return hasBackImage();
     };
 
     const getProductImage = (): string => {
         if (!product) return '';
-        if (selectedView === 'back' && showBackView()) {
-            return getBackImage();
+        if (selectedView === 'back' && hasBackImage()) {
+            if (product.image_back) {
+                return `/products/${product.image_back}`;
+            }
+            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+            return `/products/${baseName}_tył.jpg`;
         }
-        return `/products/${product.image}`;
+        return `/products/${product.image_front || product.image}`;
     };
 
     const getThumbnailImage = (view: 'front' | 'back'): string => {
         if (!product) return '';
-        if (view === 'back' && showBackView()) {
-            return getBackImage();
+        if (view === 'back' && hasBackImage()) {
+            if (product.image_back) {
+                return `/products/${product.image_back}`;
+            }
+            const baseName = product.image_front?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '') || product.image?.replace('.png', '').replace('.jpeg', '').replace('.jpg', '');
+            return `/products/${baseName}_tył.jpg`;
         }
-        return `/products/${product.image}`;
+        return `/products/${product.image_front || product.image}`;
     };
 
     const getDisplayText = (): { name: string; number: string } => {
@@ -160,6 +168,46 @@ export default function Product() {
         if (numLength === 2) return '10rem';
         return '1.5rem';
     };
+
+    const isWhiteProduct = (): boolean => {
+        if (!product) return false;
+        const name = product.name.toLowerCase();
+        return name === 'koszulka2' || name === 'komplet2' || name === 'misiek2';
+    };
+
+    const getTextColor = (): string => {
+        if (!product) return 'white';
+        const name = product.name.toLowerCase();
+        if (name === 'koszulka2' || name === 'komplet2' || name === 'misiek2') {
+            return '#888888';
+        }
+        return 'white';
+    };
+
+    const getTextPosition = (): { top: string } => {
+        if (!product) return { top: '50%' };
+        const name = product.name.toLowerCase();
+        if (name.includes('misiek')) {
+            return { top: '45%' };
+        }
+        if (name.includes('komplet') && name!="komplet1") {
+            return { top: '30%' };
+        }
+        return { top: '35%' };
+    };
+
+    const getTextSize = (): { nameSize: string; numberSize: string } => {
+        if (!product) return { nameSize: '1rem', numberSize: '2rem' };
+        const name = product.name.toLowerCase();
+        if (name.includes('misiek')) {
+
+            return { nameSize: '1rem', numberSize: '5rem' };
+        }
+        return { nameSize: '1rem', numberSize: '2rem' };
+    };
+
+    const textPosition = getTextPosition();
+    const { nameSize, numberSize } = getTextSize();
 
     const [customNameError, setCustomNameError] = useState('');
     const [customNumberError, setCustomNumberError] = useState('');
@@ -570,9 +618,11 @@ export default function Product() {
                                     <div className={styles.cartTotal}>
                                         <strong>Razem: {formatPrice(getCartTotal())}</strong>
                                     </div>
-                                    <button className={styles.checkoutButton}>Złóż zamówienie</button>
                                     <button className={styles.clearCartButton} onClick={clearCart}>
                                         🗑️ Opróżnij koszyk
+                                    </button>
+                                    <button className={styles.checkoutButton} onClick={() => navigate('/zamowienie')}>
+                                        Złóż zamówienie
                                     </button>
                                 </>
                             )}
@@ -586,9 +636,27 @@ export default function Product() {
                     <div className={styles.imageWrapper}>
                         <img src={getProductImage()} alt={product.name} />
                         {selectedView === 'back' && showBackView() && (displayText.name || displayText.number) && (
-                            <div className={styles.textOverlay}>
-                                <div className={styles.playerName} style={{ fontSize: getFontSize(displayText.name) }}>{displayText.name}</div>
-                                <div className={styles.playerNumber} style={{ fontSize: getNumberFontSize(displayText.number) }}>{displayText.number}</div>
+                            <div className={styles.textOverlay} style={{ top: textPosition.top }}>
+                                <div
+                                    className={styles.playerName}
+                                    style={{
+                                        fontSize: product?.name.toLowerCase().includes('misiek') ? nameSize : getFontSize(displayText.name),
+                                        color: getTextColor(),
+                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
+                                    }}
+                                >
+                                    {displayText.name}
+                                </div>
+                                <div
+                                    className={styles.playerNumber}
+                                    style={{
+                                        fontSize: product?.name.toLowerCase().includes('misiek') ? numberSize : getNumberFontSize(displayText.number),
+                                        color: getTextColor(),
+                                        textShadow: isWhiteProduct() ? 'none' : '2px 2px 4px rgba(0, 0, 0, 0.8)'
+                                    }}
+                                >
+                                    {displayText.number}
+                                </div>
                             </div>
                         )}
                     </div>
@@ -686,7 +754,7 @@ export default function Product() {
                         </div>
                     )}
 
-                    {showBackView() && (
+                    {hasBackImage() && (
                         <div className={styles.viewSelector}>
                             <button
                                 className={`${styles.viewButton} ${selectedView === 'front' ? styles.activeView : ''}`}

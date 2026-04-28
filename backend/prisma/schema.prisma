@@ -62,6 +62,8 @@ model produkty {
   category    String  @db.VarChar(50)
   subcategory String  @db.VarChar(50)
   image       String  @db.VarChar(255)
+  image_front String  @db.VarChar(255)
+  image_back  String  @db.VarChar(255)
 }
 
 model akapity {

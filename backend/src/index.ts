@@ -9,6 +9,7 @@ import ticketsRouter from "./routes/ticketsRouter";
 import newsDbRouter from "./routes/newsDbRouter.ts";
 import scoutDbRouter from "./routes/scoutDbRouter.ts";
 import AcademyRegisterDbRouter from "./routes/academyRegisterDbRouter.ts";
+import orderRouter from './routes/orderRouter.js';
 const app = express();
 const port = 3000;
 
@@ -19,6 +20,7 @@ app.use(express.static("public"));
 app.use("/api/table", tableDbRouter);
 app.use("/api/shop", shopDbRouter);
 app.use("/api/players", playersDbRouter);
+app.use('/api/orders', orderRouter);
 app.use("/api/matches", matchesDbRouter);
 app.use("/api/staff", staffDbRouter);
 app.use("/api/tickets",ticketsRouter);

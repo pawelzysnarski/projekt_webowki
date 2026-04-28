@@ -16,6 +16,7 @@ import StaffDesc from "./components/StaffDesc/StaffDesc.tsx";
 import NewsPage from "./routes/NewsPage/NewsPage.tsx";
 import AcademyPage from "./routes/AcademyPage/AcademyPage.tsx";
 import AcademyRegister from "./routes/AcademyRegister/AcademyRegister.tsx";
+import OrderPage from "./routes/OrderPage/OrderPage.tsx";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/aktualnosci" element={<NewsPage/>}/>
             <Route path="/akademia" element={<AcademyPage/>}/>
             <Route path="/akademia/zapis/:id" element={<AcademyRegister/>}/>
+            <Route path="/zamowienie" element={<OrderPage />} />
         </Routes>
     </BrowserRouter>
   )
