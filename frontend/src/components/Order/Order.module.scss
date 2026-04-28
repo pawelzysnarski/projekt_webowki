@@ -1,8 +1,14 @@
+$colormenu: #61331c;
+$colorgold: #c8922a;
+$bg-light: #f5f0ea;
+$shadow-sm: 0 2px 8px rgba($colormenu, 0.08);
+$transition: all 0.2s ease;
+
 .orderContainer {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #f5f0ea;
+  background-color: $bg-light;
   min-height: calc(100vh - 120px);
 }
 
@@ -17,7 +23,7 @@
 
 .orderHeader h1 {
   font-family: "Bookman Old Style", sans-serif;
-  color: #61331c;
+  color: $colormenu;
   margin: 0;
 }
 
@@ -25,11 +31,11 @@
   background: none;
   border: none;
   font-size: 1rem;
-  color: #61331c;
+  color: $colormenu;
   cursor: pointer;
   padding: 0.5rem 1rem;
   font-family: Cambria, sans-serif;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:hover {
     text-decoration: underline;
@@ -42,12 +48,12 @@
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(97, 51, 28, 0.08);
+  box-shadow: $shadow-sm;
 }
 
 .cartSummary h2 {
   font-family: Cambria, sans-serif;
-  color: #61331c;
+  color: $colormenu;
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
@@ -68,7 +74,7 @@
 
 .itemName {
   font-weight: bold;
-  color: #61331c;
+  color: $colormenu;
   margin: 0 0 0.2rem 0;
   font-family: Cambria, sans-serif;
 }
@@ -81,7 +87,7 @@
 }
 
 .itemPlayer {
-  color: #c8922a;
+  color: $colorgold;
   font-weight: bold;
 }
 
@@ -105,14 +111,14 @@
 
 .newPrice {
   font-size: 1rem;
-  color: #c8922a;
+  color: $colorgold;
   font-weight: bold;
   display: block;
 }
 
 .totalItemPrice {
   font-size: 0.9rem;
-  color: #61331c;
+  color: $colormenu;
   font-weight: bold;
   margin: 0.2rem 0 0 0;
 }
@@ -140,7 +146,7 @@
 }
 
 .newTotal {
-  color: #c8922a;
+  color: $colorgold;
   font-size: 1.4rem;
 }
 
@@ -158,12 +164,12 @@
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(97, 51, 28, 0.08);
+  box-shadow: $shadow-sm;
 }
 
 .discountSection h3 {
   font-family: Cambria, sans-serif;
-  color: #61331c;
+  color: $colormenu;
   margin-bottom: 1rem;
   font-size: 1rem;
 }
@@ -180,32 +186,32 @@
   border-radius: 0.5rem;
   font-size: 1rem;
   font-family: Cambria, sans-serif;
-}
 
-.discountInput input:focus {
-  border-color: #c8922a;
-  outline: none;
+  &:focus {
+    border-color: $colorgold;
+    outline: none;
+  }
 }
 
 .discountInput button {
   padding: 0.8rem 1.5rem;
-  background: #61331c;
+  background: $colormenu;
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
+  transition: $transition;
 
-.discountInput button:hover:not(:disabled) {
-  background: #4a2512;
-}
+  &:hover:not(:disabled) {
+    background: darken($colormenu, 8);
+  }
 
-.discountInput button:disabled {
-  background: #a08060;
-  cursor: not-allowed;
+  &:disabled {
+    background: #a08060;
+    cursor: not-allowed;
+  }
 }
 
 .discountInfo {
@@ -221,19 +227,43 @@
   color: #e53935;
 }
 
+.appliedCodes {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: $colormenu;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appliedCode {
+  background: #4caf50;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.codesLimit {
+  font-size: 0.7rem;
+  color: #a08060;
+  margin-left: 0.5rem;
+}
+
 .checkboxLabel {
   display: flex;
   align-items: center;
   gap: 0.8rem;
   cursor: pointer;
   font-family: Cambria, sans-serif;
-  color: #61331c;
-}
+  color: $colormenu;
 
-.checkboxLabel input {
-  width: 1.2rem;
-  height: 1.2rem;
-  cursor: pointer;
+  input {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+  }
 }
 
 .orderButton {
@@ -246,24 +276,24 @@
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
   margin-top: 1rem;
-}
 
-.orderButton:hover {
-  background: #45a049;
+  &:hover {
+    background: #45a049;
+  }
 }
 
 .successPage, .emptyPage {
   text-align: center;
   padding: 3rem;
-  background-color: #f5f0ea;
+  background-color: $bg-light;
   min-height: calc(100vh - 120px);
 }
 
 .successPage h2, .emptyPage h2 {
   font-family: "Bookman Old Style", sans-serif;
-  color: #61331c;
+  color: $colormenu;
   margin-bottom: 1rem;
 }
 
@@ -276,12 +306,17 @@
 .emptyPage button {
   margin-top: 1rem;
   padding: 0.8rem 1.5rem;
-  background: #61331c;
+  background: $colormenu;
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: darken($colormenu, 8);
+  }
 }
 
 @media (max-width: 768px) {
@@ -325,5 +360,20 @@
 
   .discountSection, .memberSection {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .totalRow {
+    font-size: 1rem;
+  }
+
+  .newTotal {
+    font-size: 1.2rem;
+  }
+
+  .orderButton {
+    font-size: 1rem;
+    padding: 0.8rem;
   }
 }

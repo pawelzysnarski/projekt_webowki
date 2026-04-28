@@ -1,8 +1,15 @@
+$colormenu: #61331c;
+$colorgold: #c8922a;
+$bg-light: #f5f0ea;
+$shadow-sm: 0 2px 8px rgba($colormenu, 0.08);
+$shadow-md: 0 6px 18px rgba($colormenu, 0.12);
+$transition: all 0.2s ease;
+
 .productPage {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #f5f0ea;
+  background-color: $bg-light;
   min-height: calc(100vh - 120px);
 }
 
@@ -10,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -19,11 +26,11 @@
   background: none;
   border: none;
   font-size: 1rem;
-  color: #61331c;
+  color: $colormenu;
   cursor: pointer;
   padding: 0.5rem 1rem;
   font-family: Cambria, sans-serif;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:hover {
     text-decoration: underline;
@@ -37,7 +44,7 @@
 
 .cartButton {
   position: relative;
-  background: #61331c;
+  background: $colormenu;
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -46,13 +53,13 @@
   font-weight: bold;
   cursor: pointer;
   font-family: Cambria, sans-serif;
-  transition: all 0.2s ease;
+  transition: $transition;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   &:hover {
-    background: #4a2512;
+    background: darken($colormenu, 8);
     transform: scale(1.02);
   }
 }
@@ -79,7 +86,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +100,7 @@
   max-width: 500px;
   max-height: 80vh;
   overflow: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
 .cartHeader {
@@ -101,11 +108,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 2px solid #e0d5cc;
+  border-bottom: 2px solid lighten($colormenu, 40);
 
   h3 {
     font-family: "Bookman Old Style", sans-serif;
-    color: #61331c;
+    color: $colormenu;
     margin: 0;
   }
 
@@ -114,11 +121,11 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #a08060;
-    transition: all 0.2s ease;
+    color: lighten($colormenu, 30);
+    transition: $transition;
 
     &:hover {
-      color: #61331c;
+      color: $colormenu;
     }
   }
 }
@@ -129,7 +136,7 @@
 
 .emptyCart {
   text-align: center;
-  color: #a08060;
+  color: lighten($colormenu, 30);
   padding: 2rem;
 }
 
@@ -138,7 +145,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 0;
-  border-bottom: 1px solid #f0e8e0;
+  border-bottom: 1px solid lighten($colormenu, 45);
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -159,7 +166,7 @@
 
   .cartItemName {
     font-weight: bold;
-    color: #61331c;
+    color: $colormenu;
     margin: 0 0 0.2rem 0;
     font-family: Cambria, sans-serif;
     cursor: pointer;
@@ -180,7 +187,7 @@
 
   .cartItemPrice {
     font-size: 0.9rem;
-    color: #a08060;
+    color: lighten($colormenu, 20);
     margin: 0;
   }
 }
@@ -191,16 +198,16 @@
   gap: 0.5rem;
 
   button {
-    background: #f0e8e0;
-    border: 1px solid #d4c5b8;
+    background: lighten($colormenu, 50);
+    border: 1px solid lighten($colormenu, 40);
     padding: 0.3rem 0.7rem;
     cursor: pointer;
     border-radius: 0.3rem;
     font-weight: bold;
-    transition: all 0.2s ease;
+    transition: $transition;
 
     &:hover {
-      background: #e0d5cc;
+      background: lighten($colormenu, 40);
     }
   }
 
@@ -216,7 +223,7 @@
     border: none;
 
     &:hover {
-      background: #c62828;
+      background: darken(#e53935, 10);
     }
   }
 }
@@ -225,13 +232,13 @@
   text-align: right;
   padding: 1rem 0;
   font-size: 1.2rem;
-  border-top: 2px solid #e0d5cc;
+  border-top: 2px solid lighten($colormenu, 40);
   margin-top: 0.5rem;
 }
 
 .checkoutButton, .clearCartButton {
   width: 100%;
-  background: #61331c;
+  background: $colormenu;
   color: white;
   border: none;
   padding: 0.8rem;
@@ -240,10 +247,10 @@
   font-weight: bold;
   cursor: pointer;
   margin-top: 1rem;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:hover {
-    background: #4a2512;
+    background: darken($colormenu, 8);
   }
 }
 
@@ -263,23 +270,33 @@
   background: white;
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(97, 51, 28, 0.08);
+  box-shadow: $shadow-sm;
   margin-bottom: 3rem;
 }
 
 .imageSection {
   position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 
   img {
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 0.5rem;
+    display: block;
   }
 }
 
 .imageWrapper {
   position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .textOverlay {
@@ -294,11 +311,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .playerName {
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-family: 'Arial', sans-serif;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -306,7 +324,7 @@
 
 .playerNumber {
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-family: 'Arial', sans-serif;
   letter-spacing: 2px;
   margin-top: 0.2rem;
@@ -322,21 +340,21 @@
 .productName {
   font-family: "Bookman Old Style", sans-serif;
   font-size: 2rem;
-  color: #61331c;
+  color: $colormenu;
   margin: 0;
 }
 
 .productPrice {
   font-size: 1.8rem;
-  color: #c8922a;
+  color: $colorgold;
   font-weight: bold;
   margin: 0;
 }
 
-.sizeSection, .quantitySection, .playerSection, .personalizationSection {
+.sizeSection, .quantitySection {
   h3 {
     font-family: Cambria, sans-serif;
-    color: #61331c;
+    color: $colormenu;
     margin-bottom: 0.8rem;
     font-size: 1.1rem;
   }
@@ -357,16 +375,16 @@
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:hover {
-    border-color: #c8922a;
+    border-color: $colorgold;
   }
 
   &.active {
-    background: #61331c;
+    background: $colormenu;
     color: white;
-    border-color: #61331c;
+    border-color: $colormenu;
   }
 }
 
@@ -383,10 +401,10 @@
     border-radius: 0.5rem;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: $transition;
 
     &:hover {
-      border-color: #c8922a;
+      border-color: $colorgold;
     }
   }
 
@@ -398,13 +416,24 @@
   }
 }
 
+.personalizationSection {
+  margin: 0.5rem 0;
+
+  h3 {
+    font-family: Cambria, sans-serif;
+    color: $colormenu;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
+}
+
 .playerSelectWrapper {
   margin-bottom: 1rem;
 
   label {
     display: block;
     font-size: 0.9rem;
-    color: #61331c;
+    color: $colormenu;
     margin-bottom: 0.3rem;
     font-family: Cambria, sans-serif;
   }
@@ -419,12 +448,12 @@
   font-family: Cambria, sans-serif;
   background: white;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:focus {
-    border-color: #c8922a;
+    border-color: $colorgold;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2);
+    box-shadow: 0 0 0 3px rgba($colorgold, 0.2);
   }
 }
 
@@ -441,7 +470,7 @@
   label {
     display: block;
     font-size: 0.9rem;
-    color: #61331c;
+    color: $colormenu;
     margin-bottom: 0.3rem;
     font-family: Cambria, sans-serif;
   }
@@ -455,12 +484,12 @@
   font-size: 1rem;
   font-family: Cambria, sans-serif;
   margin-bottom: 0.5rem;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   &:focus {
-    border-color: #c8922a;
+    border-color: $colorgold;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2);
+    box-shadow: 0 0 0 3px rgba($colorgold, 0.2);
   }
 }
 
@@ -489,7 +518,7 @@
   border: 2px solid #e0d5cc;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
 
   img {
     width: 60px;
@@ -501,7 +530,7 @@
   span {
     font-size: 0.8rem;
     font-family: Cambria, sans-serif;
-    color: #61331c;
+    color: $colormenu;
   }
 
   &:hover {
@@ -510,8 +539,8 @@
   }
 
   &.activeView {
-    background: #61331c;
-    border-color: #61331c;
+    background: $colormenu;
+    border-color: $colormenu;
 
     span {
       color: white;
@@ -520,7 +549,7 @@
 }
 
 .addToCartButton {
-  background: #61331c;
+  background: $colormenu;
   color: white;
   border: none;
   padding: 1rem;
@@ -528,11 +557,11 @@
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
   margin-top: 1rem;
 
   &:hover {
-    background: #4a2512;
+    background: darken($colormenu, 8);
   }
 }
 
@@ -557,7 +586,7 @@
   h2 {
     font-family: "Bookman Old Style", sans-serif;
     font-size: 1.5rem;
-    color: #61331c;
+    color: $colormenu;
     margin-bottom: 1.5rem;
   }
 }
@@ -573,12 +602,12 @@
   border-radius: 0.8rem;
   padding: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition;
   text-align: center;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(97, 51, 28, 0.12);
+    box-shadow: $shadow-md;
   }
 
   img {
@@ -597,7 +626,7 @@
 
   .similarPrice {
     font-size: 1rem;
-    color: #61331c;
+    color: $colormenu;
     font-weight: bold;
     margin: 0;
   }
@@ -607,12 +636,33 @@
   text-align: center;
   padding: 3rem;
   font-size: 1.2rem;
-  color: #61331c;
+  color: $colormenu;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1025px) {
   .productContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .productPage {
+    padding: 1.5rem;
+  }
+
+  .productContainer {
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .productName {
+    font-size: 1.8rem;
+  }
+
+  .productPrice {
+    font-size: 1.6rem;
   }
 
   .similarGrid {
@@ -664,7 +714,7 @@
   }
 
   .similarGrid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
   }
 
@@ -696,5 +746,66 @@
 
   .cartItemControls {
     justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .productPage {
+    padding: 0.8rem;
+  }
+
+  .productContainer {
+    padding: 0.8rem;
+  }
+
+  .productName {
+    font-size: 1.3rem;
+  }
+
+  .productPrice {
+    font-size: 1.2rem;
+  }
+
+  .sizeButton {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .quantityControls button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .viewButton img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .viewButton span {
+    font-size: 0.7rem;
+  }
+
+  .similarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .similarItem img {
+    height: 100px;
+  }
+
+  .similarName {
+    font-size: 0.7rem;
+  }
+
+  .similarPrice {
+    font-size: 0.85rem;
+  }
+
+  .addToCartButton {
+    padding: 0.8rem;
+    font-size: 1rem;
   }
 }

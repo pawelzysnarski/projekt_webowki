@@ -633,6 +633,10 @@ $transition: all 0.2s ease;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
+
+  .sidebar {
+    width: 200px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -713,5 +717,41 @@ $transition: all 0.2s ease;
   .cartButton {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shopGrid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .shopItem {
+    .imageWrapper .productImage {
+      height: 100px;
+    }
+
+    .itemInfo {
+      .itemName {
+        font-size: 0.75rem;
+      }
+
+      .itemPrice {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .filtersSection {
+    padding: 0.8rem;
+  }
+
+  .priceInputs {
+    flex-direction: column;
+    align-items: stretch;
+
+    span {
+      text-align: center;
+    }
   }
 }
