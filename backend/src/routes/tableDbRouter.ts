@@ -1,11 +1,14 @@
-import express, {Router} from "express";
+import express, { Router } from "express";
 import prisma from "../prismaDb";
+
 const tableDbRouter = Router();
 tableDbRouter.use(express.json());
+
 tableDbRouter.get("/", async (req, res) => {
     try {
         const teraz = new Date();
-        const mecz = await prisma.terminarz.findFirst({
+
+        const meczeDoRozegrania = await prisma.terminarz.findMany({
             where: {
                 wynik: null,
                 dataSpotkania: { lt: new Date(teraz.getTime() - 2 * 60 * 60 * 1000) }
@@ -13,12 +16,16 @@ tableDbRouter.get("/", async (req, res) => {
             include: { gospodarz: true, gosc: true }
         });
 
-        if (mecz) {
+        for (const mecz of meczeDoRozegrania) {
             const bGosp = Math.floor(Math.random() * (mecz.gospodarz.sila / 20) + Math.random() * 2);
             const bGosc = Math.floor(Math.random() * (mecz.gosc.sila / 20) + Math.random() * 2);
 
             await prisma.wyniki.create({
-                data: { idMeczu: mecz.id, bramkiGospodarzy: bGosp, bramkiGosci: bGosc }
+                data: {
+                    idMeczu: mecz.id,
+                    bramkiGospodarzy: bGosp,
+                    bramkiGosci: bGosc
+                }
             });
 
             await prisma.tabela.update({
@@ -53,9 +60,11 @@ tableDbRouter.get("/", async (req, res) => {
         const result = await prisma.tabela.findMany({
             include: { klub: true }
         });
+
         res.json(result);
     } catch (e) {
         res.status(500).json([]);
     }
 });
+
 export default tableDbRouter;

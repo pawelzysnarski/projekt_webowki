@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthContext/AuthContext';
 import styles from './SeasonTicket.module.scss';
 
 interface TicketBenefit {
@@ -21,6 +22,7 @@ interface TicketTier {
 }
 
 const SeasonTicket: React.FC = () => {
+    const { user } = useAuth();
     const [selectedTier, setSelectedTier] = useState<string>('standard');
     const [selectedPayment, setSelectedPayment] = useState<'oneTime' | 'installment'>('oneTime');
     const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -93,12 +95,6 @@ const SeasonTicket: React.FC = () => {
         const selectedTicket = ticketTiers.find(t => t.id === selectedTier);
         if (!selectedTicket) return;
 
-        const ticketTypeMap: Record<string, string> = {
-            'basic': 'Brązowy Łoś',
-            'standard': 'Srebrny Jeż',
-            'premium': 'Złoty Jeleń'
-        };
-
         const price = selectedPayment === 'oneTime' ? selectedTicket.price : selectedTicket.pricePerMonth * 12;
 
         try {
@@ -106,18 +102,20 @@ const SeasonTicket: React.FC = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    firstName: 'Effie',
-                    lastName: 'Heathcote',
-                    email: 'effie.heathcote@ethereal.email',
+                    firstName: user?.imie || 'Kibic',
+                    lastName: user?.nazwisko || 'Testowy',
+                    email: user?.email || 'kibic@test.pl',
                     ticketType: selectedTier,
-                    price: price
+                    price: price,
+                    userId: user?.id || null
                 })
             });
 
             const data = await response.json();
 
             if (data.success) {
-                alert(`Dziękujemy za zakup karnetu ${selectedTicket.name}!\nKod karnetu: ${data.seasonTicket.kod_karnetu}\nZarezerwowano ${data.occupiedSeats.length} miejsc na mecze domowe.`);
+                const znizka = selectedTicket.name === 'Złoty Jeleń' ? '30%' : selectedTicket.name === 'Srebrny Jeż' ? '20%' : '10%';
+                alert(`Dziękujemy za zakup karnetu ${selectedTicket.name}!\nKod karnetu: ${data.seasonTicket.kod_karnetu}\nZarezerwowano ${data.occupiedSeats.length} miejsc.\nZaloguj się ponownie aby aktywować zniżkę ${znizka}.`);
             } else {
                 alert('Błąd zakupu karnetu');
             }
@@ -126,6 +124,7 @@ const SeasonTicket: React.FC = () => {
             alert('Błąd zakupu karnetu');
         }
     };
+
     return (
         <div className={styles.seasonTicket}>
             <section className={styles.hero}>
@@ -138,18 +137,9 @@ const SeasonTicket: React.FC = () => {
                         Bądź częścią naszej rodziny! Z nami przeżyjesz każdy mecz od pierwszej do ostatniej minuty.
                     </p>
                     <div className={styles.heroStats}>
-                        <div className={styles.stat}>
-                            <span className={styles.statValue}>20+</span>
-                            <span className={styles.statLabel}>Meczów w sezonie</span>
-                        </div>
-                        <div className={styles.stat}>
-                            <span className={styles.statValue}>-30%</span>
-                            <span className={styles.statLabel}>Taniej niż bilety</span>
-                        </div>
-                        <div className={styles.stat}>
-                            <span className={styles.statValue}>1000+</span>
-                            <span className={styles.statLabel}>Zadowolonych kibiców</span>
-                        </div>
+                        <div className={styles.stat}><span className={styles.statValue}>20+</span><span className={styles.statLabel}>Meczów w sezonie</span></div>
+                        <div className={styles.stat}><span className={styles.statValue}>-30%</span><span className={styles.statLabel}>Taniej niż bilety</span></div>
+                        <div className={styles.stat}><span className={styles.statValue}>1000+</span><span className={styles.statLabel}>Zadowolonych kibiców</span></div>
                     </div>
                 </div>
             </section>
@@ -160,35 +150,18 @@ const SeasonTicket: React.FC = () => {
                         <div className={styles.alternativeContent}>
                             <span className={styles.alternativeIcon}>🎟️</span>
                             <h3 className={styles.alternativeTitle}>Nie chcesz kupować karnetu?</h3>
-                            <p className={styles.alternativeDescription}>
-                                Możesz kupić pojedynczy bilet na wybrane spotkanie.
-                                To idealne rozwiązanie dla osób, które nie mogą być na każdym meczu.
-                            </p>
+                            <p className={styles.alternativeDescription}>Możesz kupić pojedynczy bilet na wybrane spotkanie.</p>
                             <div className={styles.alternativeFeatures}>
-                                <div className={styles.feature}>
-                                    <span>✓</span> Kupuj tylko mecze, które Cię interesują
-                                </div>
-                                <div className={styles.feature}>
-                                    <span>✓</span> Wybierz dokładnie miejsce na stadionie
-                                </div>
-                                <div className={styles.feature}>
-                                    <span>✓</span> Brak zobowiązań na cały sezon
-                                </div>
+                                <div className={styles.feature}><span>✓</span> Kupuj tylko mecze, które Cię interesują</div>
+                                <div className={styles.feature}><span>✓</span> Wybierz dokładnie miejsce na stadionie</div>
+                                <div className={styles.feature}><span>✓</span> Brak zobowiązań na cały sezon</div>
                             </div>
-                            <Link to="/bilety/1/brazowy_los" className={styles.alternativeButton}>
-                                Kup bilet jednorazowy →
-                            </Link>
+                            <Link to="/bilety/1/brazowy_los" className={styles.alternativeButton}>Kup bilet jednorazowy →</Link>
                         </div>
                         <div className={styles.alternativeComparison}>
-                            <div className={styles.comparisonItem}>
-                                <span className={styles.comparisonLabel}>Karnet:</span>
-                                <span className={styles.comparisonValue}>od 299 zł / sezon</span>
-                            </div>
+                            <div className={styles.comparisonItem}><span className={styles.comparisonLabel}>Karnet:</span><span className={styles.comparisonValue}>od 299 zł / sezon</span></div>
                             <div className={styles.comparisonDivider}>vs</div>
-                            <div className={styles.comparisonItem}>
-                                <span className={styles.comparisonLabel}>Bilet jednorazowy:</span>
-                                <span className={styles.comparisonValue}>od 50 zł / mecz</span>
-                            </div>
+                            <div className={styles.comparisonItem}><span className={styles.comparisonLabel}>Bilet:</span><span className={styles.comparisonValue}>od 50 zł / mecz</span></div>
                         </div>
                     </div>
                 </div>
@@ -197,9 +170,6 @@ const SeasonTicket: React.FC = () => {
             <section className={styles.benefits}>
                 <div className={styles.container}>
                     <h2 className={styles.sectionTitle}>Dlaczego warto?</h2>
-                    <p className={styles.sectionSubtitle}>
-                        Karnet to nie tylko tańsze bilety, ale także wiele dodatkowych korzyści
-                    </p>
                     <div className={styles.benefitsGrid}>
                         {benefits.map((benefit) => (
                             <div key={benefit.id} className={styles.benefitCard}>
@@ -215,72 +185,26 @@ const SeasonTicket: React.FC = () => {
             <section className={styles.tiers}>
                 <div className={styles.container}>
                     <h2 className={styles.sectionTitle}>Wybierz swój karnet</h2>
-                    <p className={styles.sectionSubtitle}>
-                        Dopasuj pakiet do swoich potrzeb i możliwości
-                    </p>
-
                     <div className={styles.paymentToggle}>
-                        <button
-                            className={`${styles.paymentOption} ${selectedPayment === 'oneTime' ? styles.active : ''}`}
-                            onClick={() => setSelectedPayment('oneTime')}
-                        >
-                            Płatność jednorazowa
-                        </button>
-                        <button
-                            className={`${styles.paymentOption} ${selectedPayment === 'installment' ? styles.active : ''}`}
-                            onClick={() => setSelectedPayment('installment')}
-                        >
-                            Płatność miesięczna
-                        </button>
+                        <button className={`${styles.paymentOption} ${selectedPayment === 'oneTime' ? styles.active : ''}`} onClick={() => setSelectedPayment('oneTime')}>Płatność jednorazowa</button>
+                        <button className={`${styles.paymentOption} ${selectedPayment === 'installment' ? styles.active : ''}`} onClick={() => setSelectedPayment('installment')}>Płatność miesięczna</button>
                     </div>
-
                     <div className={styles.tiersGrid}>
                         {ticketTiers.map((tier) => (
-                            <div
-                                key={tier.id}
-                                className={`${styles.tierCard} ${selectedTier === tier.id ? styles.selected : ''} ${tier.recommended ? styles.recommended : ''}`}
-                                onClick={() => setSelectedTier(tier.id)}
-                            >
-                                {tier.badge && (
-                                    <div className={styles.tierBadge} style={{ background: tier.color }}>
-                                        {tier.badge}
-                                    </div>
-                                )}
-                                {tier.recommended && (
-                                    <div className={styles.recommendedBadge}>⭐ Polecany</div>
-                                )}
+                            <div key={tier.id} className={`${styles.tierCard} ${selectedTier === tier.id ? styles.selected : ''} ${tier.recommended ? styles.recommended : ''}`} onClick={() => setSelectedTier(tier.id)}>
+                                {tier.badge && <div className={styles.tierBadge} style={{ background: tier.color }}>{tier.badge}</div>}
+                                {tier.recommended && <div className={styles.recommendedBadge}>⭐ Polecany</div>}
                                 <h3 className={styles.tierName}>{tier.name}</h3>
                                 <div className={styles.tierPrice}>
-                                    <span className={styles.priceAmount}>
-                                        {selectedPayment === 'oneTime' ? tier.price : tier.pricePerMonth}
-                                    </span>
-                                    <span className={styles.pricePeriod}>
-                                        {selectedPayment === 'oneTime' ? 'zł / sezon' : 'zł / miesiąc'}
-                                    </span>
+                                    <span className={styles.priceAmount}>{selectedPayment === 'oneTime' ? tier.price : tier.pricePerMonth}</span>
+                                    <span className={styles.pricePeriod}>{selectedPayment === 'oneTime' ? 'zł / sezon' : 'zł / miesiąc'}</span>
                                 </div>
-                                {selectedPayment === 'installment' && (
-                                    <div className={styles.totalPrice}>
-                                        Łącznie: {tier.price} zł / sezon
-                                    </div>
-                                )}
                                 <ul className={styles.tierBenefits}>
                                     {tier.benefits.map((benefit, index) => (
-                                        <li key={index}>
-                                            <span className={styles.checkmark}>✓</span>
-                                            {benefit}
-                                        </li>
+                                        <li key={index}><span className={styles.checkmark}>✓</span>{benefit}</li>
                                     ))}
                                 </ul>
-                                <button
-                                    className={styles.selectButton}
-                                    style={{ background: tier.color }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedTier(tier.id);
-                                    }}
-                                >
-                                    Wybierz {tier.name}
-                                </button>
+                                <button className={styles.selectButton} style={{ background: tier.color }} onClick={(e) => { e.stopPropagation(); setSelectedTier(tier.id); }}>Wybierz {tier.name}</button>
                             </div>
                         ))}
                     </div>
@@ -291,25 +215,15 @@ const SeasonTicket: React.FC = () => {
                 <div className={styles.container}>
                     <div className={styles.ctaContent}>
                         <h2 className={styles.ctaTitle}>Nie czekaj!</h2>
-                        <p className={styles.ctaDescription}>
-                            Liczba karnetów jest ograniczona. Im wcześniej kupisz, tym lepsze miejsce wybierzesz.
-                        </p>
+                        <p className={styles.ctaDescription}>Liczba karnetów jest ograniczona.</p>
                         <div className={styles.ctaButtons}>
-                            <button className={styles.ctaButton} onClick={handleBuyTicket}>
-                                Kup karnet teraz
-                            </button>
-                            <Link to="/bilety/1/brazowy_los" className={styles.ctaButtonSecondary}>
-                                Kup bilet jednorazowy
-                            </Link>
+                            <button className={styles.ctaButton} onClick={handleBuyTicket}>Kup karnet teraz</button>
+                            <Link to="/bilety/1/brazowy_los" className={styles.ctaButtonSecondary}>Kup bilet jednorazowy</Link>
                         </div>
                         <div className={styles.terms}>
                             <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    checked={agreedToTerms}
-                                    onChange={(e) => setAgreedToTerms(e.target.checked)}
-                                />
-                                <span>Akceptuję <a href="#">regulamin</a> i <a href="#">politykę prywatności</a></span>
+                                <input type="checkbox" checked={agreedToTerms} onChange={(e) => setAgreedToTerms(e.target.checked)} />
+                                <span>Akceptuję <a href="/regulamin.html" target="_blank" rel="noopener noreferrer">regulamin</a> i <a href="/regulamin.html" target="_blank" rel="noopener noreferrer">politykę prywatności</a></span>
                             </label>
                         </div>
                     </div>
@@ -320,30 +234,12 @@ const SeasonTicket: React.FC = () => {
                 <div className={styles.container}>
                     <h2 className={styles.sectionTitle}>Najczęściej zadawane pytania</h2>
                     <div className={styles.faqGrid}>
-                        <div className={styles.faqItem}>
-                            <h4>Czy muszę kupić karnet?</h4>
-                            <p>Nie! Karnet to opcja dla najwierniejszych kibiców. Możesz kupić pojedynczy bilet na dowolny mecz w zakładce "Bilety".</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>Kiedy zaczyna obowiązywać karnet?</h4>
-                            <p>Karnet obowiązuje od pierwszego meczu sezonu 2026 do ostatniego, niezależnie od daty zakupu.</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>Czy mogę zwrócić karnet?</h4>
-                            <p>Tak, masz prawo do zwrotu w ciągu 14 dni od zakupu, pod warunkiem nie wykorzystania karnetu.</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>Czy karnet jest imienny?</h4>
-                            <p>Karnety są imienne dla pakietów Srebrny Jeż i Złoty Jeleń. Karnet Brązowy Łoś może być transferowany.</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>Gdzie kupię bilet na pojedynczy mecz?</h4>
-                            <p>Bilety jednorazowe dostępne są w zakładce "Bilety" - możesz wybrać sektor i konkretne miejsce na stadionie.</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>Jak odbiorę karnet?</h4>
-                            <p>Karnet możesz odebrać w klubowej kasie przed pierwszym meczem lub zamówić wysyłkę za dodatkową opłatą.</p>
-                        </div>
+                        <div className={styles.faqItem}><h4>Czy muszę kupić karnet?</h4><p>Nie! Możesz kupić pojedynczy bilet w zakładce "Bilety".</p></div>
+                        <div className={styles.faqItem}><h4>Kiedy zaczyna obowiązywać karnet?</h4><p>Od pierwszego meczu sezonu 2026.</p></div>
+                        <div className={styles.faqItem}><h4>Czy mogę zwrócić karnet?</h4><p>Tak, w ciągu 14 dni od zakupu.</p></div>
+                        <div className={styles.faqItem}><h4>Czy karnet jest imienny?</h4><p>Srebrny Jeż i Złoty Jeleń tak. Brązowy Łoś może być transferowany.</p></div>
+                        <div className={styles.faqItem}><h4>Gdzie kupię bilet na pojedynczy mecz?</h4><p>W zakładce "Bilety".</p></div>
+                        <div className={styles.faqItem}><h4>Jak odbiorę karnet?</h4><p>W klubowej kasie lub wysyłką.</p></div>
                     </div>
                 </div>
             </section>

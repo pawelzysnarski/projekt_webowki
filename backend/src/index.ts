@@ -10,6 +10,9 @@ import newsDbRouter from "./routes/newsDbRouter.ts";
 import scoutDbRouter from "./routes/scoutDbRouter.ts";
 import AcademyRegisterDbRouter from "./routes/academyRegisterDbRouter.ts";
 import orderRouter from './routes/orderRouter.js';
+import authRouter from "./routes/authRouter";
+import contactRouter from "./routes/contactRouter";
+
 const app = express();
 const port = 3000;
 
@@ -24,11 +27,13 @@ app.use('/api/orders', orderRouter);
 app.use("/api/matches", matchesDbRouter);
 app.use("/api/staff", staffDbRouter);
 app.use("/api/tickets",ticketsRouter);
-
+app.use("/api/auth", authRouter);
 app.use("/api/news",newsDbRouter);
 app.use("/api/scout",scoutDbRouter);
 app.use("/api/academyRegister",AcademyRegisterDbRouter);
+app.use("/api/contact", contactRouter);
+
+
 app.listen(port, () => {
     console.log("Listening on port", port);
 });
-export default app;

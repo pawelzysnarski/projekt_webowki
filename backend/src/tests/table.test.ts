@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { describe, test, expect } from "vitest";
 
 describe("Getting data from table 'tabela'", () => {

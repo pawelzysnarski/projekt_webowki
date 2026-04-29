@@ -1,12 +1,16 @@
-import {NavLink} from "react-router-dom";
-import styles from "./Menu.module.scss"
-import logo from "/logos/chaber.png"
-import sponsor from "../../sponsor.png"
-export default function Menu(){
-    return(
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../AuthContext/AuthContext";
+import styles from "./Menu.module.scss";
+import logo from "/logos/chaber.png";
+import sponsor from "../../sponsor.png";
+
+export default function Menu() {
+    const { user, logout } = useAuth();
+
+    return (
         <nav className={styles.Menu}>
             <div className={styles.menuTop}>
-                <img className={styles.Logo} src={logo} alt="Logo"/>
+                <img className={styles.Logo} src={logo} alt="Logo" />
                 <div className={styles.clubDesc}>
                     <h1 className={styles.clubName}>Chaber Pobiedziska</h1>
                     <p className={styles.desc}>Strona najbardziej utytułowanego klubu w całej Polsce</p>
@@ -26,7 +30,17 @@ export default function Menu(){
                         <li>2024 |</li>
                     </ul>
                 </div>
-                <img className={styles.Sponsor} src={sponsor} alt="Sponsor"/>
+                <div className={styles.authSection}>
+                    {user ? (
+                        <div className={styles.userInfo}>
+                            <span className={styles.userName}>{user.imie}</span>
+                            <button onClick={logout} className={styles.logoutBtn}>Wyloguj</button>
+                        </div>
+                    ) : (
+                        <NavLink to="/profil" className={styles.loginBtn}>Zaloguj się</NavLink>
+                    )}
+                </div>
+                <img className={styles.Sponsor} src={sponsor} alt="Sponsor" />
             </div>
             <div className={styles.menuBottom}>
                 <NavLink to="/">Strona główna</NavLink>
@@ -39,5 +53,5 @@ export default function Menu(){
                 <NavLink to="/kontakt">Kontakt</NavLink>
             </div>
         </nav>
-    )
+    );
 }

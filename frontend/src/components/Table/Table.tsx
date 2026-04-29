@@ -1,20 +1,9 @@
 import styles from "./Table.module.scss";
 import useTable from "../../queries/tableQuery.ts";
-import type {Tabela} from "../../types/Tabela.ts";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import type { Tabela } from "../../types/Tabela.ts";
 
 export default function Table() {
-    const queryClient = useQueryClient();
-    const {data: tableData, isLoading, isError, error} = useTable();
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            queryClient.invalidateQueries({ queryKey: ['table'] });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [queryClient]);
+    const { data: tableData, isLoading, isError, error } = useTable();
 
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;

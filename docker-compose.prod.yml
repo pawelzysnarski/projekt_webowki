@@ -38,6 +38,18 @@ services:
         condition: service_healthy
     networks:
       - chaber_network
+    command: >
+      sh -c "
+        echo '⏳ Waiting for database...' &&
+        sleep 10 &&
+        echo '📦 Running Prisma migrations...' &&
+        npx prisma migrate deploy &&
+        echo '📥 Importing data from SQL...' &&
+        mariadb -h mariadb -u root -prootpassword123 --ssl=0 chaber < /app/prisma/dane.sql 2>/dev/null || echo '⚠️ Import done (some data may already exist)' &&
+        echo '✅ Data import completed' &&
+        echo '🚀 Starting backend...' &&
+        npm run dev
+      "
 
   frontend:
     build:

@@ -84,7 +84,7 @@ router.get('/matches/:id/seats', async (req: Request, res: Response) => {
         if (sector) where.sektor = sector;
         if (row) where.rzad = row;
 
-        const seats = await prisma.miejsca.findMany({
+        const seats = await prisma.miejsce.findMany({
             where,
             orderBy: [
                 { sektor: 'asc' },
@@ -111,7 +111,7 @@ router.get('/matches/:matchId/seats/:seatId/check', async (req: Request, res: Re
         const matchId = parseInt(<string>req.params.matchId);
         const seatId = parseInt(<string>req.params.seatId);
 
-        const seat = await prisma.miejsca.findFirst({
+        const seat = await prisma.miejsce.findFirst({
             where: {
                 id: seatId,
                 id_meczu: matchId,
@@ -144,7 +144,7 @@ router.post('/tickets/buy', async (req: Request, res: Response) => {
 
         const finalTicketType = match.czy_domowy ? (ticketType || 'brazowy_los') : 'normalny';
 
-        const seat = await prisma.miejsca.findFirst({
+        const seat = await prisma.miejsce.findFirst({
             where: {
                 id: parseInt(seatId),
                 id_meczu: parseInt(matchId),
@@ -172,7 +172,7 @@ router.post('/tickets/buy', async (req: Request, res: Response) => {
                     czy_oplacony: false
                 }
             }),
-            prisma.miejsca.update({
+            prisma.miejsce.update({
                 where: { id: seat.id },
                 data: { czy_zajete: true }
             })
@@ -200,7 +200,7 @@ router.post('/tickets/buy', async (req: Request, res: Response) => {
         res.json({
             success: true,
             ticket: result[0],
-            message: `Bilet został zakupiony!`
+            message: 'Bilet został zakupiony!'
         });
     } catch (error) {
         console.error('Error buying ticket:', error);
@@ -236,7 +236,7 @@ router.post('/tickets/:id/cancel', async (req: Request, res: Response) => {
 
         await prisma.$transaction([
             prisma.bilet.delete({ where: { id: ticketId } }),
-            prisma.miejsca.update({
+            prisma.miejsce.update({
                 where: { id: ticket.id_miejsca },
                 data: { czy_zajete: false }
             })
@@ -251,7 +251,7 @@ router.post('/tickets/:id/cancel', async (req: Request, res: Response) => {
 
 router.post('/season-ticket/buy', async (req: Request, res: Response) => {
     try {
-        const { firstName, lastName, email, ticketType, price } = req.body;
+        const { firstName, lastName, email, ticketType, price, userId } = req.body;
 
         if (!firstName || !lastName || !email || !ticketType || !price) {
             return res.status(400).json({ error: 'Missing data' });
@@ -288,6 +288,13 @@ router.post('/season-ticket/buy', async (req: Request, res: Response) => {
             }
         });
 
+        if (userId) {
+            await prisma.uzytkownik.update({
+                where: { id: parseInt(userId) },
+                data: { karnet_id: seasonTicket.id }
+            });
+        }
+
         const futureHomeMatches = await prisma.mecz.findMany({
             where: {
                 czy_domowy: true,
@@ -300,7 +307,7 @@ router.post('/season-ticket/buy', async (req: Request, res: Response) => {
         const occupiedSeats: any[] = [];
 
         for (const match of futureHomeMatches) {
-            const freeSeat = await prisma.miejsca.findFirst({
+            const freeSeat = await prisma.miejsce.findFirst({
                 where: {
                     id_meczu: match.id,
                     sektor: { in: sectors },
@@ -314,7 +321,7 @@ router.post('/season-ticket/buy', async (req: Request, res: Response) => {
             });
 
             if (freeSeat) {
-                await prisma.miejsca.update({
+                await prisma.miejsce.update({
                     where: { id: freeSeat.id },
                     data: { czy_zajete: true }
                 });
@@ -333,13 +340,17 @@ router.post('/season-ticket/buy', async (req: Request, res: Response) => {
         const ticketTypeName = mappedType === 'brazowy_los' ? 'Brązowy Łoś' :
             mappedType === 'srebrny_jez' ? 'Srebrny Jeż' : 'Złoty Jeleń';
 
+        const discountPercent = mappedType === 'zloty_jelen' ? 30 :
+            mappedType === 'srebrny_jez' ? 20 : 10;
+
         const emailHtml = generateSeasonTicketEmailHtml({
             firstName,
             lastName,
             ticketType: ticketTypeName,
             price: price.toString(),
             passCode,
-            occupiedSeats
+            occupiedSeats,
+            discountPercent
         });
 
         await sendTicketEmail(email, 'Twój karnet sezonowy Chaber Pobiedziska 2026', emailHtml);

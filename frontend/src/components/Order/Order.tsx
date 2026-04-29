@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext/AuthContext';
 import type { CartItemWithSize } from '../../types/Product';
 import styles from './Order.module.scss';
 
 export default function Order() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [cart, setCart] = useState<CartItemWithSize[]>([]);
     const [discountCode, setDiscountCode] = useState('');
     const [discountApplied, setDiscountApplied] = useState(false);
-    const [isMember, setIsMember] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [codeMessage, setCodeMessage] = useState('');
+
+    const discountFromAccount = user?.karnet?.znizka ? user.karnet.znizka / 100 : 0;
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
-            const parsedCart = JSON.parse(savedCart);
-            setCart(parsedCart);
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setCart(JSON.parse(savedCart));
         }
     }, []);
 
@@ -30,28 +33,15 @@ export default function Order() {
     };
 
     const getTotalDiscountPercent = (): number => {
-        let totalPercent = 0;
+        let totalPercent = discountFromAccount;
         if (discountApplied) totalPercent += 0.1;
-        if (isMember) totalPercent += 0.1;
         return Math.min(totalPercent, 0.5);
     };
 
     const applyDiscount = () => {
-        if (discountCode.trim() === '') {
-            setCodeMessage('Wpisz kod rabatowy');
-            return;
-        }
-
-        if (discountCode.trim() !== 'Chaber#1') {
-            setCodeMessage('Nieprawidłowy kod rabatowy');
-            return;
-        }
-
-        if (discountApplied) {
-            setCodeMessage('Kod został już użyty');
-            return;
-        }
-
+        if (discountCode.trim() === '') { setCodeMessage('Wpisz kod rabatowy'); return; }
+        if (discountCode.trim() !== 'Chaber#1') { setCodeMessage('Nieprawidłowy kod rabatowy'); return; }
+        if (discountApplied) { setCodeMessage('Kod został już użyty'); return; }
         setDiscountApplied(true);
         setDiscountCode('');
         setCodeMessage('Kod Chaber#1 zastosowany! +10% zniżki');
@@ -59,15 +49,11 @@ export default function Order() {
     };
 
     const getFinalTotalValue = (): number => {
-        const total = getOriginalTotal();
-        const discountPercent = getTotalDiscountPercent();
-        return total * (1 - discountPercent);
+        return getOriginalTotal() * (1 - getTotalDiscountPercent());
     };
 
     const getDiscountValue = (): number => {
-        const total = getOriginalTotal();
-        const discountPercent = getTotalDiscountPercent();
-        return total * discountPercent;
+        return getOriginalTotal() * getTotalDiscountPercent();
     };
 
     const formatPrice = (price: number): string => {
@@ -76,14 +62,13 @@ export default function Order() {
 
     const generateOrderNumber = (): string => {
         const now = new Date();
-        const timestamp = now.getFullYear().toString() +
+        return 'zamowienie_nr_' + now.getFullYear().toString() +
             (now.getMonth() + 1).toString().padStart(2, '0') +
             now.getDate().toString().padStart(2, '0') +
             now.getHours().toString().padStart(2, '0') +
             now.getMinutes().toString().padStart(2, '0') +
             now.getSeconds().toString().padStart(2, '0') +
             now.getMilliseconds().toString().padStart(3, '0');
-        return timestamp;
     };
 
     const placeOrder = async () => {
@@ -93,7 +78,7 @@ export default function Order() {
         const finalTotal = getFinalTotalValue();
 
         const orderData = {
-            orderNumber: `zamowienie_nr_${orderNumber}`,
+            orderNumber,
             date: new Date().toISOString(),
             items: cart.map(item => {
                 const itemPrice = typeof item.product.price === 'number' ? item.product.price : parseFloat(item.product.price as string);
@@ -113,7 +98,7 @@ export default function Order() {
             discountPercent: parseFloat((discountPercent * 100).toFixed(1)),
             finalTotal: parseFloat(finalTotal.toFixed(2)),
             discountCodeApplied: discountApplied ? 'Chaber#1' : null,
-            memberDiscountApplied: isMember
+            memberDiscountApplied: discountFromAccount > 0
         };
 
         try {
@@ -165,11 +150,20 @@ export default function Order() {
     return (
         <div className={styles.orderContainer}>
             <div className={styles.orderHeader}>
-                <button className={styles.backToShopButton} onClick={() => navigate('/sklep')}>
-                    ← Powrót do sklepu
-                </button>
+                <button className={styles.backToShopButton} onClick={() => navigate('/sklep')}>← Powrót do sklepu</button>
                 <h1>Zamówienie</h1>
             </div>
+
+            {user && (
+                <div className={styles.userBanner}>
+                    <span>👤 {user.imie} {user.nazwisko}</span>
+                    {user.karnet && (
+                        <span className={styles.karnetBadge}>
+                            🎫 Karnet {user.karnet.typ === 'zloty_jelen' ? 'Złoty Jeleń' : user.karnet.typ === 'srebrny_jez' ? 'Srebrny Jeż' : 'Brązowy Łoś'} · -{user.karnet.znizka}%
+                        </span>
+                    )}
+                </div>
+            )}
 
             <div className={styles.cartSummary}>
                 <h2>Podsumowanie koszyka</h2>
@@ -185,13 +179,9 @@ export default function Order() {
                                 <p className={styles.itemQuantity}>Ilość: {item.quantity}</p>
                             </div>
                             <div className={styles.itemPrice}>
-                                {discountPercent > 0 && (
-                                    <span className={styles.oldPrice}>{formatPrice(itemPrice)}</span>
-                                )}
+                                {discountPercent > 0 && <span className={styles.oldPrice}>{formatPrice(itemPrice)}</span>}
                                 <span className={styles.newPrice}>{formatPrice(discountedItemPrice)}</span>
-                                <p className={styles.totalItemPrice}>
-                                    {formatPrice(discountedItemPrice * item.quantity)}
-                                </p>
+                                <p className={styles.totalItemPrice}>{formatPrice(discountedItemPrice * item.quantity)}</p>
                             </div>
                         </div>
                     );
@@ -215,34 +205,13 @@ export default function Order() {
             <div className={styles.discountSection}>
                 <h3>Kod rabatowy</h3>
                 <div className={styles.discountInput}>
-                    <input
-                        type="text"
-                        placeholder="Wpisz kod rabatowy"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                        disabled={discountApplied}
-                    />
-                    <button onClick={applyDiscount} disabled={discountApplied || !discountCode.trim()}>
-                        Zastosuj
-                    </button>
+                    <input type="text" placeholder="Wpisz kod rabatowy" value={discountCode} onChange={(e) => setDiscountCode(e.target.value)} disabled={discountApplied} />
+                    <button onClick={applyDiscount} disabled={discountApplied || !discountCode.trim()}>Zastosuj</button>
                 </div>
                 {codeMessage && <p className={`${styles.discountInfo} ${codeMessage.includes('zastosowany') ? styles.successInfo : styles.errorInfo}`}>{codeMessage}</p>}
             </div>
 
-            <div className={styles.memberSection}>
-                <label className={styles.checkboxLabel}>
-                    <input
-                        type="checkbox"
-                        checked={isMember}
-                        onChange={(e) => setIsMember(e.target.checked)}
-                    />
-                    <span>Jestem członkiem klubu (10% zniżki)</span>
-                </label>
-            </div>
-
-            <button className={styles.orderButton} onClick={placeOrder}>
-                Złóż zamówienie
-            </button>
+            <button className={styles.orderButton} onClick={placeOrder}>Złóż zamówienie</button>
         </div>
     );
 }

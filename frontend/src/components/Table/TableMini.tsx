@@ -1,20 +1,9 @@
 import styles from "./TableMini.module.scss";
 import useTable from "../../queries/tableQuery.ts";
-import type {Tabela} from "../../types/Tabela.ts";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import type { Tabela } from "../../types/Tabela.ts";
 
 export default function TableMini() {
-    const queryClient = useQueryClient();
     const { data: tableMiniData, isLoading, isError, error } = useTable();
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            queryClient.invalidateQueries({ queryKey: ['table'] });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [queryClient]);
 
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;
