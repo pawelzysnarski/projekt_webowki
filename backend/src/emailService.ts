@@ -7,6 +7,9 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: 'effie.heathcote@ethereal.email',
         pass: 'qWtzdUEFTP1MgqGxn5'
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -147,5 +150,73 @@ export function generateContactEmailHtml(data: {
                 <p>Wiadomość wysłana przez formularz kontaktowy</p>
             </div>
         </div>
+    `;
+}
+export async function sendAcademyRegisterEmail(to: string, subject: string, html: string) {
+    try {
+        const info = await transporter.sendMail({
+            from: '"Chaber Pobiedziska" <chaber@pobiedziska.pl>',
+            to,
+            subject,
+            html
+        });
+        console.log('Email sent:', info.messageId);
+        console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
+        return true;
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return false;
+    }
+}
+
+export function generateAcademyRegisterHtml(data: {
+    imie: string;
+    nazwisko: string;
+    email: string;
+    wiek: number;
+    wiadomosc: string;
+}) {
+    return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #1a0f09; color: #f5e6d9;">
+    <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #2d1b12, #714a36); border-radius: 10px;">
+        <h1 style="color: #d4af37; margin: 0;">⚽ Akademia Chaber</h1>
+        <p style="font-size: 18px; margin: 10px 0 0;">Potwierdzenie zgłoszenia do akademii</p>
+    </div>
+    
+    <div style="padding: 20px; background: #2d1b12; border-radius: 10px; margin-top: 20px;">
+        <p style="color: #f5e6d9; font-size: 16px;">Witaj! Otrzymaliśmy zgłoszenie Twojego dziecka do naszej akademii.</p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <tr>
+                <td style="padding: 8px; color: #c4a58b; width: 40%;">Imię dziecka:</td>
+                <td style="padding: 8px; color: #f5e6d9; font-weight: bold;">${data.imie}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; color: #c4a58b;">Nazwisko dziecka:</td>
+                <td style="padding: 8px; color: #f5e6d9; font-weight: bold;">${data.nazwisko}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; color: #c4a58b;">Wiek:</td>
+                <td style="padding: 8px; color: #d4af37;">${data.wiek} lat</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; color: #c4a58b;">Email kontaktowy:</td>
+                <td style="padding: 8px; color: #f5e6d9;">${data.email}</td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; border-left: 3px solid #d4af37;">
+            <p style="color: #f5e6d9; margin: 0; line-height: 1.6;">
+                Nasz trener skontaktuje się z Państwem w ciągu najbliższych dni, aby ustalić termin pierwszego treningu zapoznawczego.
+            </p>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: #c4a58b; font-size: 12px;">
+        <p>Wiadomość wygenerowana automatycznie przez system rekrutacji Akademii Chaber Pobiedziska.</p>
+        <p>Prosimy nie odpowiadać na ten e-mail.</p>
+    </div>
+</div>
+
     `;
 }

@@ -7,7 +7,7 @@ export interface Zawodnik {
     Waga: number;
     Wzrost: number;
     Kraj: string;
-    DataUrodzin: Date;
+    Data_Urodzenia: Date;
     Mecze: number;
     Bramki: number;
     Asysty: number;
