@@ -3,7 +3,7 @@ import styles from "./NewsMini.module.scss";
 
 export default function NewsMini({ item }: { item: NewsItem }) {
     return (
-        <article className={styles.Article}>
+        <article className={styles.Article} data-testid="news-mini">
             <div className={styles.ImageWrapper}>
                 <img src={`/news/${item.Zdj_cie}`} alt="news" />
             </div>

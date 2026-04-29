@@ -18,7 +18,7 @@ router.get('/matches/upcoming', async (req: Request, res: Response) => {
             take: 2
         });
 
-        const matchesWithInfo = matches.map((match: { czy_domowy: any; stadion: any; miasto: any; }) => ({
+        const matchesWithInfo = matches.map((match) => ({
             ...match,
             match_type: match.czy_domowy ? 'home' : 'away',
             location: match.czy_domowy
@@ -35,7 +35,7 @@ router.get('/matches/upcoming', async (req: Request, res: Response) => {
 
 router.get('/matches/:id', async (req: Request, res: Response) => {
     try {
-        const matchId = parseInt(<string>req.params.id);
+        const matchId = parseInt(req.params.id);
 
         const match = await prisma.mecz.findUnique({
             where: { id: matchId },
@@ -70,7 +70,7 @@ router.get('/matches/:id', async (req: Request, res: Response) => {
 router.get('/matches/:id/seats', async (req: Request, res: Response) => {
     try {
         const { sector, row } = req.query;
-        const matchId = parseInt(<string>req.params.id);
+        const matchId = parseInt(req.params.id);
 
         const match = await prisma.mecz.findUnique({
             where: { id: matchId }
@@ -108,8 +108,8 @@ router.get('/matches/:id/seats', async (req: Request, res: Response) => {
 
 router.get('/matches/:matchId/seats/:seatId/check', async (req: Request, res: Response) => {
     try {
-        const matchId = parseInt(<string>req.params.matchId);
-        const seatId = parseInt(<string>req.params.seatId);
+        const matchId = parseInt(req.params.matchId);
+        const seatId = parseInt(req.params.seatId);
 
         const seat = await prisma.miejsce.findFirst({
             where: {
@@ -211,7 +211,7 @@ router.post('/tickets/buy', async (req: Request, res: Response) => {
 router.get('/tickets/user/:email', async (req: Request, res: Response) => {
     try {
         const tickets = await prisma.bilet.findMany({
-            where: { email: <string>req.params.email },
+            where: { email: req.params.email },
             include: { mecz: true, miejsce: true },
             orderBy: { data_zakupu: 'desc' }
         });
@@ -224,7 +224,7 @@ router.get('/tickets/user/:email', async (req: Request, res: Response) => {
 
 router.post('/tickets/:id/cancel', async (req: Request, res: Response) => {
     try {
-        const ticketId = parseInt(<string>req.params.id);
+        const ticketId = parseInt(req.params.id);
 
         const ticket = await prisma.bilet.findUnique({
             where: { id: ticketId }
