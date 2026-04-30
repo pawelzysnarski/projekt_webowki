@@ -151,7 +151,7 @@ Paweł zajmował się częścią informacyjną aplikacji — widokami prezentuj�
 | **Drużyna** | Strony zawodników i personelu (`TeamPage`, `PlayerData`, `PlayerDesc`, `StaffData`, `StaffDesc`) |
 | **Akademia** | Strona akademii z opisem oferty (`AcademyPage`) |
 | **Style** | Pliki SCSS dla: `MainPage`, `NewsPage`, `News`, `TablePage`, `Table`, `TeamPage`, `PlayerData`, `PlayerDesc`, `StaffData`, `StaffDesc`, `AcademyPage` |
-| **Testy** | Testy jednostkowe: `news.test.ts`, `matches.test.ts`, `players.test.ts`, `staff.test.ts`, `scout.test.ts`, `table.test.ts` |
+| **Testy** | Testy jednostkowe: `news.test.ts`, `matches.test.ts`, `players.test.ts`, `staff.test.ts`, `scout.test.ts`, `table.test.ts`, `results.test.ts` |
 
 ---
 
@@ -165,7 +165,7 @@ Piotr był odpowiedzialny za pełną obsługę sklepu internetowego — od przeg
 | **Szczegóły produktu** | Widok pojedynczego produktu (`ProductPage`, `Product`) |
 | **Zamówienia** | Logika składania i obsługi zamówień (`OrderPage`, `Order`, `orderRouter`) |
 | **Style** | Pliki SCSS dla: `Shop`, `Product`, `Order`, `ShopPage`, `ProductPage`, `OrderPage` |
-| **Testy** | Testy jednostkowe: `results.test.ts` (wyniki zamówień i logika sklepu) |
+| **Testy** | |
 
 ---
 
@@ -424,6 +424,19 @@ docker compose -f docker-compose.prod.yml up --build -d
 
 ---
 
+### Podgląd wysłanych e-maili
+
+Projekt korzysta z serwisu **[Ethereal Email](https://ethereal.email)** jako fałszywej skrzynki SMTP do przechwytywania wiadomości e-mail (potwierdzenia biletów, karnetów, formularza kontaktowego, zapisów do akademii) — żadna wiadomość nie trafia do prawdziwych odbiorców.
+
+Aby zobaczyć wysłane wiadomości, wejdź na [https://ethereal.email](https://ethereal.email) i zaloguj się danymi skonfigurowanymi w `emailService.ts`:
+
+| Pole | Wartość |
+|---|---|
+| Login | `effie.heathcote@ethereal.email` |
+| Hasło | `qWtzdUEFTP1MgqGxn5` |
+
+---
+
 ## 6. Testowanie
 
 Projekt zawiera testy jednostkowe zarówno po stronie frontendu, jak i backendu, napisane przy użyciu frameworka **Jest**.
@@ -457,3 +470,24 @@ docker exec frontend npm test
 | `scout.test.ts` | Punkty scoutingowe |
 | `table.test.ts` | Tabela ligowa |
 | `results.test.ts` | Wyniki meczów i logika zamówień |
+
+### Pokrycie testami – Frontend
+
+| Plik testowy | Obszar |
+|---|---|
+| `Login.test.tsx` | Formularz logowania |
+| `protectedRoute.test.tsx` | Ochrona tras dla niezalogowanych użytkowników |
+| `MainPage.test.tsx` | Strona główna |
+| `News.test.tsx` | Widok aktualności |
+| `Table.test.tsx` | Tabela ligowa |
+| `PlayerData.test.tsx` | Lista zawodników |
+| `PlayerDesc.test.tsx` | Szczegóły zawodnika |
+| `Tickets.test.tsx` | Strona zakupu biletów |
+| `Ticket.test.tsx` | Widok pojedynczego biletu |
+| `TicketPage.test.tsx` | Strona wyboru miejsca na mecz |
+| `SeasonTicket.test.tsx` | Zakup karnetu sezonowego |
+| `StadiumMap.test.tsx` | Mapa stadionu |
+| `ContactPage.test.tsx` | Formularz kontaktowy |
+| `AcademyRegister.test.tsx` | Formularz zapisu do akademii |
+| `Academy.test.tsx` | Strona akademii |
+| `Menu.test.tsx` | Nawigacja / menu |
