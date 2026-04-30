@@ -146,3 +146,78 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .Main {
+    padding: 15px;
+    gap: 15px;
+
+    .Link_ticket,
+    .Link_pass {
+      height: 180px;
+
+      .Ticket_container .Ticket_container_matchup {
+        padding: 20px;
+
+        .Ticket_container_title {
+          font-size: 1.3rem;
+        }
+
+        .Ticket_container_date {
+          font-size: 0.8rem;
+          padding: 6px 16px;
+        }
+      }
+
+      .Pass_container {
+        .Pass_container_title {
+          font-size: 1.5rem;
+        }
+
+        .Pass_container_subtitle {
+          font-size: 0.9rem;
+          padding: 6px 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Main {
+    padding: 10px;
+    gap: 12px;
+
+    .Link_ticket,
+    .Link_pass {
+      height: 150px;
+
+      .Ticket_container .Ticket_container_matchup {
+        padding: 15px;
+        gap: 8px;
+
+        .Ticket_container_title {
+          font-size: 1.1rem;
+        }
+
+        .Ticket_container_date {
+          font-size: 0.7rem;
+          padding: 4px 12px;
+        }
+      }
+
+      .Pass_container {
+        gap: 6px;
+
+        .Pass_container_title {
+          font-size: 1.2rem;
+        }
+
+        .Pass_container_subtitle {
+          font-size: 0.75rem;
+          padding: 4px 12px;
+        }
+      }
+    }
+  }
+}

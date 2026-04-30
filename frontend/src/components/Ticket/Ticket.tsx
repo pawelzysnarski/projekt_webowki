@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { matchQuery, type Match } from '../../queries/matchQuery';
+import { matchQuery} from '../../queries/matchQuery';
+import type {Match} from '../../types/Match.ts';
 import styles from "./Ticket.module.scss";
 import Stadium from "../Stadium/StadiumMap.tsx";
 

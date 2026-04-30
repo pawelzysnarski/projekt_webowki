@@ -17,6 +17,7 @@ $colormenu: #61331c;
     border-color: lighten($colormenu, 20%);
     background: rgba(darken($colormenu, 15%), 0.8);
   }
+
   .ImageWrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -36,6 +37,7 @@ $colormenu: #61331c;
 
     .Meta {
       margin-bottom: 0.5rem;
+
       time {
         color: lighten($colormenu, 30%);
         font-size: 0.9rem;
@@ -60,7 +62,54 @@ $colormenu: #61331c;
       font-family: "Bookman Old Style", sans-serif;
       line-height: 1.6;
       margin-bottom: 1rem;
-      &:last-child { margin-bottom: 0; }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .Article {
+    .Content {
+      padding: 1rem;
+
+      .Meta time {
+        font-size: 0.75rem;
+      }
+
+      .Title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Article {
+    .Content {
+      padding: 0.8rem;
+
+      .Meta time {
+        font-size: 0.7rem;
+      }
+
+      .Title {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
     }
   }
 }

@@ -1,25 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../AuthContext/AuthContext';
+import { useAuth } from '../../auth/AuthContext.tsx';
 import styles from './SeasonTicket.module.scss';
-
-interface TicketBenefit {
-    id: string;
-    title: string;
-    description: string;
-    icon: string;
-}
-
-interface TicketTier {
-    id: string;
-    name: string;
-    price: number;
-    pricePerMonth: number;
-    color: string;
-    badge?: string;
-    benefits: string[];
-    recommended?: boolean;
-}
+import type {TicketTier,TicketBenefit} from '../../types/Ticket.ts'
 
 const SeasonTicket: React.FC = () => {
     const { user } = useAuth();

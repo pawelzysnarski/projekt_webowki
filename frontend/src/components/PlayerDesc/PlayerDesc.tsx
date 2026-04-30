@@ -1,13 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import usePlayers from "../../queries/playersQuery";
 import styles from "./PlayerDesc.module.scss";
-import type {Zawodnik} from "../../types/Zawodnik.ts";
+import type {Player} from "../../types/Player.ts";
 
 export default function PlayerDesc() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: players } = usePlayers();
-    const player = players?.find((p: Zawodnik) => p.ID === Number(id));
+    const player = players?.find((p: Player) => p.ID === Number(id));
 
     if (!player) return <div className={styles.NotFound}>Nie znaleziono zawodnika</div>;
 

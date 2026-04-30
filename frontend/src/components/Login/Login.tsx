@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../AuthContext/AuthContext';
+import { useAuth } from '../../auth/AuthContext.tsx';
 import styles from './Login.module.scss';
 
 export default function Login() {

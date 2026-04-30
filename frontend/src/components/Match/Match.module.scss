@@ -10,6 +10,7 @@ $colormenu: #61331c;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
   &.MyMatch {
     background: rgba(darken($colormenu, 10%), 0.9);
     border: 2px solid lighten($colormenu, 15%);
@@ -19,6 +20,7 @@ $colormenu: #61331c;
       color: #ffd700;
     }
   }
+
   &:hover {
     background: rgba(darken($colormenu, 15%), 0.8);
     border-color: $colormenu;
@@ -27,6 +29,7 @@ $colormenu: #61331c;
 
   .Top {
     text-align: center;
+
     h6 {
       margin: 0;
       font-size: 0.65rem;
@@ -54,7 +57,7 @@ $colormenu: #61331c;
         width: 60px;
         height: 60px;
         object-fit: contain;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
       }
 
       span {
@@ -107,6 +110,87 @@ $colormenu: #61331c;
       50% { opacity: 0.5; }
       100% { opacity: 1; }
     }
+  }
+}
 
+@media (max-width: 768px) {
+  .MatchCard {
+    padding: 1rem 0.8rem;
+    gap: 0.8rem;
+
+    .TeamsRow {
+      gap: 6px;
+
+      .Team {
+        img {
+          width: 45px;
+          height: 45px;
+        }
+
+        span {
+          font-size: 0.75rem;
+          max-width: 70px;
+        }
+      }
+
+      .TimeBox {
+        min-width: 60px;
+
+        .Hour, .Score {
+          font-size: 1.2rem;
+        }
+
+        .Date {
+          font-size: 0.6rem;
+        }
+
+        .Live {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .MatchCard {
+    padding: 0.8rem 0.5rem;
+    gap: 0.6rem;
+
+    .Top h6 {
+      font-size: 0.55rem;
+    }
+
+    .TeamsRow {
+      gap: 4px;
+
+      .Team {
+        img {
+          width: 35px;
+          height: 35px;
+        }
+
+        span {
+          font-size: 0.65rem;
+          max-width: 55px;
+        }
+      }
+
+      .TimeBox {
+        min-width: 50px;
+
+        .Hour, .Score {
+          font-size: 1rem;
+        }
+
+        .Date {
+          font-size: 0.55rem;
+        }
+
+        .Live {
+          font-size: 0.6rem;
+        }
+      }
+    }
   }
 }

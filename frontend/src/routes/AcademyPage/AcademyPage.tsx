@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styles from './AcademyPage.module.scss';
-import useScout from "../../queries/scoutQuery.ts";
+import useScout from "../../queries/scoutQuery";
 
 const benefits = [
     { title: "Kadra UEFA", desc: "Trenerzy z najwyższymi licencjami.", icon: "⚽" },

@@ -109,3 +109,83 @@ $colormenu: #61331c;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .Contener {
+    width: 220px;
+
+    .PImage {
+      height: 260px;
+    }
+
+    .Overlay {
+      height: 55%;
+      gap: 6px;
+
+      .Role {
+        font-size: 1rem;
+      }
+
+      .Country {
+        font-size: 0.75rem;
+      }
+
+      .ProfileLink {
+        padding: 6px 16px;
+        font-size: 0.7rem;
+      }
+    }
+
+    .Desc {
+      padding: 15px;
+
+      h4:first-child {
+        font-size: 0.85rem;
+      }
+
+      h4:last-child {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Contener {
+    width: 160px;
+
+    .PImage {
+      height: 200px;
+    }
+
+    .Overlay {
+      height: 60%;
+      gap: 4px;
+
+      .Role {
+        font-size: 0.8rem;
+      }
+
+      .Country {
+        font-size: 0.65rem;
+      }
+
+      .ProfileLink {
+        padding: 5px 12px;
+        font-size: 0.6rem;
+      }
+    }
+
+    .Desc {
+      padding: 10px;
+
+      h4:first-child {
+        font-size: 0.7rem;
+      }
+
+      h4:last-child {
+        font-size: 1rem;
+      }
+    }
+  }
+}

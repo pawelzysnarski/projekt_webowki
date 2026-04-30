@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
@@ -6,10 +9,7 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom',
-        pool: 'forks',
-        transformMode: {
-            web: [/\.[jt]sx$/],
-        },
+        setupFiles: './src/test/setup.ts',
         deps: {
             inline: [/vite-test-utils/],
         },

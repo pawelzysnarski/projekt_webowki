@@ -6,10 +6,10 @@ import matchesDbRouter from "./routes/matchesDbRouter";
 import staffDbRouter from "./routes/staffDbRouter";
 import ticketsRouter from "./routes/ticketsRouter";
 
-import newsDbRouter from "./routes/newsDbRouter.ts";
-import scoutDbRouter from "./routes/scoutDbRouter.ts";
-import AcademyRegisterDbRouter from "./routes/academyRegisterDbRouter.ts";
-import orderRouter from './routes/orderRouter.js';
+import newsDbRouter from "./routes/newsDbRouter";
+import scoutDbRouter from "./routes/scoutDbRouter";
+import AcademyRegisterDbRouter from "./routes/academyRegisterDbRouter";
+import orderRouter from './routes/orderRouter';
 import authRouter from "./routes/authRouter";
 import contactRouter from "./routes/contactRouter";
 

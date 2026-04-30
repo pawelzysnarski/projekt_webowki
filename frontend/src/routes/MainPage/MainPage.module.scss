@@ -12,10 +12,6 @@ $colormenu: #61331c;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
-
-      @media (max-width: 48rem) {
-        grid-template-columns: 1fr;
-      }
     }
   }
 
@@ -25,23 +21,10 @@ $colormenu: #61331c;
     gap: 1.875rem;
     max-width: 112.5rem;
     margin: 0 auto;
-
-    @media (max-width: 87.5rem) {
-      grid-template-columns: 12.5rem 1fr 18.75rem;
-    }
-
-    @media (max-width: 68.75rem) {
-      grid-template-columns: 1fr;
-      padding: 0 1rem;
-    }
   }
 
   .SponsorSidebar {
     width: 100%;
-
-    @media (max-width: 68.75rem) {
-      display: none;
-    }
 
     .SponsorSticky {
       position: sticky;
@@ -86,10 +69,6 @@ $colormenu: #61331c;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
 
-    @media (max-width: 48rem) {
-      grid-template-columns: 1fr;
-    }
-
     .ActionCard {
       background: linear-gradient(135deg, darken($colormenu, 10%), darken($colormenu, 25%));
       padding: 2.5rem;
@@ -98,10 +77,6 @@ $colormenu: #61331c;
       text-align: center;
       border: 0.0625rem solid rgba($colormenu, 0.3);
       transition: 0.3s;
-
-      @media (max-width: 30rem) {
-        padding: 1.5rem;
-      }
 
       &:hover {
         transform: scale(1.02);
@@ -113,10 +88,6 @@ $colormenu: #61331c;
         font-family: "Bookman Old Style", serif;
         font-size: 2rem;
         margin-bottom: 0.625rem;
-
-        @media (max-width: 30rem) {
-          font-size: 1.5rem;
-        }
       }
 
       span {
@@ -131,21 +102,12 @@ $colormenu: #61331c;
   .TableSidebar {
     width: 100%;
 
-    @media (max-width: 68.75rem) {
-      order: 3;
-    }
-
     .TableSticky {
       position: sticky;
       top: 1.25rem;
       height: calc(100vh - 5rem);
       display: flex;
       flex-direction: column;
-
-      @media (max-width: 68.75rem) {
-        position: static;
-        height: auto;
-      }
 
       h3 {
         color: white;
@@ -154,6 +116,68 @@ $colormenu: #61331c;
         font-size: 1.1rem;
         border-left: 0.25rem solid $colormenu;
         padding-left: 0.9375rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 87.5rem) {
+  .MainPage .Layout {
+    grid-template-columns: 12.5rem 1fr 18.75rem;
+  }
+}
+
+@media (max-width: 68.75rem) {
+  .MainPage {
+    padding: 1.5rem;
+
+    .Layout {
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
+    }
+
+    .SponsorSidebar {
+      display: none;
+    }
+
+    .TableSidebar {
+      order: 3;
+
+      .TableSticky {
+        position: static;
+        height: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 48rem) {
+  .MainPage {
+    padding: 1rem;
+
+    .MainNews .NewsGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .QuickActions {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 30rem) {
+  .MainPage {
+    padding: 0.8rem;
+
+    .Layout {
+      padding: 0;
+    }
+
+    .QuickActions .ActionCard {
+      padding: 1.5rem;
+
+      h2 {
+        font-size: 1.5rem;
       }
     }
   }

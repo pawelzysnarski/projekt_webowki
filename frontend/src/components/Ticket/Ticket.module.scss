@@ -180,3 +180,83 @@ $bronze-color: #cd7f32;
     font-weight: 600;
   }
 }
+
+@media (max-width: 768px) {
+  .Main {
+    padding: 30px 15px;
+  }
+
+  .Matchup {
+    padding: 20px 24px;
+    margin-bottom: 30px;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+
+  .homeMatch,
+  .awayMatch {
+    padding: 6px 16px;
+    font-size: 0.85rem;
+  }
+
+  .stadiumInfo {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .matchDetails {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Main {
+    padding: 20px 10px;
+  }
+
+  .Matchup {
+    padding: 16px;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+  }
+
+  .homeMatch,
+  .awayMatch {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+  }
+
+  .stadiumInfo {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .matchDetails {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .matchDetail {
+    .detailLabel {
+      font-size: 0.7rem;
+    }
+
+    .detailValue {
+      font-size: 0.9rem;
+    }
+  }
+}

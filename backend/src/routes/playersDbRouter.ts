@@ -3,7 +3,7 @@ import prisma from "../prismaDb";
 const playersDbRouter = Router();
 playersDbRouter.use(express.json());
 playersDbRouter.get("/", async (req, res) => {
-    const result = await prisma.dru_yna.findMany({
+    const result = await prisma.druzyna.findMany({
         orderBy: {
             Numer: "asc",
         },

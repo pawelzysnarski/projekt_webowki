@@ -4,7 +4,7 @@ import useProduct from '../../queries/productQuery';
 import useShop from '../../queries/shopQuery';
 import usePlayers from '../../queries/playersQuery';
 import type { Product, CartItemWithSize } from '../../types/Product';
-import type { Zawodnik } from '../../types/Zawodnik';
+import type { Player } from '../../types/Player.ts';
 import styles from './Product.module.scss';
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -79,16 +79,16 @@ export default function Product() {
         return cat === 'koszulki' || cat === 'komplety' || (cat === 'pluszaki' && !isMainBear);
     };
 
-    const getFilteredPlayers = (): Zawodnik[] => {
+    const getFilteredPlayers = (): Player[] => {
         if (!players || !product) return [];
 
         const name = product.name.toLowerCase();
         const isGoalkeeperProduct = name.includes('bramkarz');
 
         if (isGoalkeeperProduct) {
-            return players.filter((p: Zawodnik) => p.Pozycja === 'Bramkarz');
+            return players.filter((p: Player) => p.Pozycja === 'Bramkarz');
         } else {
-            return players.filter((p: Zawodnik) => p.Pozycja !== 'Bramkarz');
+            return players.filter((p: Player) => p.Pozycja !== 'Bramkarz');
         }
     };
 
@@ -697,7 +697,7 @@ export default function Product() {
                                     }}
                                 >
                                     <option value="">Brak nadruku</option>
-                                    {filteredPlayers.map((player: Zawodnik) => (
+                                    {filteredPlayers.map((player: Player) => (
                                         <option key={player.ID} value={`${player.Numer}_${player.Nazwisko.toLowerCase()}`}>
                                             {player.Numer}. {player.Imie} {player.Nazwisko}
                                         </option>

@@ -1,7 +1,7 @@
-import type { Zawodnik } from "../../types/Zawodnik.ts";
+import type { Player } from "../../types/Player.ts";
 import styles from "./PlayerData.module.scss";
 
-export default function PlayerData({ player }: { player: Zawodnik }) {
+export default function PlayerData({ player }: { player: Player }) {
     return (
         <div className={styles.Contener}>
             <img src={`/players/${player.Numer}.png`} alt="player" className={styles.PImage}/>

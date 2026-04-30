@@ -18,6 +18,7 @@ $colormenu: #61331c;
   cursor: pointer;
   margin-bottom: 30px;
   transition: all 0.3s;
+
   &:hover {
     background: $colormenu;
     color: white;
@@ -36,12 +37,14 @@ $colormenu: #61331c;
 .Hero {
   position: relative;
   height: 500px;
+
   .MainImg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;
   }
+
   .NameOverlay {
     position: absolute;
     bottom: 0;
@@ -50,16 +53,19 @@ $colormenu: #61331c;
     padding: 40px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
     color: white;
+
     h1 {
       font-size: 3.5rem;
       margin: 0;
       font-family: "Bookman Old Style", sans-serif;
     }
+
     span {
       font-size: 2rem;
       color: #2b190e;
       font-weight: bold;
     }
+
     p {
       font-size: 1.2rem;
       text-transform: uppercase;
@@ -74,17 +80,20 @@ $colormenu: #61331c;
   background: $colormenu;
   padding: 20px;
   gap: 1px;
+
   .StatBox {
     background: darken($colormenu, 5%);
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+
     .Value {
       font-size: 2.5rem;
       font-weight: 800;
       color: white;
     }
+
     .Label {
       font-size: 0.8rem;
       color: #a68b7c;
@@ -100,6 +109,7 @@ $colormenu: #61331c;
   gap: 20px;
   justify-content: space-between;
   background: darken($colormenu, 25%);
+
   .DetailItem {
     color: #ccc;
     flex: 1 1 150px;
@@ -108,11 +118,13 @@ $colormenu: #61331c;
     gap: 5px;
     word-break: break-word;
     text-align: center;
+
     strong {
       color: #a68b7c;
       font-size: 0.8rem;
       text-transform: uppercase;
     }
+
     span {
       font-size: 1.1rem;
     }
@@ -123,4 +135,128 @@ $colormenu: #61331c;
   color: white;
   padding: 50px;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .Wrapper {
+    padding: 30px 15px;
+  }
+
+  .ProfileCard {
+    max-width: 100%;
+  }
+
+  .Hero {
+    height: 380px;
+
+    .NameOverlay {
+      padding: 25px;
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      span {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .StatsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px;
+
+    .StatBox {
+      padding: 15px 10px;
+
+      .Value {
+        font-size: 1.8rem;
+      }
+
+      .Label {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .Details {
+    padding: 20px;
+    gap: 15px;
+
+    .DetailItem {
+      flex: 1 1 120px;
+
+      strong {
+        font-size: 0.7rem;
+      }
+
+      span {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Wrapper {
+    padding: 20px 10px;
+  }
+
+  .Hero {
+    height: 300px;
+
+    .NameOverlay {
+      padding: 15px;
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      span {
+        font-size: 1.2rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .StatsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 8px;
+
+    .StatBox {
+      padding: 10px 5px;
+
+      .Value {
+        font-size: 1.4rem;
+      }
+
+      .Label {
+        font-size: 0.6rem;
+      }
+    }
+  }
+
+  .Details {
+    padding: 15px;
+    gap: 10px;
+
+    .DetailItem {
+      flex: 1 1 100px;
+
+      strong {
+        font-size: 0.65rem;
+      }
+
+      span {
+        font-size: 0.85rem;
+      }
+    }
+  }
 }

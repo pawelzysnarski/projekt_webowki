@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import type {PunktyScoutingowe} from "../types/Scouting.ts";
+import type {PunktyScoutingowe} from "../types/Scouting";
 
 export default function useScout() {
     return useQuery<PunktyScoutingowe[]>({

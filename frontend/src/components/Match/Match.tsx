@@ -1,7 +1,7 @@
-import type { Terminarz } from "../../types/Terminarz";
+import type { Timetable } from "../../types/Timetable.ts";
 import styles from "./Match.module.scss";
 
-export default function Match(mecz: Terminarz) {
+export default function Match(mecz: Timetable) {
     const data = new Date(mecz.dataSpotkania);
     const teraz = new Date();
     const godzina = `${String(data.getHours()).padStart(2, "0")}:${String(data.getMinutes()).padStart(2, "0")}`;

@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./components/AuthContext/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { AuthProvider } from "./auth/AuthContext";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import MainPage from "./routes/MainPage/MainPage";
 import ShopPage from "./routes/ShopPage/ShopPage";
 import TablePage from "./routes/TablePage/TablePage";
@@ -8,7 +8,7 @@ import "./App.scss";
 import Menu from "./components/Menu/Menu";
 import TicketPage from "./routes/TicketPage/TicketPage";
 import ContactPage from "./routes/ContactPage/ContactPage";
-import Tickets from "./routes/TicketPage/Tickets/Tickets";
+import Tickets from "./components/Tickets/Tickets";
 import Ticket from "./components/Ticket/Ticket";
 import SeasonTicket from "./components/SeasonTicket/SeasonTicket";
 import TeamPage from "./routes/TeamPage/TeamPage";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../components/AuthContext/AuthContext";
+import { useAuth } from "../../auth/AuthContext.tsx";
 import styles from "./ContactPage.module.scss";
 
 export default function ContactPage() {

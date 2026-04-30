@@ -5,7 +5,7 @@ const newsDbRouter = Router();
 
 newsDbRouter.get("/", async (req, res) => {
     try {
-        const news = await prisma.wiadomo_ci.findMany({
+        const news = await prisma.wiadomosci.findMany({
             include: {
                 akapity: {
                     orderBy: { ID: 'asc' }

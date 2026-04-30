@@ -2,6 +2,7 @@ import express, { Router, Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import type {OrderData,OrderItem} from '../types/Order.ts';
 
 const orderRouter = Router();
 orderRouter.use(express.json());
@@ -12,28 +13,6 @@ const ordersDir = path.join(__dirname, '../../Orders');
 
 if (!fs.existsSync(ordersDir)) {
     fs.mkdirSync(ordersDir, { recursive: true });
-}
-
-interface OrderItem {
-    id: number;
-    name: string;
-    size: string | null;
-    playerName: string | null;
-    quantity: number;
-    originalPrice: number;
-    finalPrice: number;
-}
-
-interface OrderData {
-    orderNumber: string;
-    date: string;
-    items: OrderItem[];
-    originalTotal: number;
-    discountValue: number;
-    discountPercent: number;
-    finalTotal: number;
-    discountCodesApplied: string[] | null;
-    memberDiscountApplied: boolean;
 }
 
 orderRouter.post('/save-order', (req: Request, res: Response) => {

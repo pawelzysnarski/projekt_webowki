@@ -1,6 +1,6 @@
 import styles from "./TableMini.module.scss";
 import useTable from "../../queries/tableQuery.ts";
-import type { Tabela } from "../../types/Tabela.ts";
+import type { Table } from "../../types/Table.ts";
 
 export default function TableMini() {
     const { data: tableMiniData, isLoading, isError, error } = useTable();
@@ -25,7 +25,7 @@ export default function TableMini() {
             </tr>
             </thead>
             <tbody>
-            {sortedData.map((k: Tabela) => (
+            {sortedData.map((k: Table) => (
                 <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
                     <td className={styles.desc}>
                         <img src={`logos/${k.klub.herb}`} alt='logo'/>

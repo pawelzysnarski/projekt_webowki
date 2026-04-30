@@ -1,6 +1,6 @@
-import type {Klub} from "./Klub.ts";
+import type {Club} from "./Club.ts";
 
-export interface Tabela {
+export interface Table {
     idKlubu: number;
     mecze: number;
     zwyciestwa: number;
@@ -10,5 +10,5 @@ export interface Tabela {
     goleStracone: number;
     bilansBramek: number;
     punkty: number;
-    klub: Klub;
+    klub: Club;
 }

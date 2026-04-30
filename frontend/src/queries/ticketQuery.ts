@@ -1,27 +1,4 @@
-export interface TicketPurchase {
-    matchId: number;
-    seatId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    ticketType?: string;
-}
-
-export interface PurchasedTicket {
-    id: number;
-    id_meczu: number;
-    id_miejsca: number;
-    imie: string;
-    nazwisko: string;
-    email: string;
-    data_zakupu: string;
-    czy_oplacony: boolean;
-    cena: number;
-    typ_biletu: string;
-    kod_biletu: string;
-    mecz: never;
-    miejsce: never;
-}
+import type {TicketPurchase,PurchasedTicket} from '../types/Ticket';
 
 export const ticketQuery = {
     buyTicket: async (data: TicketPurchase) => {

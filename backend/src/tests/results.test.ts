@@ -1,13 +1,20 @@
-//@ts-ignore
-import { describe, test, expect } from "vitest";
+import request from 'supertest';
+import express from 'express';
+import tableDbRouter from '../routes/tableDbRouter.js';
+import matchesDbRouter from '../routes/matchesDbRouter.js';
+
+const app = express();
+app.use(express.json());
+app.use('/api/table', tableDbRouter);
+app.use('/api/matches', matchesDbRouter);
 
 describe("Database Integrity Check", () => {
     test("Number of matches with results should equal half of total matches count in league table", async () => {
-        const resTabela = await fetch("http://localhost:3000/api/table");
-        const tabelaData = await resTabela.json();
+        const resTabela = await request(app).get('/api/table');
+        const tabelaData = resTabela.body;
 
-        const resMecze = await fetch("http://localhost:3000/api/matches");
-        const meczeData = await resMecze.json();
+        const resMecze = await request(app).get('/api/matches');
+        const meczeData = resMecze.body;
 
         const totalMatchesFromTable = tabelaData.reduce((sum: number, team: any) => {
             const m = team.mecze !== undefined ? team.mecze : (team.Mecze || 0);
@@ -19,12 +26,13 @@ describe("Database Integrity Check", () => {
 
         expect(matchesWithResults.length).toBe(expectedMatchesCount);
     });
-    test("Wins, draws, losses and points should match match history", async () => {
-        const resTabela = await fetch("http://localhost:3000/api/table");
-        const tabelaData = await resTabela.json();
 
-        const resMecze = await fetch("http://localhost:3000/api/matches");
-        const meczeData = await resMecze.json();
+    test("Wins, draws, losses and points should match match history", async () => {
+        const resTabela = await request(app).get('/api/table');
+        const tabelaData = resTabela.body;
+
+        const resMecze = await request(app).get('/api/matches');
+        const meczeData = resMecze.body;
 
         const stats: Record<number, { w: number; r: number; p: number; pkt: number }> = {};
 
@@ -68,12 +76,13 @@ describe("Database Integrity Check", () => {
             expect(Number(pTabela)).toBe(stats[id].p);
         });
     });
-    test("Goals scored and conceded in table should match match results", async () => {
-        const resTabela = await fetch("http://localhost:3000/api/table");
-        const tabelaData = await resTabela.json();
 
-        const resMecze = await fetch("http://localhost:3000/api/matches");
-        const meczeData = await resMecze.json();
+    test("Goals scored and conceded in table should match match results", async () => {
+        const resTabela = await request(app).get('/api/table');
+        const tabelaData = resTabela.body;
+
+        const resMecze = await request(app).get('/api/matches');
+        const meczeData = resMecze.body;
 
         const goals: Record<number, { zdobyte: number; stracone: number }> = {};
 

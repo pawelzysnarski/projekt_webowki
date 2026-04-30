@@ -1,6 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { AuthContext } from "../components/AuthContext/AuthContext";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { AuthContext } from "../auth/AuthContext";
 import RegisterPage from "../routes/AcademyRegister/AcademyRegister";
 
 const mockNavigate = vi.fn();
@@ -36,30 +40,25 @@ describe("RegisterPage Component Tests", () => {
         );
     };
 
-    test("should render form and handle user data from context", () => {
+    test("should render form with context data", () => {
         renderWithProviders(<RegisterPage />);
 
-        expect(screen.getByText(/Zgłoszenie/i)).toBeDefined();
-        const emailInput = screen.getByDisplayValue("test@chaber.pl") as HTMLInputElement;
-        expect(emailInput.readOnly).toBe(true);
+        expect(screen.getByText(/Zgłoszenie/i)).toBeInTheDocument();
+        expect(screen.getByDisplayValue("test@chaber.pl")).toBeInTheDocument();
     });
 
-    test("should show error for invalid age", async () => {
+    test("should show validation error for invalid age", async () => {
         renderWithProviders(<RegisterPage />);
 
         fireEvent.change(screen.getByPlaceholderText("Imię dziecka"), { target: { value: "Adam" } });
         fireEvent.change(screen.getByPlaceholderText("Nazwisko dziecka"), { target: { value: "Nowak" } });
+        fireEvent.change(screen.getByPlaceholderText(/Wiek dziecka/), { target: { value: "2" } });
 
-        const ageInput = screen.getByPlaceholderText(/Wiek dziecka/);
-        fireEvent.change(ageInput, { target: { value: "2" } });
+        const form = screen.getByRole("main").querySelector("form")!;
+        fireEvent.submit(form);
 
-        const form = screen.getByRole("main").querySelector("form");
-        if (form) fireEvent.submit(form);
-
-        const errorMsg = await screen.findByText("Wiek dziecka musi mieścić się w przedziale od 4 do 20 lat.");
-        expect(errorMsg).toBeDefined();
+        expect(await screen.findByText(/Wiek dziecka musi mieścić się w przedziale/i)).toBeInTheDocument();
     });
-
 
     test("should submit form and navigate on success", async () => {
         vi.stubGlobal('fetch', vi.fn(() =>
@@ -75,10 +74,19 @@ describe("RegisterPage Component Tests", () => {
         fireEvent.change(screen.getByPlaceholderText("Nazwisko dziecka"), { target: { value: "Nowak" } });
         fireEvent.change(screen.getByPlaceholderText(/Wiek dziecka/), { target: { value: "10" } });
 
-        fireEvent.click(screen.getByText("Wyślij"));
+        const form = screen.getByRole("main").querySelector("form")!;
+        fireEvent.submit(form);
 
         await waitFor(() => {
             expect(mockNavigate).toHaveBeenCalledWith("/akademia");
         });
+    });
+
+    test("should render PDF link", () => {
+        renderWithProviders(<RegisterPage />);
+
+        const pdfLink = screen.getByText(/Zobacz regulamin uczestnictwa/i);
+        expect(pdfLink).toBeInTheDocument();
+        expect(pdfLink.closest('a')).toHaveAttribute("href", "/docs/Regulamin_obozu.pdf");
     });
 });

@@ -1,8 +1,8 @@
-import type {Terminarz} from "../types/Terminarz.ts";
+import type {Timetable} from "../types/Timetable.ts";
 import {useQuery} from "@tanstack/react-query";
 
 export function useAllMatches() {
-    return useQuery<Terminarz[]>({
+    return useQuery<Timetable[]>({
         queryKey: ['matches', 'all'],
         queryFn: async () => {
             const res = await fetch('/api/matches');

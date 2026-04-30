@@ -1,4 +1,4 @@
-export interface Zawodnik {
+export interface Player {
     ID: number;
     Imie: string;
     Nazwisko: string;

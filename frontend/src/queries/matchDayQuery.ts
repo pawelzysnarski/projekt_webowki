@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Terminarz } from "../types/Terminarz";
+import type { Timetable } from "../types/Timetable.ts";
 
 export default function useMatches(round: number) {
-    return useQuery<Terminarz[]>({
+    return useQuery<Timetable[]>({
         queryKey: ['matches', round],
         queryFn: async () => {
             const res = await fetch(`/api/matches/${round}`);

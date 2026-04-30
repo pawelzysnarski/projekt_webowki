@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './AcademyRegister.module.scss';
-import {useAuth} from "../../components/AuthContext/AuthContext.tsx";
+import {useAuth} from "../../auth/AuthContext";
 
 export default function RegisterPage() {
     const { user } = useAuth();

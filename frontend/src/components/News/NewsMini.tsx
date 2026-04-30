@@ -1,4 +1,4 @@
-import type { NewsItem } from "../../types/Wiadomosc";
+import type { NewsItem } from "../../types/Information.ts";
 import styles from "./NewsMini.module.scss";
 
 export default function NewsMini({ item }: { item: NewsItem }) {

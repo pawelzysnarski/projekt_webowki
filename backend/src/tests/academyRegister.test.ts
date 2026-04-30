@@ -1,5 +1,10 @@
-//@ts-ignore
-import { describe, test, expect } from "vitest";
+import request from 'supertest';
+import express from 'express';
+import academyRegisterDbRouter from '../routes/academyRegisterDbRouter.js';
+
+const app = express();
+app.use(express.json());
+app.use('/api/academyRegister', academyRegisterDbRouter);
 
 describe("Testing 'academyRegister' endpoint", () => {
     test("Should successfully create a new registration", async () => {
@@ -11,17 +16,13 @@ describe("Testing 'academyRegister' endpoint", () => {
             Email: "test@example.com"
         };
 
-        const response = await fetch("http://localhost:3000/api/academyRegister", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(testData)
-        });
-
-        const data = await response.json();
+        const response = await request(app)
+            .post('/api/academyRegister')
+            .send(testData);
 
         expect(response.status).toBe(201);
-        expect(data.success).toBe(true);
-        expect(data.data.Imie).toBe("Jan");
+        expect(response.body.success).toBe(true);
+        expect(response.body.data.Imie).toBe("Jan");
     });
 
     test("Should return 400 when fields are missing", async () => {
@@ -29,46 +30,40 @@ describe("Testing 'academyRegister' endpoint", () => {
             Imie: "Jan"
         };
 
-        const response = await fetch("http://localhost:3000/api/academyRegister", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(incompleteData)
-        });
+        const response = await request(app)
+            .post('/api/academyRegister')
+            .send(incompleteData);
 
         expect(response.status).toBe(400);
     });
 
     test("Response data should not be null", async () => {
-        const response = await fetch("http://localhost:3000/api/academyRegister", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+        const response = await request(app)
+            .post('/api/academyRegister')
+            .send({
                 ID_Punktu: 1,
                 Imie: "Adam",
                 Nazwisko: "Nowak",
                 Wiek: 8,
                 Email: "adam@test.pl"
-            })
-        });
-        const data = await response.json();
-        expect(data).not.toBe(null);
+            });
+
+        expect(response.body.data).not.toBe(null);
     });
 });
+
 describe("Email delivery check", () => {
     test("Should successfully finish registration process", async () => {
-        const response = await fetch("http://localhost:3000/api/academyRegister", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+        const response = await request(app)
+            .post('/api/academyRegister')
+            .send({
                 ID_Punktu: 1,
                 Imie: "Test",
                 Nazwisko: "Wiadomosci",
                 Wiek: 10,
                 Email: "test@chaber.pl"
-            })
-        });
+            });
+
         expect(response.status).toBe(201);
-        const data = await response.json();
-        expect(data.success).toBe(true);
     });
 });

@@ -1,4 +1,4 @@
-import type { NewsItem } from "../../types/Wiadomosc";
+import type { NewsItem } from "../../types/Information.ts";
 import styles from "./News.module.scss";
 
 export default function News({ item }: { item: NewsItem }) {

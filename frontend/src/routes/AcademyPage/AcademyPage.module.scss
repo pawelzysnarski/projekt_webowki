@@ -9,8 +9,17 @@ $colormenu: #61331c;
   .Hero {
     text-align: center;
     margin-bottom: 4rem;
-    h1 { font-size: 3.5rem; text-transform: uppercase; color: lighten($colormenu, 40%); }
-    p { color: #a68b7c; font-size: 1.2rem; }
+
+    h1 {
+      font-size: 3.5rem;
+      text-transform: uppercase;
+      color: lighten($colormenu, 40%);
+    }
+
+    p {
+      color: #a68b7c;
+      font-size: 1.2rem;
+    }
   }
 }
 
@@ -35,9 +44,22 @@ $colormenu: #61331c;
       border-color: lighten($colormenu, 20%);
     }
 
-    .Icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
-    h3 { margin-bottom: 0.5rem; font-size: 1.25rem; }
-    p { color: #a68b7c; font-size: 0.95rem; line-height: 1.4; }
+    .Icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    p {
+      color: #a68b7c;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
   }
 }
 
@@ -47,15 +69,16 @@ $colormenu: #61331c;
   gap: 2rem;
   max-width: 75rem;
   margin: 0 auto;
-
-  @media (max-width: 64rem) { grid-template-columns: 1fr; }
 }
 
 .Info {
   display: flex;
   flex-direction: column;
   max-height: 31.25rem;
-  h2 { margin-bottom: 1rem; }
+
+  h2 {
+    margin-bottom: 1rem;
+  }
 }
 
 .DatesList {
@@ -65,9 +88,19 @@ $colormenu: #61331c;
   overflow-y: scroll;
   padding-right: 0.5rem;
 
-  &::-webkit-scrollbar { width: 6px; }
-  &::-webkit-scrollbar-track { background: rgba($colormenu, 0.1); border-radius: 10px; }
-  &::-webkit-scrollbar-thumb { background: lighten($colormenu, 10%); border-radius: 10px; }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba($colormenu, 0.1);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: lighten($colormenu, 10%);
+    border-radius: 10px;
+  }
 }
 
 .DateCard {
@@ -80,9 +113,21 @@ $colormenu: #61331c;
   transition: all 0.3s ease;
   cursor: pointer;
 
-  span { color: lighten($colormenu, 20%); font-weight: bold; }
-  strong { font-size: 1.1rem; margin-top: 0.4rem; }
-  small { color: #a68b7c; margin-top: 0.5rem; font-size: 0.85rem; }
+  span {
+    color: lighten($colormenu, 20%);
+    font-weight: bold;
+  }
+
+  strong {
+    font-size: 1.1rem;
+    margin-top: 0.4rem;
+  }
+
+  small {
+    color: #a68b7c;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
 
   &.ActiveCard {
     background: rgba($colormenu, 0.25);
@@ -94,7 +139,10 @@ $colormenu: #61331c;
     opacity: 0.5;
     filter: grayscale(1);
     cursor: default;
-    &:hover { transform: none; }
+
+    &:hover {
+      transform: none;
+    }
   }
 }
 
@@ -109,7 +157,9 @@ $colormenu: #61331c;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover { background-color: lighten($colormenu, 25%); }
+  &:hover {
+    background-color: lighten($colormenu, 25%);
+  }
 }
 
 .MapWrapper {
@@ -117,5 +167,124 @@ $colormenu: #61331c;
   border-radius: 1rem;
   overflow: hidden;
   border: 0.0625rem solid rgba($colormenu, 0.3);
-  .Map { height: 100%; width: 100%; }
+
+  .Map {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 64rem) {
+  .ScoutingSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .AcademyPage {
+    padding: 2rem 1rem;
+
+    .Hero {
+      margin-bottom: 2rem;
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .BenefitsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+
+    .BenefitItem {
+      padding: 1.5rem;
+
+      .Icon {
+        font-size: 2rem;
+      }
+
+      h3 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .ScoutingSection {
+    gap: 1.5rem;
+  }
+
+  .Info {
+    max-height: none;
+  }
+
+  .MapWrapper {
+    height: 20rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .AcademyPage {
+    padding: 1.5rem 0.8rem;
+
+    .Hero {
+      margin-bottom: 1.5rem;
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .BenefitsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+
+    .BenefitItem {
+      padding: 1rem;
+
+      .Icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      h3 {
+        font-size: 1rem;
+      }
+
+      p {
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  .DateCard {
+    padding: 1rem;
+
+    strong {
+      font-size: 1rem;
+    }
+
+    small {
+      font-size: 0.75rem;
+    }
+  }
+
+  .MapWrapper {
+    height: 16rem;
+  }
 }

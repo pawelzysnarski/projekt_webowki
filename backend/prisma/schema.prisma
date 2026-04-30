@@ -68,14 +68,14 @@ model produkty {
 
 model akapity {
   ID            Int        @id @default(autoincrement())
-  ID_Wiadomo_ci Int        @map("ID_Wiadomości")
-  Tre__         String     @map("Treść") @db.VarChar(1000)
-  wiadomo_ci    wiadomo_ci @relation(fields: [ID_Wiadomo_ci], references: [ID], onUpdate: Restrict, map: "akapity_ibfk_1")
+  ID_Wiadomosci Int        @map("ID_Wiadomości")
+  Tresc         String     @map("Treść") @db.VarChar(1000)
+  wiadomosci    wiadomosci @relation(fields: [ID_Wiadomosci], references: [ID], onUpdate: Restrict, map: "akapity_ibfk_1")
 
-  @@index([ID_Wiadomo_ci], map: "ID_Wiadomości")
+  @@index([ID_Wiadomosci], map: "ID_Wiadomości")
 }
 
-model dru_yna {
+model druzyna {
   ID             Int       @id @default(autoincrement())
   Imie           String    @db.VarChar(40)
   Nazwisko       String    @db.VarChar(40)
@@ -113,7 +113,7 @@ model uzytkownik {
   @@map("uzytkownicy")
 }
 
-model wiadomo_ci {
+model wiadomosci {
   ID       Int       @id @default(autoincrement())
   Nag__wek String    @map("Nagłówek") @db.VarChar(100)
   Zdj_cie  String    @map("Zdjęcie") @db.VarChar(100)

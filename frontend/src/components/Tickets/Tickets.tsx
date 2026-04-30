@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./Tickets.module.scss";
 import { NavLink, useParams } from "react-router";
-import { matchQuery, type Match } from "../../../queries/matchQuery";
+import { matchQuery} from "../../queries/matchQuery.ts";
+import type {Match} from '../../types/Match.ts';
 
 export default function Tickets() {
     const { id } = useParams<{ id: string }>();

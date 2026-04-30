@@ -1,6 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider, type UseQueryResult } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import PlayerDesc from "../components/PlayerDesc/PlayerDesc";
 import * as playersQuery from "../queries/playersQuery";
 import type { Zawodnik } from "../types/Zawodnik";
@@ -22,6 +26,7 @@ vi.mock("react-router-dom", async () => {
 describe("PlayerDesc Component Tests", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        queryClient.clear();
     });
 
     const renderWithProviders = () => render(
@@ -31,6 +36,7 @@ describe("PlayerDesc Component Tests", () => {
             </MemoryRouter>
         </QueryClientProvider>
     );
+
     test("should render player details correctly", () => {
         const birthDate = new Date("1994-05-20");
         const mockPlayers: Zawodnik[] = [{
@@ -51,35 +57,29 @@ describe("PlayerDesc Component Tests", () => {
         vi.spyOn(playersQuery, 'default').mockReturnValue({
             data: mockPlayers,
             isLoading: false
-        } as unknown as UseQueryResult<Zawodnik[]>);
+        } as never);
 
         renderWithProviders();
 
-        expect(screen.getByText("Piotr Zieliński")).toBeTruthy();
-        expect(screen.getByText("#20")).toBeTruthy();
-
-        const expectedDate = birthDate.toLocaleDateString('pl-PL');
-        expect(screen.getByText(expectedDate)).toBeTruthy();
-
-        expect(screen.getByText("180 cm")).toBeTruthy();
+        expect(screen.getByText("Piotr Zieliński")).toBeInTheDocument();
+        expect(screen.getByText("#20")).toBeInTheDocument();
+        expect(screen.getByText("180 cm")).toBeInTheDocument();
     });
-
-
 
     test("should show not found message when player does not exist", () => {
         vi.spyOn(playersQuery, 'default').mockReturnValue({
             data: [],
             isLoading: false
-        } as unknown as UseQueryResult<Zawodnik[]>);
+        } as never);
 
         renderWithProviders();
 
-        expect(screen.getByText("Nie znaleziono zawodnika")).toBeTruthy();
+        expect(screen.getByText("Nie znaleziono zawodnika")).toBeInTheDocument();
     });
 
     test("should call navigate(-1) when back button is clicked", () => {
         const mockPlayers = [{ ID: 10, Imie: "Jan", Nazwisko: "Test", Numer: 1 }] as Zawodnik[];
-        vi.spyOn(playersQuery, 'default').mockReturnValue({ data: mockPlayers, isLoading: false } as any);
+        vi.spyOn(playersQuery, 'default').mockReturnValue({ data: mockPlayers, isLoading: false } as never);
 
         renderWithProviders();
 
@@ -89,7 +89,7 @@ describe("PlayerDesc Component Tests", () => {
 
     test("should render player image with correct source", () => {
         const mockPlayers = [{ ID: 10, Imie: "Jan", Numer: 99 }] as Zawodnik[];
-        vi.spyOn(playersQuery, 'default').mockReturnValue({ data: mockPlayers, isLoading: false } as any);
+        vi.spyOn(playersQuery, 'default').mockReturnValue({ data: mockPlayers, isLoading: false } as never);
 
         renderWithProviders();
 

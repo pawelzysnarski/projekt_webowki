@@ -58,3 +58,37 @@ $colormenu: #61331c;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .Article {
+    .Content {
+      padding: 1rem;
+
+      .Meta time {
+        font-size: 0.75rem;
+      }
+
+      .Title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Article {
+    .Content {
+      padding: 0.8rem;
+
+      .Meta time {
+        font-size: 0.7rem;
+      }
+
+      .Title {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+      }
+    }
+  }
+}

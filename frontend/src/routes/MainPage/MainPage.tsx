@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useNews from "../../queries/newsQuery";
 import News from "../../components/News/News";
 import styles from "./MainPage.module.scss";
-import type {NewsItem} from "../../types/Wiadomosc.ts";
+import type {NewsItem} from "../../types/Information.ts";
 import NewsMini from "../../components/News/NewsMini.tsx";
 
 export default function MainPage() {

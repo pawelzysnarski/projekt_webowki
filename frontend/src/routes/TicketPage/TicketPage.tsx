@@ -1,7 +1,8 @@
 import styles from "./TicketPage.module.scss"
 import {NavLink} from "react-router"
 import {useEffect, useState} from "react";
-import { matchQuery, type Match } from '../../queries/matchQuery';
+import { matchQuery } from '../../queries/matchQuery';
+import type {Match} from '../../types/Match.ts';
 
 export default function TicketPage(){
     const [matches, setMatches] = useState<Match[]>([]);

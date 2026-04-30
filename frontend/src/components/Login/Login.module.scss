@@ -101,3 +101,38 @@ $transition: all 0.2s ease;
     }
   }
 }
+
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 1rem;
+    min-height: calc(100vh - 100px);
+  }
+
+  .loginCard {
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    button[type="submit"] {
+      padding: 0.7rem;
+      font-size: 1rem;
+    }
+  }
+
+  .switch {
+    font-size: 0.8rem;
+
+    button {
+      font-size: 0.8rem;
+    }
+  }
+}

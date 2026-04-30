@@ -2,7 +2,7 @@ import { useState } from "react";
 import useMatches from "../../queries/matchDayQuery.ts";
 import Match from "../../components/Match/Match";
 import styles from "./TablePage.module.scss";
-import type { Terminarz } from "../../types/Terminarz.ts";
+import type { Timetable } from "../../types/Timetable.ts";
 import Table from "../../components/Table/Table.tsx";
 import {useAllMatches} from "../../queries/matchDayQuery2.ts";
 
@@ -45,7 +45,7 @@ export default function TablePage() {
                 <div className={styles.Loader}>Ładowanie...</div>
             ) : (
                 <div className={styles.MatchesGrid}>
-                    {matches?.map((mecz: Terminarz) => (
+                    {matches?.map((mecz: Timetable) => (
                         <Match key={mecz.id} {...mecz} />
                     ))}
                 </div>

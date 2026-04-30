@@ -1,11 +1,12 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { QueryClient, QueryClientProvider, type UseQueryResult } from "@tanstack/react-query";
-import AcademyPage from "../routes/AcademyPage/AcademyPage";
-import * as scoutQuery from "../queries/scoutQuery.ts";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 
-const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } }
-});
+import { render, screen, fireEvent } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import AcademyPage from "../routes/AcademyPage/AcademyPage";
+import * as scoutQueryModule from "../queries/scoutQuery";
 
 vi.mock('react-leaflet', () => ({
     MapContainer: ({ children }: any) => <div data-testid="map">{children}</div>,
@@ -16,27 +17,34 @@ vi.mock('react-leaflet', () => ({
 
 vi.mock('leaflet/dist/leaflet.css', () => ({}));
 
+const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } }
+});
+
+const renderWithProviders = () => render(
+    <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+            <AcademyPage />
+        </BrowserRouter>
+    </QueryClientProvider>
+);
+
 describe("AcademyPage Tests", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        queryClient.clear();
     });
 
-    const renderWithProviders = () => render(
-        <QueryClientProvider client={queryClient}>
-            <AcademyPage />
-        </QueryClientProvider>
-    );
-
     test("should render benefits section", () => {
-        vi.spyOn(scoutQuery, 'default').mockReturnValue({
+        vi.spyOn(scoutQueryModule, 'default').mockReturnValue({
             data: [],
-            isLoading: false
-        } as UseQueryResult<any>);
+            isLoading: false,
+        } as any);
 
         renderWithProviders();
 
-        expect(screen.getByText("Kadra UEFA")).toBeTruthy();
-        expect(screen.getByText("Monitoring")).toBeTruthy();
+        expect(screen.getByText("Kadra UEFA")).toBeInTheDocument();
+        expect(screen.getByText("Monitoring")).toBeInTheDocument();
     });
 
     test("should display scouting points and calculate available places", () => {
@@ -52,17 +60,17 @@ describe("AcademyPage Tests", () => {
             }
         ];
 
-        vi.spyOn(scoutQuery, 'default').mockReturnValue({
+        vi.spyOn(scoutQueryModule, 'default').mockReturnValue({
             data: mockPoints,
-            isLoading: false
-        } as UseQueryResult<any>);
+            isLoading: false,
+        } as any);
 
         renderWithProviders();
 
-        const points = screen.getAllByText("Arena Pobiedziska");
-        expect(points.length).toBeGreaterThanOrEqual(1);
-        expect(screen.getByText(/Dostępne miejsca: 28/i)).toBeTruthy();
-        expect(screen.getByText("Zapisz się")).toBeTruthy();
+        const elements = screen.getAllByText("Arena Pobiedziska");
+        expect(elements.length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/Dostępne miejsca: 28/i)).toBeInTheDocument();
+        expect(screen.getByText("Zapisz się")).toBeInTheDocument();
     });
 
     test("should show 'Zakończone' for past dates", () => {
@@ -79,17 +87,16 @@ describe("AcademyPage Tests", () => {
             }
         ];
 
-        vi.spyOn(scoutQuery, 'default').mockReturnValue({
+        vi.spyOn(scoutQueryModule, 'default').mockReturnValue({
             data: mockPoints,
-            isLoading: false
-        } as UseQueryResult<any>);
+            isLoading: false,
+        } as any);
 
         renderWithProviders();
 
         const statusElements = screen.getAllByText("Zakończone");
         expect(statusElements.length).toBeGreaterThanOrEqual(1);
-
-        expect(screen.queryByText("Zapisz się")).toBeNull();
+        expect(screen.queryByText("Zapisz się")).not.toBeInTheDocument();
     });
 
     test("should have correct redirect link", () => {
@@ -101,10 +108,10 @@ describe("AcademyPage Tests", () => {
             zapis: []
         }];
 
-        vi.spyOn(scoutQuery, 'default').mockReturnValue({
+        vi.spyOn(scoutQueryModule, 'default').mockReturnValue({
             data: mockPoints,
-            isLoading: false
-        } as UseQueryResult<any>);
+            isLoading: false,
+        } as any);
 
         const locationMock = vi.fn();
         delete (window as any).location;

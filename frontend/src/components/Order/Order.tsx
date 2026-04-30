@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext/AuthContext';
+import { useAuth } from '../../auth/AuthContext.tsx';
 import type { CartItemWithSize } from '../../types/Product';
 import styles from './Order.module.scss';
 

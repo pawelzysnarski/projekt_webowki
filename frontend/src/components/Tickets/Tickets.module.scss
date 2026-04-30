@@ -24,6 +24,7 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
 }
+
 .Ticket_container_1,
 .Ticket_container_2,
 .Ticket_container_3,
@@ -87,22 +88,24 @@
     letter-spacing: 1px;
   }
 }
+
 .Ticket_container_1 {
-  background-image: url("../../../../public/tickets_photos/brazowy_los.png");
+  background-image: url("../../../public/tickets_photos/brazowy_los.png");
 }
 
 .Ticket_container_2 {
-  background-image: url("../../../../public/tickets_photos/srebrny_jez.png");
+  background-image: url("../../../public/tickets_photos/srebrny_jez.png");
 }
 
 .Ticket_container_3 {
-  background-image: url("../../../../public/tickets_photos/zloty_jelen.png");
+  background-image: url("../../../public/tickets_photos/zloty_jelen.png");
 }
 
 .Ticket_container_away {
-  background-image: url("../../../../public/tickets_photos/stadion.png");
+  background-image: url("../../../public/tickets_photos/stadion.png");
   border: 2px solid #3b82f6;
 }
+
 .Ticket_container_price {
   position: absolute;
   bottom: 50px;
@@ -134,6 +137,7 @@
     border-radius: 12px;
   }
 }
+
 .awayWrapper {
   width: 100%;
   display: flex;
@@ -177,6 +181,7 @@
     font-style: italic;
   }
 }
+
 .Learn_more {
   width: 100%;
   display: flex;
@@ -205,10 +210,137 @@
     }
   }
 }
+
 .loading {
   color: #c4a58b;
   font-size: 1.2rem;
   text-align: center;
   padding: 60px;
   width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .Ticket {
+    width: 280px;
+    height: 380px;
+  }
+
+  .Ticket_container_type {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Main {
+    padding: 30px 15px;
+    gap: 16px;
+  }
+
+  .Ticket {
+    width: 100%;
+    max-width: 350px;
+    height: 340px;
+  }
+
+  .Ticket_container_matchup {
+    padding: 20px 15px 8px;
+  }
+
+  .Ticket_container_title {
+    font-size: 1.1rem;
+  }
+
+  .Ticket_container_type {
+    font-size: 1.5rem;
+  }
+
+  .Ticket_container_price {
+    font-size: 1.2rem;
+    bottom: 45px;
+  }
+
+  .Ticket_container_info {
+    font-size: 0.75rem;
+    bottom: 15px;
+  }
+
+  .awayHeader {
+    padding: 16px;
+
+    .awayIcon {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .Learn_more_button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Main {
+    padding: 20px 10px;
+    gap: 12px;
+  }
+
+  .Ticket {
+    height: 300px;
+  }
+
+  .Ticket_container_matchup {
+    padding: 15px 10px 6px;
+  }
+
+  .Ticket_container_title {
+    font-size: 1rem;
+  }
+
+  .Ticket_container_date {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+  }
+
+  .Ticket_container_type {
+    font-size: 1.3rem;
+  }
+
+  .Ticket_container_price {
+    font-size: 1.1rem;
+    bottom: 40px;
+  }
+
+  .Ticket_container_info {
+    font-size: 0.7rem;
+    bottom: 10px;
+  }
+
+  .awayHeader {
+    padding: 12px;
+
+    .awayIcon {
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+  }
+
+  .Learn_more_button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
 }

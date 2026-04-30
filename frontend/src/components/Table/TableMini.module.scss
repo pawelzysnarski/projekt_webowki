@@ -15,6 +15,7 @@ $colormenu: #61331c;
       background: rgba($colormenu, 0.1);
       border-bottom: 1px solid $colormenu;
     }
+
     th {
       padding: 10px 5px;
       color: lighten($colormenu, 25%);
@@ -30,10 +31,10 @@ $colormenu: #61331c;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: background 0.2s ease;
 
-
       &:hover {
         background: rgba($colormenu, 0.15);
       }
+
       &.MyClub {
         background: rgba($colormenu, 0.3);
         color: #fff;
@@ -75,6 +76,65 @@ $colormenu: #61331c;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 120px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .TableMini {
+    thead th {
+      padding: 8px 3px;
+      font-size: 0.6rem;
+      letter-spacing: 0.5px;
+    }
+
+    tbody td {
+      padding: 6px 3px;
+      font-size: 0.7rem;
+    }
+
+    .desc {
+      gap: 6px;
+      padding-left: 6px !important;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      p {
+        font-size: 0.65rem;
+        max-width: 80px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .TableMini {
+    thead th {
+      padding: 6px 2px;
+      font-size: 0.5rem;
+    }
+
+    tbody td {
+      padding: 5px 2px;
+      font-size: 0.6rem;
+    }
+
+    .desc {
+      gap: 4px;
+      padding-left: 4px !important;
+
+      img {
+        width: 14px;
+        height: 14px;
+      }
+
+      p {
+        font-size: 0.55rem;
+        max-width: 50px;
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import styles from "./Table.module.scss";
 import useTable from "../../queries/tableQuery.ts";
-import type { Tabela } from "../../types/Tabela.ts";
+import type { Table } from "../../types/Table.ts";
 
 export default function Table() {
     const { data: tableData, isLoading, isError, error } = useTable();
@@ -32,7 +32,7 @@ export default function Table() {
                 </tr>
                 </thead>
                 <tbody>
-                {sortedData.map((k: Tabela, index: number) => (
+                {sortedData.map((k: Table, index: number) => (
                     <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
                         <td className={styles.Pos}>{index + 1}</td>
                         <td className={styles.desc}>

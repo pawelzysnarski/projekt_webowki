@@ -1,7 +1,7 @@
 import useNews from "../../queries/newsQuery";
 import News from "../../components/News/News";
 import styles from "./NewsPage.module.scss";
-import type { NewsItem } from "../../types/Wiadomosc";
+import type { NewsItem } from "../../types/Information.ts";
 
 export default function NewsPage() {
     const { data: newsData, isLoading } = useNews();

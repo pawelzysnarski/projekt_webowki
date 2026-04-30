@@ -1,17 +1,10 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaDb from "../prismaDb.ts";
-import {generateAcademyRegisterHtml, sendAcademyRegisterEmail} from "../emailService.ts";
+import PrismaDb from "../prismaDb";
+import {generateAcademyRegisterHtml, sendAcademyRegisterEmail} from "../emailService";
+import type {RegisterBody} from '../types/RegisterBody';
 
 const AcademyRegisterDbRouter = Router();
 const prisma = PrismaDb;
-
-interface RegisterBody {
-    ID_Punktu: number;
-    Imie: string;
-    Nazwisko: string;
-    Wiek: number;
-    Email: string;
-}
 
 AcademyRegisterDbRouter.use(express.json());
 

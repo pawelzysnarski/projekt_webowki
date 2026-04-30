@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../AuthContext/AuthContext";
+import { useAuth } from "../../auth/AuthContext.tsx";
 import styles from "./Menu.module.scss";
 import logo from "/logos/chaber.png";
 import sponsor from "../../sponsor.png";

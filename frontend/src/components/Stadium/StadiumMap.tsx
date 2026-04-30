@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
-import { stadiumQuery, type Seat, type SeatsResponse } from '../../queries/stadiumQuery';
-import { matchQuery, type Match } from '../../queries/matchQuery';
-import { useAuth } from '../AuthContext/AuthContext.tsx';
+import { stadiumQuery } from '../../queries/stadiumQuery';
+import type { Seat,SeatsResponse} from '../../types/Seat.ts';
+import { matchQuery } from '../../queries/matchQuery';
+import type {Match } from '../../types/Match';
+import { useAuth } from '../../auth/AuthContext.tsx';
 import styles from './StadiumMap.module.scss';
-
-type TicketType = 'zloty_jelen' | 'srebrny_jez' | 'brazowy_los' | 'normalny';
-
-interface Sector {
-    id: string;
-    name: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    color: string;
-    seats: Seat[];
-    allowedTicketTypes: TicketType[];
-}
+import type {Sector,TicketType} from '../../types/Sector.ts';
 
 export default function StadiumMap() {
     const { id, type_id } = useParams<{ id: string; type_id?: string }>();
@@ -101,18 +90,18 @@ export default function StadiumMap() {
                 };
 
                 const positions: Record<string, { x: number; y: number; width: number; height: number }> = {
-                    'A1': { x: 55, y: 100, width: 80, height: 65 },
-                    'A2': { x: 145, y: 100, width: 80, height: 65 },
-                    'A3': { x: 235, y: 100, width: 80, height: 65 },
-                    'A4': { x: 325, y: 100, width: 80, height: 65 },
-                    'B1': { x: 415, y: 145, width: 55, height: 100 },
-                    'B2': { x: 415, y: 255, width: 55, height: 100 },
-                    'C1': { x: 55, y: 375, width: 80, height: 65 },
-                    'C2': { x: 145, y: 375, width: 80, height: 65 },
-                    'C3': { x: 235, y: 375, width: 80, height: 65 },
-                    'C4': { x: 325, y: 375, width: 80, height: 65 },
-                    'D1': { x: 0, y: 145, width: 55, height: 100 },
-                    'D2': { x: 0, y: 255, width: 55, height: 100 },
+                    'A1': { x: 85, y: 65, width: 80, height: 65 },
+                    'A2': { x: 175, y: 65, width: 80, height: 65 },
+                    'A3': { x: 265, y: 65, width: 80, height: 65 },
+                    'A4': { x: 355, y: 65, width: 80, height: 65 },
+                    'B1': { x: 455, y: 145, width: 55, height: 100 },
+                    'B2': { x: 455, y: 255, width: 55, height: 100 },
+                    'C1': { x: 85, y: 375, width: 80, height: 65 },
+                    'C2': { x: 175, y: 375, width: 80, height: 65 },
+                    'C3': { x: 265, y: 375, width: 80, height: 65 },
+                    'C4': { x: 355, y: 375, width: 80, height: 65 },
+                    'D1': { x: 20, y: 145, width: 55, height: 100 },
+                    'D2': { x: 20, y: 255, width: 55, height: 100 },
                 };
 
                 const generatedSectors: Sector[] = [];
@@ -254,20 +243,20 @@ export default function StadiumMap() {
             </header>
 
             <div className={styles.stageWrapper}>
-                <Stage width={475} height={540}>
+                <Stage width={530} height={540}>
                     <Layer>
-                        <Rect x={70} y={150} width={335} height={200} fill="#22c55e" stroke="#166534" strokeWidth={3} cornerRadius={10} />
-                        <Circle x={237} y={250} radius={35} stroke="white" strokeWidth={2} />
-                        <Circle x={237} y={250} radius={12} stroke="white" fill="white" strokeWidth={2} />
-                        <Rect x={80} y={160} width={315} height={180} stroke="white" strokeWidth={2} cornerRadius={10} />
-                        <Rect x={237} y={160} width={1} height={180} stroke="white" strokeWidth={2} />
+                        <Rect x={100} y={150} width={335} height={200} fill="#22c55e" stroke="#166534" strokeWidth={3} cornerRadius={10} />
+                        <Circle x={267} y={250} radius={35} stroke="white" strokeWidth={2} />
+                        <Circle x={267} y={250} radius={12} stroke="white" fill="white" strokeWidth={2} />
+                        <Rect x={110} y={160} width={315} height={180} stroke="white" strokeWidth={2} cornerRadius={10} />
+                        <Rect x={267} y={160} width={1} height={180} stroke="white" strokeWidth={2} />
                     </Layer>
 
                     <Layer>
-                        <Text x={100} y={120} width={275} fontSize={14} text={"Trybuna Północna"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={100} y={358} width={275} fontSize={14} text={"Trybuna Południowa"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={340} y={260} width={160} rotation={-90} fontSize={14} text={"Trybuna Wschodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
-                        <Text x={-20} y={260} width={160} rotation={90} fontSize={14} text={"Trybuna Zachodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={130} y={135} width={275} fontSize={14} text={"Trybuna Północna"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={130} y={358} width={275} fontSize={14} text={"Trybuna Południowa"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={435} y={330} width={160} rotation={-90} fontSize={14} text={"Trybuna Wschodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
+                        <Text x={95} y={180} width={160} rotation={90} fontSize={14} text={"Trybuna Zachodnia"} fill="#c4a58b" fontStyle="bold" align="center" />
                     </Layer>
 
                     <Layer>
