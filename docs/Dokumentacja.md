@@ -15,7 +15,7 @@
 
 ## 1. Opis aplikacji
 
-**Chaber FC** to webowa aplikacja klubu piłkarskiego, zbudowana w architekturze **SPA (Single Page Application)**. Umożliwia kibicom i użytkownikom przeglądanie informacji o klubie, zakup biletów i karnetów, przeglądanie sklepu klubowego, śledzenie aktualności oraz zapisywanie się do akademii piłkarskiej.
+**Chaber Pobiedziska - aplikacja webowa** to webowa aplikacja klubu piłkarskiego, zbudowana w architekturze **SPA (Single Page Application)**. Umożliwia kibicom i użytkownikom przeglądanie informacji o klubie, zakup biletów i karnetów, przeglądanie sklepu klubowego, śledzenie aktualności oraz zapisywanie się do akademii piłkarskiej.
 
 ### Technologie
 
@@ -165,7 +165,7 @@ Piotr był odpowiedzialny za pełną obsługę sklepu internetowego — od przeg
 | **Szczegóły produktu** | Widok pojedynczego produktu (`ProductPage`, `Product`) |
 | **Zamówienia** | Logika składania i obsługi zamówień (`OrderPage`, `Order`, `orderRouter`) |
 | **Style** | Pliki SCSS dla: `Shop`, `Product`, `Order`, `ShopPage`, `ProductPage`, `OrderPage` |
-| **Testy** | |
+| **Testy** | Testy jednostkowe: `Shop.test.tsx`, `Product.test.tsx`, `Order.test.tsx`, `shop.test.ts`, `order.test.ts` |
 
 ---
 
@@ -469,7 +469,9 @@ docker exec frontend npm test
 | `staff.test.ts` | Dane personelu |
 | `scout.test.ts` | Punkty scoutingowe |
 | `table.test.ts` | Tabela ligowa |
-| `results.test.ts` | Wyniki meczów i logika zamówień |
+| `results.test.ts` | Wyniki meczów |
+| `order.test.ts` | Składanie i obsługa zamówień ze sklepu |
+| `shop.test.ts` | Pobieranie produktów sklepowych |
 
 ### Pokrycie testami – Frontend
 
@@ -491,3 +493,6 @@ docker exec frontend npm test
 | `AcademyRegister.test.tsx` | Formularz zapisu do akademii |
 | `Academy.test.tsx` | Strona akademii |
 | `Menu.test.tsx` | Nawigacja / menu |
+| `Shop.test.tsx` | Widok sklepu klubowego |
+| `Product.test.tsx` | Szczegóły produktu sklepowego |
+| `Order.test.tsx` | Składanie zamówienia ze sklepu |
