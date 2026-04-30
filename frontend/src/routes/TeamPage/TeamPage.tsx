@@ -1,9 +1,9 @@
-import PlayerData from "../../components/PlayerData/PlayerData.tsx";
-import StaffData from "../../components/StaffData/StaffData.tsx";
-import usePlayers from "../../queries/playersQuery.ts";
-import useStaff from "../../queries/staffQuery.ts";
-import type { Zawodnik } from "../../types/Zawodnik.ts";
-import type { Personel } from "../../types/Personel.ts";
+import PlayerData from "../../components/PlayerData/PlayerData";
+import StaffData from "../../components/StaffData/StaffData";
+import usePlayers from "../../queries/playersQuery";
+import useStaff from "../../queries/staffQuery";
+import type { Player } from "../../types/Player.ts";
+import type { Personel } from "../../types/Personel";
 import styles from "./TeamPage.module.scss";
 
 export default function TeamPage() {
@@ -29,28 +29,28 @@ export default function TeamPage() {
         <div className={styles.Container}>
             <h2 className={styles.Heading}>Bramkarze</h2>
             <div className={styles.Grid}>
-                {playersData.filter((p: Zawodnik) => p.Pozycja === "Bramkarz").map((player: Zawodnik) => (
+                {playersData.filter((p: Player) => p.Pozycja === "Bramkarz").map((player: Player) => (
                     <PlayerData key={player.ID} player={player} />
                 ))}
             </div>
 
             <h2 className={styles.Heading}>Obrońcy</h2>
             <div className={styles.Grid}>
-                {playersData.filter((p: Zawodnik) => p.Pozycja === "Obrońca").map((player: Zawodnik) => (
+                {playersData.filter((p: Player) => p.Pozycja === "Obrońca").map((player: Player) => (
                     <PlayerData key={player.ID} player={player} />
                 ))}
             </div>
 
             <h2 className={styles.Heading}>Pomocnicy</h2>
             <div className={styles.Grid}>
-                {playersData.filter((p: Zawodnik) => p.Pozycja === "Pomocnik").map((player: Zawodnik) => (
+                {playersData.filter((p: Player) => p.Pozycja === "Pomocnik").map((player: Player) => (
                     <PlayerData key={player.ID} player={player} />
                 ))}
             </div>
 
             <h2 className={styles.Heading}>Napastnicy</h2>
             <div className={styles.Grid}>
-                {playersData.filter((p: Zawodnik) => p.Pozycja === "Napastnik").map((player: Zawodnik) => (
+                {playersData.filter((p: Player) => p.Pozycja === "Napastnik").map((player: Player) => (
                     <PlayerData key={player.ID} player={player} />
                 ))}
             </div>

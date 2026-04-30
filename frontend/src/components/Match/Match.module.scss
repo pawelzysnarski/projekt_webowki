@@ -1,16 +1,25 @@
 $colormenu: #61331c;
 
 .MatchCard {
-  width: 320px; // Sztywna szerokość, żeby działał poziomy scroll w .Grid
-  background: rgba(darken($colormenu, 20%), 0.6); // Półprzezroczysty brąz
+  background: rgba(darken($colormenu, 20%), 0.6);
   border-radius: 12px;
   padding: 1.5rem 1rem;
   border: 1px solid rgba($colormenu, 0.3);
-  backdrop-filter: blur(10px); // Efekt szklanej karty na gradiencie tła
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
+  &.MyMatch {
+    background: rgba(darken($colormenu, 10%), 0.9);
+    border: 2px solid lighten($colormenu, 15%);
+    box-shadow: 0 0 15px rgba($colormenu, 0.5);
+
+    .Hour, .Score {
+      color: #ffd700;
+    }
+  }
 
   &:hover {
     background: rgba(darken($colormenu, 15%), 0.8);
@@ -20,6 +29,7 @@ $colormenu: #61331c;
 
   .Top {
     text-align: center;
+
     h6 {
       margin: 0;
       font-size: 0.65rem;
@@ -47,7 +57,7 @@ $colormenu: #61331c;
         width: 60px;
         height: 60px;
         object-fit: contain;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
       }
 
       span {
@@ -56,7 +66,6 @@ $colormenu: #61331c;
         font-weight: bold;
         color: white;
         text-align: center;
-        // Ucinanie tekstu jeśli klub ma bardzo długą nazwę
         max-width: 100px;
         white-space: nowrap;
         overflow: hidden;
@@ -68,18 +77,119 @@ $colormenu: #61331c;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-width: 80px;
 
-      .Hour {
+      .Hour, .Score {
         font-size: 1.5rem;
         font-weight: 900;
         color: lighten($colormenu, 25%);
         line-height: 1;
       }
 
+      .Score {
+        color: #fff;
+        letter-spacing: 2px;
+      }
+
       .Date {
         font-size: 0.7rem;
         color: rgba(white, 0.5);
         margin-top: 5px;
+      }
+
+      .Live {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #ff4444;
+        animation: pulse 2s infinite;
+      }
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .MatchCard {
+    padding: 1rem 0.8rem;
+    gap: 0.8rem;
+
+    .TeamsRow {
+      gap: 6px;
+
+      .Team {
+        img {
+          width: 45px;
+          height: 45px;
+        }
+
+        span {
+          font-size: 0.75rem;
+          max-width: 70px;
+        }
+      }
+
+      .TimeBox {
+        min-width: 60px;
+
+        .Hour, .Score {
+          font-size: 1.2rem;
+        }
+
+        .Date {
+          font-size: 0.6rem;
+        }
+
+        .Live {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .MatchCard {
+    padding: 0.8rem 0.5rem;
+    gap: 0.6rem;
+
+    .Top h6 {
+      font-size: 0.55rem;
+    }
+
+    .TeamsRow {
+      gap: 4px;
+
+      .Team {
+        img {
+          width: 35px;
+          height: 35px;
+        }
+
+        span {
+          font-size: 0.65rem;
+          max-width: 55px;
+        }
+      }
+
+      .TimeBox {
+        min-width: 50px;
+
+        .Hour, .Score {
+          font-size: 1rem;
+        }
+
+        .Date {
+          font-size: 0.55rem;
+        }
+
+        .Live {
+          font-size: 0.6rem;
+        }
       }
     }
   }

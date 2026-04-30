@@ -1,0 +1,381 @@
+$colormenu: #61331c;
+$colorgold: #c8922a;
+$bg-light: #f5f0ea;
+$shadow-sm: 0 2px 8px rgba($colormenu, 0.08);
+$transition: all 0.2s ease;
+
+.orderContainer {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: $bg-light;
+  min-height: calc(100vh - 120px);
+}
+
+.orderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.orderHeader h1 {
+  font-family: "Bookman Old Style", sans-serif;
+  color: $colormenu;
+  margin: 0;
+}
+
+.backToShopButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: $colormenu;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-family: Cambria, sans-serif;
+  transition: $transition;
+
+  &:hover {
+    text-decoration: underline;
+    transform: translateX(-2px);
+  }
+}
+
+.cartSummary {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-sm;
+}
+
+.cartSummary h2 {
+  font-family: Cambria, sans-serif;
+  color: $colormenu;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0d5cc;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.itemDetails {
+  flex: 1;
+}
+
+.itemName {
+  font-weight: bold;
+  color: $colormenu;
+  margin: 0 0 0.2rem 0;
+  font-family: Cambria, sans-serif;
+}
+
+.itemSize, .itemPlayer {
+  font-size: 0.8rem;
+  color: #a68b7c;
+  margin: 0;
+  font-style: italic;
+}
+
+.itemPlayer {
+  color: $colorgold;
+  font-weight: bold;
+}
+
+.itemQuantity {
+  font-size: 0.9rem;
+  color: #a08060;
+  margin: 0.2rem 0 0 0;
+}
+
+.itemPrice {
+  text-align: right;
+  min-width: 120px;
+}
+
+.oldPrice {
+  font-size: 0.8rem;
+  color: #a08060;
+  text-decoration: line-through;
+  display: block;
+}
+
+.newPrice {
+  font-size: 1rem;
+  color: $colorgold;
+  font-weight: bold;
+  display: block;
+}
+
+.totalItemPrice {
+  font-size: 0.9rem;
+  color: $colormenu;
+  font-weight: bold;
+  margin: 0.2rem 0 0 0;
+}
+
+.totalSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e0d5cc;
+  text-align: right;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.oldTotal {
+  color: #a08060;
+  text-decoration: line-through;
+  font-size: 1rem;
+}
+
+.newTotal {
+  color: $colorgold;
+  font-size: 1.4rem;
+}
+
+.savingsRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.discountSection, .memberSection {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: $shadow-sm;
+}
+
+.discountSection h3 {
+  font-family: Cambria, sans-serif;
+  color: $colormenu;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.discountInput {
+  display: flex;
+  gap: 1rem;
+}
+
+.discountInput input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 2px solid #e0d5cc;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-family: Cambria, sans-serif;
+
+  &:focus {
+    border-color: $colorgold;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($colorgold, 0.2);
+  }
+}
+
+.discountInput button {
+  padding: 0.8rem 1.5rem;
+  background: $colormenu;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover:not(:disabled) {
+    background: darken($colormenu, 8);
+  }
+
+  &:disabled {
+    background: #a08060;
+    cursor: not-allowed;
+  }
+}
+
+.discountInfo {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.successInfo {
+  color: #4caf50;
+}
+
+.errorInfo {
+  color: #e53935;
+}
+
+.appliedCodes {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: $colormenu;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appliedCode {
+  background: #4caf50;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.codesLimit {
+  font-size: 0.7rem;
+  color: #a08060;
+  margin-left: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  font-family: Cambria, sans-serif;
+  color: $colormenu;
+
+  input {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+.orderButton {
+  width: 100%;
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: $transition;
+  margin-top: 1rem;
+
+  &:hover {
+    background: #45a049;
+    transform: scale(1.01);
+  }
+}
+
+.successPage, .emptyPage {
+  text-align: center;
+  padding: 3rem;
+  background-color: $bg-light;
+  min-height: calc(100vh - 120px);
+}
+
+.successPage h2, .emptyPage h2 {
+  font-family: "Bookman Old Style", sans-serif;
+  color: $colormenu;
+  margin-bottom: 1rem;
+}
+
+.successIcon {
+  font-size: 4rem;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+
+.emptyPage button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background: $colormenu;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: darken($colormenu, 8);
+  }
+}
+
+@media (max-width: 768px) {
+  .orderContainer {
+    padding: 1rem;
+  }
+
+  .orderHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .orderItem {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .itemPrice {
+    text-align: center;
+  }
+
+  .totalRow {
+    justify-content: center;
+  }
+
+  .savingsRow {
+    justify-content: center;
+  }
+
+  .discountInput {
+    flex-direction: column;
+  }
+
+  .discountInput button {
+    width: 100%;
+  }
+
+  .cartSummary {
+    padding: 1rem;
+  }
+
+  .discountSection, .memberSection {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .totalRow {
+    font-size: 1rem;
+  }
+
+  .newTotal {
+    font-size: 1.2rem;
+  }
+
+  .orderButton {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}

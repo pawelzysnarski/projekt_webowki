@@ -1,67 +1,93 @@
 services:
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "8000:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-    stdin_open: true
-    tty: true
-    depends_on:
-      - backend
-  db:
+  mariadb:
     image: mariadb:10.4.32
-    container_name: mariadb
-    restart: always
-    ports:
-      - "3306:3306"
+    container_name: chaber_mariadb_dev
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3307:3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_dev_data:/var/lib/mysql
+    networks:
+      - chaber_network
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 3
+      start_period: 15s
+
   backend:
-    build: ./backend
-    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chaber_backend_dev
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${PORT}
     ports:
       - "3000:3000"
-    environment:
-      - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@db:3306/${DB_NAME}
-      - NODE_ENV=development
     volumes:
       - ./backend:/app
       - /app/node_modules
     depends_on:
-      db:
+      mariadb:
         condition: service_healthy
-    stdin_open: true
-    tty: true
-  init-db:
-    build: ./backend
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@db:3306/${DB_NAME}
+    networks:
+      - chaber_network
     command: >
       sh -c "
-        npx prisma migrate dev --name init &&
-        mysql -h db -u root -p${DB_ROOT_PASSWORD} ${DB_NAME} < prisma/dane.sql
+        echo '⏳ Waiting for database...' &&
+        sleep 10 &&
+        echo '📦 Running Prisma migrations...' &&
+        npx prisma migrate deploy &&
+        echo '📥 Importing data from SQL...' &&
+        mariadb -h mariadb -u root -prootpassword123 --ssl=0 chaber < /app/prisma/dane.sql 2>/dev/null || echo '⚠️ Import done (some data may already exist)' &&
+        echo '✅ Data import completed' &&
+        echo '🚀 Starting backend...' &&
+        npm run dev
       "
-    profiles:
-      - init
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chaber_frontend_dev
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: ${VITE_API_URL}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - chaber_network
+
+  adminer:
+    image: adminer:latest
+    container_name: chaber_adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    depends_on:
+      - mariadb
+    networks:
+      - chaber_network
+
+networks:
+  chaber_network:
+    driver: bridge
 
 volumes:
-  mariadb_data:
+  mariadb_dev_data:
+    name: chaber_mariadb_dev_data

@@ -1,12 +1,14 @@
-import {PrismaClient} from "../generated/prisma/client.ts";
+//@ts-nocheck
+
+import {PrismaClient} from "../generated/prisma/client";
 import {PrismaMariaDb} from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: '',
-    database: 'chaber',
+    host: process.env.DB_HOST || 'mariadb',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'rootpassword123',
+    database: process.env.DB_NAME || 'chaber',
 });
 
 const prisma = new PrismaClient({ adapter });

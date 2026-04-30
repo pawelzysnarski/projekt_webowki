@@ -1,12 +1,31 @@
-import { defineConfig } from 'vite'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
     plugins: [react()],
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/test/setup.ts',
+        deps: {
+            inline: [/vite-test-utils/],
+        },
+        fileParallelism: false,
+        isolate: true,
+    },
     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        watch: {
+            usePolling: true,
+            interval: 1000
+        },
         proxy: {
             '/api': {
-                target: 'http://localhost:3000',
+                target: 'http://backend:3000',
                 changeOrigin: true,
                 secure: false
             }

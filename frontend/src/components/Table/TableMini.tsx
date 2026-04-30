@@ -1,12 +1,20 @@
 import styles from "./TableMini.module.scss";
 import useTable from "../../queries/tableQuery.ts";
-import type {Tabela} from "../../types/Tabela.ts";
+import type { Table } from "../../types/Table.ts";
 
-export default function TableMini(){
+export default function TableMini() {
     const { data: tableMiniData, isLoading, isError, error } = useTable();
+
     if (isLoading) return <div>Ładowanie tabeli...</div>;
     if (isError) return <div>Błąd: {error.message}</div>;
-    return(
+
+    const sortedData = [...(tableMiniData || [])].sort((a, b) => {
+        if (b.punkty !== a.punkty) return b.punkty - a.punkty;
+        if (b.bilansBramek !== a.bilansBramek) return b.bilansBramek - a.bilansBramek;
+        return b.goleZdobyte - a.goleZdobyte;
+    });
+
+    return (
         <table className={styles.TableMini}>
             <thead>
             <tr>
@@ -17,17 +25,18 @@ export default function TableMini(){
             </tr>
             </thead>
             <tbody>
-            {tableMiniData?.map((k:Tabela) => {
-                return (
-                    <tr key={k.idKlubu}>
-                        <td className={styles.desc}><img src={`logos/${k.klub.herb}`} alt='logo'/><p>{k.klub.nazwa}</p> </td>
-                        <td>{k.mecze}</td>
-                        <td>{k.bilansBramek}</td>
-                        <td>{k.punkty}</td>
-                    </tr>
-                );
-            })}
+            {sortedData.map((k: Table) => (
+                <tr key={k.idKlubu} className={k.idKlubu === 1 ? styles.MyClub : ""}>
+                    <td className={styles.desc}>
+                        <img src={`logos/${k.klub.herb}`} alt='logo'/>
+                        <p>{k.klub.nazwa}</p>
+                    </td>
+                    <td>{k.mecze}</td>
+                    <td>{k.bilansBramek}</td>
+                    <td>{k.punkty}</td>
+                </tr>
+            ))}
             </tbody>
         </table>
-    )
+    );
 }

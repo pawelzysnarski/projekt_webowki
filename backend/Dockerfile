@@ -2,12 +2,12 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package*.json .
+RUN apk add --no-cache mysql-client bash
 
-RUN npm install
+COPY package*.json ./
+COPY prisma ./prisma/
 
-COPY . .
+RUN npm install && npm cache clean --force && npx prisma generate
 
 EXPOSE 3000
-
-CMD ["npm","run", "dev"]
+CMD ["npm", "run", "dev"]

@@ -1,4 +1,3 @@
-// Zmienne
 $primary-brown: #714a36;
 $primary-dark: #2d1b12;
 $primary-darker: #1a0f09;
@@ -17,6 +16,92 @@ $bronze: #cd7f32;
 @mixin gradient-bg {
   background: linear-gradient(135deg, $primary-dark, $primary-darker);
 }
+
+.seasonTicket {
+  background: $primary-darker;
+  color: $text-light;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero {
+  background: linear-gradient(135deg, $primary-dark, $primary-darker);
+  padding: 80px 20px 100px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '⚽';
+    position: absolute;
+    font-size: 300px;
+    opacity: 0.05;
+    bottom: -50px;
+    right: -50px;
+    pointer-events: none;
+  }
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, $text-light, $gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  display: block;
+  font-size: 1.5rem;
+  color: $gold;
+  margin-top: 8px;
+}
+
+.heroDescription {
+  font-size: 1.2rem;
+  color: $text-muted;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: $gold;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: $text-muted;
+}
+
 .alternative {
   padding: 60px 0;
   background: linear-gradient(135deg, rgba(113, 74, 54, 0.1), rgba(0, 0, 0, 0.2));
@@ -33,11 +118,6 @@ $bronze: #cd7f32;
   gap: 40px;
   border: 1px solid $primary-brown;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-  }
 }
 
 .alternativeContent {
@@ -149,122 +229,6 @@ $bronze: #cd7f32;
     left: 100%;
     margin-left: 10px;
   }
-}
-
-.ctaButtonSecondary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: transparent;
-  border: 2px solid $primary-brown;
-  border-radius: 40px;
-  color: $text-light;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-
-  &:hover {
-    border-color: $gold;
-    color: $gold;
-    transform: translateY(-2px);
-  }
-}
-
-.faqItem {
-
-  &:first-child {
-    border-left-color: $gold;
-
-    h4 {
-      color: $gold;
-    }
-  }
-}
-
-.seasonTicket {
-  background: $primary-darker;
-  color: $text-light;
-  min-height: 100vh;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.hero {
-  background: linear-gradient(135deg, $primary-dark, $primary-darker);
-  padding: 80px 20px 100px;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '⚽';
-    position: absolute;
-    font-size: 300px;
-    opacity: 0.05;
-    bottom: -50px;
-    right: -50px;
-    pointer-events: none;
-  }
-}
-
-.heroContent {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.heroTitle {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 16px;
-  background: linear-gradient(135deg, $text-light, $gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.heroSubtitle {
-  display: block;
-  font-size: 1.5rem;
-  color: $gold;
-  margin-top: 8px;
-}
-
-.heroDescription {
-  font-size: 1.2rem;
-  color: $text-muted;
-  margin-bottom: 40px;
-  line-height: 1.6;
-}
-
-.heroStats {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  flex-wrap: wrap;
-}
-
-.stat {
-  text-align: center;
-}
-
-.statValue {
-  display: block;
-  font-size: 2rem;
-  font-weight: 800;
-  color: $gold;
-  margin-bottom: 8px;
-}
-
-.statLabel {
-  font-size: 0.9rem;
-  color: $text-muted;
 }
 
 .benefits {
@@ -534,6 +498,7 @@ $bronze: #cd7f32;
 }
 
 .ctaButtonSecondary {
+  display: inline-block;
   padding: 14px 32px;
   background: transparent;
   border: 2px solid $primary-brown;
@@ -543,6 +508,7 @@ $bronze: #cd7f32;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 
   &:hover {
     border-color: $gold;
@@ -605,5 +571,163 @@ $bronze: #cd7f32;
     color: $text-muted;
     line-height: 1.5;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 50px 20px 60px;
+
+    &::before {
+      font-size: 150px;
+      bottom: -20px;
+      right: -20px;
+    }
+  }
+
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .heroDescription {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .heroStats {
+    gap: 30px;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+
+  .alternativeCard {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .tiersGrid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 40px auto 0;
+  }
+
+  .paymentToggle {
+    gap: 10px;
+  }
+
+  .paymentOption {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .ctaTitle {
+    font-size: 1.8rem;
+  }
+
+  .faqGrid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 40px 15px 50px;
+
+    &::before {
+      font-size: 100px;
+      bottom: -10px;
+      right: -10px;
+    }
+  }
+
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroDescription {
+    font-size: 0.9rem;
+  }
+
+  .heroStats {
+    gap: 20px;
+  }
+
+  .statValue {
+    font-size: 1.3rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  .alternativeCard {
+    padding: 20px;
+  }
+
+  .alternativeTitle {
+    font-size: 1.4rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefitCard {
+    padding: 20px;
+  }
+
+  .tierCard {
+    padding: 20px;
+  }
+
+  .tierName {
+    font-size: 1.4rem;
+  }
+
+  .priceAmount {
+    font-size: 2rem;
+  }
+
+  .ctaTitle {
+    font-size: 1.5rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .faqItem {
+    padding: 16px;
   }
 }

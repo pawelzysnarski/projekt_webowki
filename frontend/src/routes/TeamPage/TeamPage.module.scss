@@ -4,45 +4,71 @@ $colormenu: #61331c;
   padding: 2rem 6rem;
   background: linear-gradient(45deg, darken(#61331c, 12%), darken(#423129, 12%));
   min-height: 100vh;
+
+  @media (max-width: 64rem) {
+    padding: 2rem 2rem;
+  }
+
+  @media (max-width: 30rem) {
+    padding: 1.5rem 1rem;
+  }
 }
 
 .Heading {
   color: lighten($colormenu, 10%);
   font-size: 1.8rem;
-  margin: 40px 0 20px 0;
+  margin: 2.5rem 0 1.25rem 0;
   text-transform: uppercase;
   font-family: "Bookman Old Style", sans-serif;
-  border-left: 5px solid $colormenu;
-  padding-left: 15px;
+  border-left: 0.3125rem solid $colormenu;
+  padding-left: 0.9375rem;
+
+  @media (max-width: 48rem) {
+    font-size: 1.4rem;
+    margin: 1.875rem 0 1rem 0;
+  }
 }
 
 .Grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 25px;
+  gap: 1.5625rem;
   justify-content: flex-start;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
   overflow-x: auto;
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
   -webkit-overflow-scrolling: touch;
+
   & > div {
     flex: 0 0 auto;
   }
 
   &::-webkit-scrollbar {
-    height: 8px;
+    height: 0.5rem;
   }
 
   &::-webkit-scrollbar-track {
     background: darken($colormenu, 20%);
-    border-radius: 10px;
+    border-radius: 0.625rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background: $colormenu;
-    border-radius: 10px;
+    border-radius: 0.625rem;
+
     &:hover {
       background: lighten($colormenu, 10%);
     }
+  }
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

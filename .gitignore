@@ -1,4 +1,4 @@
-*/.env
+*.env
 .idea/
 
 logs
@@ -31,3 +31,4 @@ dist-ssr
 .pnp.js
 
 generated
+/backend/Orders/

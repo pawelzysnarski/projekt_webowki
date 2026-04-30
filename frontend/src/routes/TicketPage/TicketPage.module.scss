@@ -1,18 +1,31 @@
 .Main {
   width: 100%;
-  height: 1200px;
+  min-height: 100vh;
   padding: 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  gap: 20px;
+  background: linear-gradient(135deg, #1a0f09 0%, #2d1b12 100%);
 
   .Link_ticket {
-    margin-top: 30px;
     width: 90%;
-    height: 90%;
+    max-width: 800px;
+    height: 220px;
     text-decoration: none;
-    padding: 5px;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+      .Ticket_container {
+        border: 2px solid #d4af37;
+      }
+    }
 
     .Ticket_container {
       background-image: url("../../../public/tickets_photos/stadion.png");
@@ -20,12 +33,13 @@
       background-size: cover;
       width: 100%;
       height: 100%;
-      background-color: white;
       position: relative;
-      border-radius: 10px;
+      border-radius: 16px;
       display: flex;
       justify-content: center;
       flex-direction: column;
+      border: 2px solid transparent;
+      transition: border 0.3s ease;
 
       &::before {
         width: 100%;
@@ -33,42 +47,57 @@
         content: "";
         position: absolute;
         z-index: 1;
-        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
-        border-radius: 10px;
-      }
-
-      &:hover {
-        border: 2px solid lightblue;
-        transform: translateY(-20px);
-        box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.85) 100%);
+        border-radius: 14px;
       }
 
       .Ticket_container_matchup {
         z-index: 2;
         width: 100%;
-        height: 40%;
-        font-size: 30px;
+        padding: 30px 40px;
         display: flex;
         justify-content: space-around;
         align-items: center;
         flex-direction: column;
         color: white;
+        gap: 12px;
+
+        .Ticket_container_title {
+          font-size: 1.8rem;
+          font-weight: 700;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
 
         .Ticket_container_date {
-          padding: 5px;
-          border: 2px solid black;
-          border-radius: 10px;
-          background-color: rgba(00, 00, 00, 0.5);
+          padding: 8px 20px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 20px;
+          background: rgba(0, 0, 0, 0.4);
+          font-size: 0.95rem;
+          backdrop-filter: blur(4px);
         }
       }
     }
   }
+
   .Link_pass {
-    margin-top: 30px;
     width: 90%;
-    height: 90%;
+    max-width: 800px;
+    height: 220px;
     text-decoration: none;
-    padding: 5px;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+      .Pass_container {
+        border: 2px solid #d4af37;
+      }
+    }
 
     .Pass_container {
       background-image: url("../../../public/logos/chaber.png");
@@ -76,13 +105,15 @@
       background-size: cover;
       width: 100%;
       height: 100%;
-      background-color: white;
       position: relative;
-      border-radius: 10px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
       flex-direction: column;
+      gap: 12px;
+      border: 2px solid transparent;
+      transition: border 0.3s ease;
 
       &::before {
         width: 100%;
@@ -90,28 +121,103 @@
         content: "";
         position: absolute;
         z-index: 1;
-        background: linear-gradient(to bottom, rgba(00, 00, 00, 0.1) 0%, rgba(00, 00, 00, 1) 100%);
-        border-radius: 10px;
-      }
-
-      &:hover {
-        border: 2px solid lightblue;
-        transform: translateY(-20px);
-        box-shadow: 0 20px 10px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.85) 100%);
+        border-radius: 14px;
       }
 
       .Pass_container_title {
         z-index: 2;
-        width: 100%;
         text-align: center;
-        font-size: 30px;
-        color: white;}
+        font-size: 2rem;
+        font-weight: 800;
+        color: #d4af37;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+      }
 
-        .Pass_container_subtitle {
-          color: white;
-          padding: 5px;
+      .Pass_container_subtitle {
+        z-index: 2;
+        color: #c4a58b;
+        font-size: 1.1rem;
+        padding: 8px 20px;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .Main {
+    padding: 15px;
+    gap: 15px;
+
+    .Link_ticket,
+    .Link_pass {
+      height: 180px;
+
+      .Ticket_container .Ticket_container_matchup {
+        padding: 20px;
+
+        .Ticket_container_title {
+          font-size: 1.3rem;
         }
 
+        .Ticket_container_date {
+          font-size: 0.8rem;
+          padding: 6px 16px;
+        }
+      }
+
+      .Pass_container {
+        .Pass_container_title {
+          font-size: 1.5rem;
+        }
+
+        .Pass_container_subtitle {
+          font-size: 0.9rem;
+          padding: 6px 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Main {
+    padding: 10px;
+    gap: 12px;
+
+    .Link_ticket,
+    .Link_pass {
+      height: 150px;
+
+      .Ticket_container .Ticket_container_matchup {
+        padding: 15px;
+        gap: 8px;
+
+        .Ticket_container_title {
+          font-size: 1.1rem;
+        }
+
+        .Ticket_container_date {
+          font-size: 0.7rem;
+          padding: 4px 12px;
+        }
+      }
+
+      .Pass_container {
+        gap: 6px;
+
+        .Pass_container_title {
+          font-size: 1.2rem;
+        }
+
+        .Pass_container_subtitle {
+          font-size: 0.75rem;
+          padding: 4px 12px;
+        }
+      }
     }
   }
 }

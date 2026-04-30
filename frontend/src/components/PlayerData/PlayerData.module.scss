@@ -105,3 +105,81 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .Contener {
+    width: 220px;
+
+    .PImage {
+      height: 260px;
+    }
+
+    .Overlay {
+      .Number {
+        font-size: 1.8rem;
+      }
+
+      .Country {
+        font-size: 0.75rem;
+      }
+
+      .ProfileLink {
+        padding: 6px 16px;
+        font-size: 0.7rem;
+      }
+    }
+
+    .Desc {
+      padding: 15px;
+
+      h4:first-child {
+        font-size: 0.85rem;
+      }
+
+      h4:last-child {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Contener {
+    width: 160px;
+
+    .PImage {
+      height: 200px;
+    }
+
+    .Overlay {
+      height: 60%;
+      gap: 4px;
+
+      .Number {
+        font-size: 1.4rem;
+      }
+
+      .Country {
+        font-size: 0.65rem;
+      }
+
+      .ProfileLink {
+        padding: 5px 12px;
+        font-size: 0.65rem;
+        margin-top: 2px;
+      }
+    }
+
+    .Desc {
+      padding: 10px;
+
+      h4:first-child {
+        font-size: 0.7rem;
+      }
+
+      h4:last-child {
+        font-size: 1rem;
+      }
+    }
+  }
+}

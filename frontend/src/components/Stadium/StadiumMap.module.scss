@@ -1,10 +1,10 @@
-$primary-dark: #2d1b12;      // ciemny brąz
-$primary-darker: #1a0f09;    // bardzo ciemny brąz
-$primary-accent: #714a36;     // główny kolor akcentu
-$primary-light: #8b5e46;      // jaśniejszy brąz
-$text-light: #f5e6d9;         // kremowy biały
-$text-muted: #c4a58b;         // jasny brąz
-$border-color: #8b5e46;       // krawędzie w kolorze akcentu
+$primary-dark: #2d1b12;
+$primary-darker: #1a0f09;
+$primary-accent: #714a36;
+$primary-light: #8b5e46;
+$text-light: #f5e6d9;
+$text-muted: #c4a58b;
+$border-color: #8b5e46;
 
 $gold-color: #d4af37;
 $silver-color: #a8a8a8;
@@ -140,6 +140,7 @@ $bronze-color: #cd7f32;
   font-weight: 500;
   backdrop-filter: blur(8px);
   border-top: 1px solid $primary-accent;
+  z-index: 100;
 }
 
 .loading {
@@ -259,9 +260,9 @@ $bronze-color: #cd7f32;
 }
 
 .seatSelected {
-  background: linear-gradient(135deg, #eab308, #ca8a04);
-  color: #1a1a2e;
-  box-shadow: 0 0 0 2px $primary-accent, 0 4px 12px rgba(234, 179, 8, 0.5);
+  background: linear-gradient(135deg, $gold-color, darken($gold-color, 10%));
+  color: $primary-darker;
+  box-shadow: 0 0 0 2px $primary-accent, 0 4px 12px rgba(212, 175, 55, 0.5);
   transform: scale(1.02);
 }
 
@@ -397,7 +398,81 @@ $bronze-color: #cd7f32;
   &:hover {
     background: lighten($primary-accent, 10%);
   }
+}
+.stadiumContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $primary-darker, $primary-dark);
+}
 
+.stageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  border: 1px solid $primary-accent;
+  margin: 20px auto;
+}
+
+.matchInfo {
+  color: $text-muted;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.pitchIndicator {
+  text-align: center;
+  color: $text-muted;
+  font-size: 0.8rem;
+  padding: 8px;
+  letter-spacing: 2px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #f87171;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 20px;
+  gap: 16px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.retryButton {
+  background: $primary-accent;
+  color: $text-light;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: lighten($primary-accent, 10%);
+  }
+}
+
+.awayInfo {
+  color: $text-muted;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
   .seat {
     width: 36px;
     height: 36px;
@@ -414,5 +489,10 @@ $bronze-color: #cd7f32;
   .legend {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .stageWrapper {
+    padding: 10px;
+    margin: 10px;
   }
 }

@@ -1,30 +1,139 @@
-.TableMini{
-  width: 15%;
-  border: 0.3rem solid #61331c;
-  background-color: #fff;
-  border-radius: 1rem;
-  font-family: "Agency FB",arial,sans-serif;
-  thead{
-    tr{
-      border-bottom: 0.02rem dotted #703d23;
-      th{
-        padding: 0.3rem;
-        width: auto;
+$colormenu: #61331c;
+
+.TableMini {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ddd;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba($colormenu, 0.2);
+  backdrop-filter: blur(5px);
+
+  thead {
+    tr {
+      background: rgba($colormenu, 0.1);
+      border-bottom: 1px solid $colormenu;
+    }
+
+    th {
+      padding: 10px 5px;
+      color: lighten($colormenu, 25%);
+      font-family: "Bookman Old Style", sans-serif;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba($colormenu, 0.15);
+      }
+
+      &.MyClub {
+        background: rgba($colormenu, 0.3);
+        color: #fff;
+        font-weight: bold;
+        box-shadow: inset 4px 0 0 $colormenu;
+
+        .Points {
+          color: white;
+          text-shadow: 0 0 10px $colormenu;
+        }
+      }
+
+      td {
+        padding: 8px 5px;
+        text-align: center;
+        font-size: 0.8rem;
       }
     }
   }
-  tbody{
-    tr{
-      border-bottom: 0.005rem dotted #703d23;
-      .desc{
-        display:flex;
-        flex-direction: row;
+
+  .desc {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding-left: 10px !important;
+
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    p {
+      margin: 0;
+      font-family: "Bookman Old Style", sans-serif;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .TableMini {
+    thead th {
+      padding: 8px 3px;
+      font-size: 0.6rem;
+      letter-spacing: 0.5px;
+    }
+
+    tbody td {
+      padding: 6px 3px;
+      font-size: 0.7rem;
+    }
+
+    .desc {
+      gap: 6px;
+      padding-left: 6px !important;
+
+      img {
+        width: 16px;
+        height: 16px;
       }
-      td{
-        text-align: end;
-        img{
-          width: 2rem;
-        }
+
+      p {
+        font-size: 0.65rem;
+        max-width: 80px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .TableMini {
+    thead th {
+      padding: 6px 2px;
+      font-size: 0.5rem;
+    }
+
+    tbody td {
+      padding: 5px 2px;
+      font-size: 0.6rem;
+    }
+
+    .desc {
+      gap: 4px;
+      padding-left: 4px !important;
+
+      img {
+        width: 14px;
+        height: 14px;
+      }
+
+      p {
+        font-size: 0.55rem;
+        max-width: 50px;
       }
     }
   }

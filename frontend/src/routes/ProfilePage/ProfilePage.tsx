@@ -1,10 +1,13 @@
-import styles from "./ProfilePage.module.scss"
-import Login from "../../components/Login/Login.tsx";
+import { useAuth } from "../../auth/AuthContext";
+import Login from "../../components/Login/Login";
+import { Navigate } from "react-router-dom";
 
 export default function ProfilePage() {
-    return (
-        <div>
-            <Login/>
-        </div>
-    );
+    const { user } = useAuth();
+
+    if (user) {
+        return <Navigate to="/" replace />;
+    }
+
+    return <Login />;
 }

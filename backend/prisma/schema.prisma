@@ -42,6 +42,7 @@ model terminarz {
   gospodarz     klub     @relation("terminarz_ID_GospodarzaToklub", fields: [idGospodarza], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_1")
   gosc          klub     @relation("terminarz_ID_Go_ciaToklub", fields: [idGoscia], references: [id], onUpdate: Restrict, map: "terminarz_ibfk_2")
   wynik         wyniki?
+  mecz          mecz?
 
   @@index([idGospodarza], map: "ID_Gospodarza")
   @@index([idGoscia], map: "ID_Gościa")
@@ -61,18 +62,20 @@ model produkty {
   category    String  @db.VarChar(50)
   subcategory String  @db.VarChar(50)
   image       String  @db.VarChar(255)
+  image_front String  @db.VarChar(255)
+  image_back  String? @db.VarChar(255)
 }
 
 model akapity {
   ID            Int        @id @default(autoincrement())
-  ID_Wiadomo_ci Int        @map("ID_Wiadomości")
-  Tre__         String     @map("Treść") @db.VarChar(1000)
-  wiadomo_ci    wiadomo_ci @relation(fields: [ID_Wiadomo_ci], references: [ID], onUpdate: Restrict, map: "akapity_ibfk_1")
+  ID_Wiadomosci Int        @map("ID_Wiadomości")
+  Tresc         String     @map("Treść") @db.VarChar(1000)
+  wiadomosci    wiadomosci @relation(fields: [ID_Wiadomosci], references: [ID], onUpdate: Restrict, map: "akapity_ibfk_1")
 
-  @@index([ID_Wiadomo_ci], map: "ID_Wiadomości")
+  @@index([ID_Wiadomosci], map: "ID_Wiadomości")
 }
 
-model dru_yna {
+model druzyna {
   ID             Int       @id @default(autoincrement())
   Imie           String    @db.VarChar(40)
   Nazwisko       String    @db.VarChar(40)
@@ -89,30 +92,121 @@ model dru_yna {
   @@map("drużyna")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model personel {
   ID       Int    @id @default(autoincrement())
   Imie     String @db.VarChar(40)
   Nazwisko String @db.VarChar(40)
   Profesja String @db.VarChar(100)
   Kraj     String @db.VarChar(50)
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model u_ytkownik {
-  ID    Int
-  Login String @db.VarChar(255)
-  Has_o String @map("Hasło") @db.VarChar(255)
+model uzytkownik {
+  id        Int      @id @default(autoincrement())
+  imie      String   @db.VarChar(100)
+  nazwisko  String   @db.VarChar(100)
+  email     String   @unique @db.VarChar(255)
+  haslo     String   @db.VarChar(255)
+  data_rej  DateTime @default(now()) @db.DateTime(0)
+  karnet_id Int?
+  karnet    karnet?  @relation(fields: [karnet_id], references: [id], onDelete: SetNull)
 
-  @@map("użytkownik")
-  @@ignore
+  @@map("uzytkownicy")
 }
 
-model wiadomo_ci {
-  ID      Int       @id @default(autoincrement())
-  Zdj_cie String    @map("Zdjęcie") @db.VarChar(100)
-  akapity akapity[]
+model wiadomosci {
+  ID       Int       @id @default(autoincrement())
+  Nag__wek String    @map("Nagłówek") @db.VarChar(100)
+  Zdj_cie  String    @map("Zdjęcie") @db.VarChar(100)
+  Data     DateTime  @default(now()) @db.Date
+  akapity  akapity[]
 
   @@map("wiadomości")
+}
+
+model mecz {
+  id            Int        @id @default(autoincrement())
+  przeciwnik    String     @db.VarChar(100)
+  czy_domowy    Boolean
+  data_meczu    DateTime   @db.DateTime(0)
+  stadion       String?    @db.VarChar(255)
+  miasto        String?    @db.VarChar(100)
+  id_terminarza Int?       @unique
+  terminarz     terminarz? @relation(fields: [id_terminarza], references: [id], onDelete: SetNull)
+  miejsca       miejsce[]
+  bilety        bilet[]
+
+  @@map("mecze")
+}
+
+model miejsce {
+  id         Int     @id @default(autoincrement())
+  sektor     String  @db.VarChar(10)
+  rzad       String  @db.VarChar(5)
+  numer      Int
+  czy_zajete Boolean @default(false)
+  cena       Decimal @db.Decimal(10, 2)
+  typ_biletu String  @db.VarChar(50)
+  id_meczu   Int
+  mecz       mecz    @relation(fields: [id_meczu], references: [id], onDelete: Cascade)
+  bilety     bilet[]
+
+  @@unique([id_meczu, sektor, rzad, numer])
+  @@map("miejsca")
+}
+
+model bilet {
+  id           Int      @id @default(autoincrement())
+  id_meczu     Int
+  id_miejsca   Int      @unique
+  imie         String   @db.VarChar(100)
+  nazwisko     String   @db.VarChar(100)
+  email        String   @db.VarChar(255)
+  data_zakupu  DateTime @default(now()) @db.DateTime(0)
+  czy_oplacony Boolean  @default(false)
+  cena         Decimal  @db.Decimal(10, 2)
+  typ_biletu   String   @db.VarChar(50)
+  kod_biletu   String   @unique @db.VarChar(50)
+
+  mecz    mecz    @relation(fields: [id_meczu], references: [id], onDelete: Cascade)
+  miejsce miejsce @relation(fields: [id_miejsca], references: [id], onDelete: Cascade)
+
+  @@map("bilety")
+}
+
+model karnet {
+  id           Int          @id @default(autoincrement())
+  imie         String       @db.VarChar(100)
+  nazwisko     String       @db.VarChar(100)
+  email        String       @db.VarChar(255)
+  typ_karnetu  String       @db.VarChar(50)
+  data_zakupu  DateTime     @default(now()) @db.DateTime(0)
+  czy_oplacony Boolean      @default(false)
+  cena         Decimal      @db.Decimal(10, 2)
+  sezon        String       @db.VarChar(9)
+  kod_karnetu  String       @unique @db.VarChar(50)
+  uzytkownik   uzytkownik[]
+
+  @@map("karnety")
+}
+
+model punkty_scoutingowe {
+  ID                     Int       @id @default(autoincrement())
+  szerokosc_geograficzna Decimal?  @db.Decimal(9, 6)
+  dlugosc_geograficzna   Decimal?  @db.Decimal(9, 6)
+  miejsce                String?   @db.VarChar(255)
+  data                   DateTime? @db.Date
+  Ilosc_miejsca          Int
+  zapis                  zapis[]
+}
+
+model zapis {
+  ID                 Int                @id @default(autoincrement())
+  ID_Punktu          Int
+  Imie               String             @db.VarChar(30)
+  Nazwisko           String             @db.VarChar(50)
+  Wiek               Int
+  Email              String             @db.VarChar(70)
+  punkty_scoutingowe punkty_scoutingowe @relation(fields: [ID_Punktu], references: [ID], onUpdate: Restrict, map: "zapis_ibfk_1")
+
+  @@index([ID_Punktu], map: "ID_Punktu")
 }

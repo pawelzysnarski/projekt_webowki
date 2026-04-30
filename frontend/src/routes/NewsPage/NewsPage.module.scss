@@ -1,0 +1,65 @@
+$colormenu: #61331c;
+
+.PageContainer {
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem;
+  min-height: 100vh;
+
+  h1 {
+    font-family: "Bookman Old Style", sans-serif;
+    color: white;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1875rem;
+    text-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.5);
+
+    @media (max-width: 48rem) {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.1rem;
+    }
+  }
+}
+
+.NewsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 3.75rem;
+  align-items: center;
+
+  @media (max-width: 48rem) {
+    gap: 2rem;
+  }
+
+  & > * {
+    width: 100%;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.875rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.StatusInfo {
+  text-align: center;
+  color: white;
+  font-family: "Bookman Old Style", sans-serif;
+  padding: 6.25rem;
+  font-size: 1.2rem;
+
+  @media (max-width: 480px) {
+    padding: 3rem 1rem;
+    font-size: 1rem;
+  }
+}
