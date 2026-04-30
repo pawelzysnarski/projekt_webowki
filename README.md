@@ -17,8 +17,8 @@ docker compose -f docker-compose.prod.yml up --build -d
 ## Testy
  
 ```bash
-docker exec backend npm test
-docker exec frontend npm test
+docker compose exec backend npm test
+docker compose exec frontend npm test
 ```
  
 ## Dokumentacja
