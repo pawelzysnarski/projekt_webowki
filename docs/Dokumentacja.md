@@ -447,12 +447,12 @@ Projekt zawiera testy jednostkowe zarówno po stronie frontendu, jak i backendu,
 
 **Testy backendu:**
 ```bash
-docker exec backend npm test
+docker compose exec backend npm test
 ```
 
 **Testy frontendu:**
 ```bash
-docker exec frontend npm test
+docker compose exec frontend npm test
 ```
 
 ### Pokrycie testami – Backend
