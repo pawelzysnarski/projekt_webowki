@@ -134,8 +134,8 @@ Miłosz odpowiadał za fundamenty infrastrukturalne projektu oraz kluczową logi
 | **Autentykacja** | Logowanie i rejestracja użytkowników (`authRouter`, `AuthContext`, `Login`) |
 | **Bilety i karnety** | Pełna logika zakupu biletów na mecze oraz karnetów sezonowych (`ticketsRouter`, `Tickets`, `Ticket`, `SeasonTicket`) |
 | **Strona kontaktowa** | Formularz kontaktowy z obsługą wysyłki e-mail (`contactRouter`, `emailService`, `ContactPage`) |
-| **Style** | Pliki SCSS dla komponentów: `Login`, `ContactPage`, `Tickets`, `Ticket`, `SeasonTicket`, `StadiumMap` |
-| **Testy** | Testy jednostkowe: `auth.test.ts`, `contact.test.ts`, `tickets.test.ts` |
+| **Style** | Pliki SCSS dla komponentów:`TicketPage`, `ContactPage`, `Login`, `ContactPage`, `Tickets`, `Ticket`, `SeasonTicket`, `StadiumMap` |
+| **Testy** | Testy jednostkowe: `ContactPage.test.tsx`, `Login.test.tsx`, `protectedRoute.test.tsx`, `SeasonTicket.test.tsx`, `StadiumMap.test.tsx`, `Ticket.test.tsx`, `TicketPage.test.tsx`, `Tickets.test.tsx`, `auth.test.ts`, `contact.test.ts`, `tickets.test.ts` |
 
 ---
 
@@ -151,7 +151,7 @@ Paweł zajmował się częścią informacyjną aplikacji — widokami prezentuj�
 | **Drużyna** | Strony zawodników i personelu (`TeamPage`, `PlayerData`, `PlayerDesc`, `StaffData`, `StaffDesc`) |
 | **Akademia** | Strona akademii z opisem oferty (`AcademyPage`) |
 | **Style** | Pliki SCSS dla: `MainPage`, `NewsPage`, `News`, `TablePage`, `Table`, `TeamPage`, `PlayerData`, `PlayerDesc`, `StaffData`, `StaffDesc`, `AcademyPage` |
-| **Testy** | Testy jednostkowe: `news.test.ts`, `matches.test.ts`, `players.test.ts`, `staff.test.ts`, `scout.test.ts`, `table.test.ts`, `results.test.ts` |
+| **Testy** | Testy jednostkowe: `Academy.test.tsx`, `AcademyRegister.test.tsx`, `MainPage.test.tsx`, `Menu.test.tsx`, `News.test.tsx`, `PlayerData.test.tsx`, `PlayerDesc.test.tsx`, `Table.test.tsx`, `academyRegister.test.ts`, `news.test.ts`, `matches.test.ts`, `players.test.ts`, `staff.test.ts`, `scout.test.ts`, `table.test.ts`, `results.test.ts` |
 
 ---
 
