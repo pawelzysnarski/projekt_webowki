@@ -11,6 +11,9 @@ shopDbRouter.get("/:id", async (req, res)=>{
     const result = await prisma.produkty.findUnique({
         where: { id }
     });
+    if (!result) {
+        return res.status(404).json({ message: 'Product not found' });
+    }
     res.json(result);
 });
 export default shopDbRouter;
